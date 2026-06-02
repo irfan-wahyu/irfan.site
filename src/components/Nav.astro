@@ -1,0 +1,19 @@
+---
+export interface Props {
+  variant?: 'home' | 'works' | 'detail';
+}
+const { variant = 'home' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<nav>
+  <a href={`${base}`} class="nav-logo">I · W</a>
+  
+  {variant === 'home' ? (
+    <ul class="nav-links">
+      <li><a href={`${base}#about`}>About</a></li>
+      <li><a href={`${base}works`}>Works</a></li>
+      <li><a href={`${base}#philosophy`}>Philosophy</a></li>
+      <li><a href={`${base}#contact`}>Contact</a></li>
+    </ul>
+  ) : null}
+</nav>

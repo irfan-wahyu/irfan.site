@@ -1,0 +1,180 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const sorted = allProjects.sort((a, b) => a.data.order - b.data.order);
+const base = import.meta.env.BASE_URL;
+
+// Collect all unique tags across projects
+const allTags = [...new Set(sorted.flatMap(p => p.data.tags))];
+---
+
+<Layout title="Works — Irfan Wahyu">
+  <style>
+    @import '../../../public/styles/works-index.css';
+  </style>
+  <Nav variant="works" />
+
+  <!-- HERO -->
+  <section id="hero" class="has-corners">
+    <span class="c-tl"></span><span class="c-tr"></span>
+    <div class="hero-lines"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Archive</div>
+      <h1 class="hero-heading">All Works</h1>
+    </div>
+  </section>
+
+  <div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+  <!-- FILTER BAR -->
+  <div id="filter-bar">
+    <span class="filter-label">Filter</span>
+    <div class="filter-divider"></div>
+    <div class="filter-tags" id="filterTags">
+      <button class="filter-tag active" data-filter="all">All</button>
+      {allTags.map(tag => (
+        <button class="filter-tag" data-filter={tag}>{tag}</button>
+      ))}
+    </div>
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+
+  <!-- WORKS -->
+  <section id="works-section" class="has-corners">
+    <span class="c-tl"></span><span class="c-tr"></span>
+    <span class="c-bl"></span><span class="c-br"></span>
+
+    <div class="works-grid" id="worksGrid">
+      {sorted.map((project, idx) => (
+        <div
+          class={`work-card card-anim${idx >= 3 ? ' hidden' : ''}`}
+          data-delay={idx >= 3 ? '0' : String(idx * 80)}
+          data-tags={project.data.tags.join(',')}
+        >
+          <a href={`${base}works/${project.id}/`} class="work-link"></a>
+          <div class="work-thumb">
+            {project.data.thumbnail ? (
+              <img src={`${base}images/${project.data.thumbnail}`} alt={project.data.title} />
+            ) : (
+              <div class="work-thumb-placeholder">
+                <div class="work-thumb-pattern" style="background:repeating-linear-gradient(45deg,var(--accent) 0,var(--accent) 1px,transparent 0,transparent 50px)"></div>
+              </div>
+            )}
+            <div class="work-overlay">
+              <div class="work-overlay-title">{project.data.title}</div>
+              {project.data.subtitle && (
+              <div class="work-desc">{project.data.subtitle}</div>
+            )}
+              <div class="work-overlay-tags">
+                {project.data.tags.map(tag => (
+                  <span class="work-overlay-tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+
+
+        </div>
+      ))}
+    </div>
+
+    <!-- SHOW MORE + COUNT -->
+    <div class="works-footer" id="worksFooter">
+      <button class="btn-show-more" id="btnShowMore">
+        Show More
+        <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+          <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <span class="works-shown-count" id="shownCount"></span>
+    </div>
+
+  </section>
+
+  <div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+  <script define:vars={{ totalProjects: sorted.length }}>
+  const PER_PAGE = 3;
+  
+  function initFilter() {
+    const grid = document.getElementById('worksGrid');
+    const btn = document.getElementById('btnShowMore');
+    const shownCount = document.getElementById('shownCount');
+
+    if (!grid || !btn || !shownCount) {
+      console.error('Missing elements');
+      return;
+    }
+
+    function updateCount() {
+      const visible = grid.querySelectorAll('.work-card:not(.hidden):not(.filtered-out)');
+      const total = grid.querySelectorAll('.work-card:not(.filtered-out)');
+      shownCount.textContent = 'showing ' + visible.length + ' of ' + total.length;
+      const hasMore = grid.querySelectorAll('.work-card.hidden:not(.filtered-out)').length > 0;
+      btn.style.display = hasMore ? 'inline-flex' : 'none';
+    }
+
+    btn.addEventListener('click', () => {
+      const hidden = Array.from(grid.querySelectorAll('.work-card.hidden:not(.filtered-out)')).slice(0, PER_PAGE);
+      hidden.forEach((c, i) => {
+        c.classList.remove('hidden');
+        setTimeout(() => c.classList.add('visible'), i * 80);
+      });
+      updateCount();
+    });
+
+    // FILTER
+    document.querySelectorAll('.filter-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+        const filter = tag.dataset.filter;
+
+        grid.querySelectorAll('.work-card').forEach((card, idx) => {
+          card.classList.remove('filtered-out');
+          if (idx >= PER_PAGE) card.classList.add('hidden');
+          else card.classList.remove('hidden');
+        });
+        
+if (filter !== 'all') {
+  grid.querySelectorAll('.work-card').forEach(card => {
+    const tags = (card.dataset.tags || '').split(',').map(t => t.trim());
+    console.log('Card tags:', tags, 'Filter:', filter, 'Match:', tags.includes(filter));
+    if (!tags.includes(filter)) {
+      card.classList.add('filtered-out');
+    }
+  });
+}
+        updateCount();
+      });
+    });
+
+    // SCROLL ANIMATIONS
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        setTimeout(() => el.classList.add('visible'), parseInt(el.dataset.delay || '0'));
+        io.unobserve(el);
+      });
+    }, { threshold: .06, rootMargin: '0px 0px -20px 0px' });
+
+    document.querySelectorAll('.card-anim:not(.hidden)').forEach(el => io.observe(el));
+
+    updateCount();
+  }
+
+  // Run setelah DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFilter);
+  } else {
+    initFilter();
+  }
+</script>
+
+</Layout>

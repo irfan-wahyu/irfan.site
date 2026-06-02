@@ -1,0 +1,742 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import { getCollection } from 'astro:content';
+import { skills } from '../data/skills';
+const allProjects = await getCollection('projects');
+const sorted = allProjects.sort((a, b) => a.data.order - b.data.order);
+const base = import.meta.env.BASE_URL;
+---
+<Layout title="Irfan Wahyu — Systemic Thinker. Visual Maker.">
+  <Nav variant="home" />
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-num" id="modalNum"></div>
+      <div class="modal-domain" id="modalDomain"></div>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-section-label">Dengan</div>
+      <div class="modal-tools" id="modalTools"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">I · W</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="has-corners">
+  <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+  <canvas id="ascii-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Portfolio</div>
+    <h1 class="hero-heading">Lagi Debugging Bang.<br><em>Nanti Kalo Ga Ngebug.</em></h1>
+    <p class="hero-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada, ut consequat enim fringilla dignissim gravida.</p>
+    <div class="hero-btn-wrap">
+      <a href="#" class="hero-btn" style="pointer-events:all">
+        Get in Touch
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+<!-- ABOUT -->
+<section id="about" class="has-corners">
+  <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
+  <div class="about-grid fade-in">
+    <div class="about-photo-wrap">
+      <canvas id="particle-canvas"></canvas>
+    </div>
+    <div class="about-text">
+      <h2 class="heading-anim">bla bla bla<br><em>bli bli bli.</em></h2>
+      <div class="about-container">
+        <p class="about-body">Curabitur luctus felis ac nunc venenatis, vitae sodales purus ultrices. Integer convallis magna nec lacus consequat, vel vestibulum nisl accumsan. Vivamus sagittis ante a felis dignissim odio fermentum euismod.</p>
+      </div>
+      <div class="about-info-grid">
+        <div class="about-info-card slide-left" data-delay="0">
+          <div class="about-info-icon">✦</div>
+          <div><div class="about-info-label">Pendidikan</div><div class="about-info-value">Maunya sih Informatika<br>UNYEAH</div></div>
+        </div>
+        <div class="about-info-card slide-left" data-delay="80">
+          <div class="about-info-icon">◈</div>
+          <div><div class="about-info-label">Keahlian</div><div class="about-info-value">Lorem Ipsum, Ipsum Lorem,<br>Dolor sit</div></div>
+        </div>
+        <div class="about-info-card slide-left" data-delay="160">
+          <div class="about-info-icon">◉</div>
+          <div><div class="about-info-label">Minat</div><div class="about-info-value">Amet Amet,Cogito,<br>Ergo Sum</div></div>
+        </div>
+        <div class="about-info-card slide-left" data-delay="240">
+          <div class="about-info-icon">⟡</div>
+          <div><div class="about-info-label">Berbasis di</div><div class="about-info-value">Watasi,Wakatta<br>Wakaranai</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deco-line fade-in"><div class="deco-line-mark">◆</div></div>
+  <p class="skill-heading fade-in">Areas of Practice</p>
+
+
+<div class="skill-grid">
+  {skills.map((skill) => (
+    <div 
+      class="skill-card clickable card-anim" 
+      data-delay={skill.delay}
+      data-num={skill.num}
+      data-domain={skill.domain}
+      data-desc={skill.desc}
+      data-tools={skill.tools.join(',')}
+    >
+      <span class="skill-card-num">{skill.num}</span>
+      <span class="skill-card-arrow">↗</span>
+      <div class="skill-card-domain">{skill.domain}</div>
+      <div class="skill-card-essence">{skill.essence}</div>
+    </div>
+  ))}
+</div>
+
+</section>
+
+<div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+<!-- WORKS -->
+<section id="works" class="has-corners corner-bottom">
+  <div class="works-header fade-in">
+    <h2 class="works-title heading-anim">Selected<em> Works</em></h2>
+    <a href="/irfan.site/works/" class="works-all">All Projects <svg width="13" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
+  </div>
+  <div class="works-grid" id="worksGrid">
+    {sorted.map((project, idx) => (
+      <a href={`${base}works/${project.id}/`} class={`work-card work-anim${idx >= 3 ? ' hidden' : ''}`} data-delay={idx >= 3 ? '0' : String(idx * 100)}>
+        <div class="work-placeholder">
+          <div class="work-placeholder-title">{project.data.title}</div>
+          <div class="work-placeholder-arrow">View Project <svg width="11" height="9" viewBox="0 0 12 10" fill="none"><path d="M1 5h10M6 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+        </div>
+        <div class="work-overlay">
+          <div class="work-title">{project.data.title}</div>
+          <div class="work-tags">
+            {project.data.tags.map(tag => <span class="work-tag">{tag}</span>)}
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+  <div class="works-show-more" id="showMoreWrap">
+    <button class="btn-show-more" id="btnShowMore">
+      Show More
+      <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <script define:vars={{totalProjects: sorted.length}}>
+  const PER_PAGE = 3;
+  const grid = document.getElementById('worksGrid');
+  const btn = document.getElementById('btnShowMore');
+
+  function updateShowMore() {
+    const hidden = grid.querySelectorAll('.work-card.hidden');
+    btn.style.display = hidden.length > 0 ? 'inline-flex' : 'none';
+  }
+
+  btn?.addEventListener('click', () => {
+    const hidden = Array.from(grid.querySelectorAll('.work-card.hidden')).slice(0, PER_PAGE);
+    hidden.forEach((c, i) => {
+      c.classList.remove('hidden');
+      setTimeout(() => c.classList.add('visible'), i * 100);
+    });
+    updateShowMore();
+  });
+
+  updateShowMore();
+  </script>
+</section>
+
+<div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+<!-- PHILOSOPHY SLIDER -->
+<section id="philosophy" class="has-corners corner-bottom">
+  <div class="slider-wrap">
+    <div class="slide active" id="slide-1">
+      <div class="slide-section-label">Philosophy</div>
+      <div class="slide-1-content">
+        <div class="slide-quote heading-anim">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada fringilla et consequat dignissim.</div>
+        <div class="slide-deco"><div class="slide-deco-mark">✦</div></div>
+        <p class="slide-body">Curabitur luctus felis ac nunc venenatis, vitae sodales purus ultrices. Integer convallis magna nec lacus consequat, vel vestibulum nisl accumsan. Vivamus sagittis ante a felis dignissim, ut luctus odio fermentum sed euismod tortor vel nunc pretium.</p>
+      </div>
+    </div>
+    <div class="slide" id="slide-2">
+      <div class="slide-section-label">Roadmap</div>
+      <h3 class="roadmap-title heading-anim">Where I'm Heading</h3>
+      <div class="roadmap">
+        <div class="roadmap-node"><div class="roadmap-dot active-dot"></div><div class="roadmap-phase">Phase 01 — Now</div><div class="roadmap-label">Foundation</div><div class="roadmap-desc">Lorem ipsum dolor sit amet consectetur adipiscing elit quisque vehicula sapien.</div></div>
+        <div class="roadmap-node"><div class="roadmap-dot"></div><div class="roadmap-phase">Phase 02 — 2026</div><div class="roadmap-label">Expansion</div><div class="roadmap-desc">Curabitur luctus felis ac nunc venenatis vitae sodales purus ultrices.</div></div>
+        <div class="roadmap-node"><div class="roadmap-dot"></div><div class="roadmap-phase">Phase 03 — 2027</div><div class="roadmap-label">Building</div><div class="roadmap-desc">Integer convallis magna nec lacus consequat vel vestibulum nisl acc.</div></div>
+        <div class="roadmap-node"><div class="roadmap-dot"></div><div class="roadmap-phase">Phase 04 — 2028+</div><div class="roadmap-label">Launch</div><div class="roadmap-desc">Vivamus sagittis ante a felis dignissim ut luctus odio fermentum.</div></div>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <div class="slider-dot active" data-slide="0"></div>
+      <div class="slider-dot" data-slide="1"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+<!-- FAQ -->
+<section id="faq-section" class="has-corners corner-bottom">
+  <div class="faq-inner">
+    <div class="slide-section-label fade-in" style="margin-bottom:var(--space-lg)">Questions</div>
+    <h2 class="faq-title heading-anim">Ini nanti harusnya<br><em>Faq sih</em></h2>
+    <p class="faq-subtitle fade-in">bla bla bla bli bli bli blu blu blu.</p>
+    <div class="faq-list">
+      <div class="faq-item fade-in">
+        <button class="faq-question">Lorem ipsum dolor sit amet consectetur adipiscing?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada, ut consequat enim fringilla. Phasellus ornare nibh at arcu dignissim gravida sed vitae enim curabitur luctus.</p></div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-question">Quisque vehicula sapien vel urna malesuada fringilla?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Curabitur luctus felis ac nunc venenatis, vitae sodales purus ultrices. Integer convallis magna nec lacus consequat, vel vestibulum nisl accumsan vivamus sagittis ante <em>a felis dignissim</em>.</p></div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-question">Phasellus ornare nibh at arcu dignissim gravida?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Sed euismod tortor vel nunc pretium, eu tempor arcu suscipit. Nullam commodo libero id velit dictum, nec bibendum eros placerat donec fringilla nisi <em>tincidunt hendrerit</em> lorem ipsum.</p></div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-question">Integer convallis magna nec lacus consequat vel?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Vivamus sagittis ante a felis dignissim, ut luctus odio fermentum. Phasellus ornare nibh at arcu dignissim gravida sed vitae enim lorem ipsum dolor sit amet <em>consectetur adipiscing elit</em>.</p></div>
+      </div>
+      <div class="faq-item fade-in">
+        <button class="faq-question">Vivamus sagittis ante a felis dignissim ultrices?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Donec fringilla nisi nec turpis tincidunt hendrerit. Integer convallis magna nec lacus consequat vel vestibulum nisl accumsan curabitur luctus felis ac nunc venenatis vitae sodales.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+<!-- CONTACT -->
+<section id="contact" class="has-corners corner-bottom">
+  <div class="contact-ring-1"></div><div class="contact-ring-2"></div>
+  <div class="contact-eyebrow fade-in">Let's Connect</div>
+  <h2 class="contact-heading heading-anim">ini nanti<br><em>kontak sih.</em></h2>
+  <p class="contact-para fade-in">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada fringilla dignissim et consequat. Curabitur luctus felis nunc venenatis vitae sodales.</p>
+  <div class="contact-deco fade-in"><div class="contact-deco-line"></div><div class="contact-deco-mark">◆</div><div class="contact-deco-line"></div></div>
+  <a href="#" class="contact-btn fade-in">Open Links <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></a>
+</section>
+
+  <script>
+// CURSOR
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function animC(){cursor.style.left=mx+'px';cursor.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animC)})();
+
+
+// ===== HERO PARTICLE (PROPERLY RESPONSIVE) =====
+(function(){
+  const cv = document.getElementById('ascii-canvas');
+  if (!cv) return;
+  
+  const ctx = cv.getContext('2d');
+  let particles = [];
+  let img = new Image();
+  let imgLoaded = false;
+  let isAssembled = false;
+  let visible = true;
+  
+  // ===== CONFIG (UBAH DI SINI) =====
+  const CFG = {
+    dotSize: 1.75,              // ← Ukuran dot (1-5)
+    gridSpacing: 5,          // ← Jarak dot (2=rapat, 4=normal, 8=sparse)
+    brightnessThreshold: 138, // ← Brightness cutoff (20-200, LEBIH KECIL = lebih banyak dot)
+    dotColor: 'rgba(201,169,110,',
+    alphaScattered: 0.5,    // ← Alpha saat scattered
+    alphaAssembled: 0.9,     // ← Alpha saat assembled
+    assemblySpeed: 0.1,      // ← Kecepatan assembly (0.05=lambat, 0.2=cepat)
+    maxParticles: 5000       // ← Max particle (1000-8000)
+  };
+  
+  const io = new IntersectionObserver(e => {
+    visible = e[0].isIntersecting;
+  }, {threshold: 0});
+  io.observe(cv);
+  
+  function resizeCanvas() {
+    cv.width = window.innerWidth;
+    cv.height = window.innerHeight;
+    if (imgLoaded) initParticles();
+  }
+  
+  function initParticles() {
+    particles = [];
+    if (!imgLoaded) return;
+    
+    // ===== MEMORY CANVAS (FIXED REFERENCE) =====
+    const mem = document.createElement('canvas');
+    mem.width = 800;
+    mem.height = 450;
+    const mCtx = mem.getContext('2d');
+    mCtx.drawImage(img, 0, 0, mem.width, mem.height);
+    let imgData = mCtx.getImageData(0, 0, mem.width, mem.height);
+    
+    // ===== OBJECT-FIT COVER LOGIC (RESPONSIVE) =====
+    const cRatio = cv.width / cv.height;  // current canvas ratio
+    let rW, rH, oX, oY;
+    
+    if (cRatio > 16/9) {
+      // Canvas lebih lebar (landscape) → scale to width
+      rW = cv.width;
+      rH = cv.width / (16/9);
+      oX = 0;
+      oY = (cv.height - rH) / 2;
+    } else {
+      // Canvas lebih tinggi (portrait) → scale to height
+      rW = cv.height * (16/9);
+      rH = cv.height;
+      oX = (cv.width - rW) / 2;
+      oY = 0;
+    }
+    
+    // ===== SPAWN PARTICLES (BRIGHTNESS-BASED) =====
+    let count = 0;
+    for (let y = 0; y < mem.height; y += CFG.gridSpacing) {
+      for (let x = 0; x < mem.width; x += CFG.gridSpacing) {
+        if (count >= CFG.maxParticles) break;
+        
+        let i = (y * imgData.width + x) * 4;
+        let bright = (imgData.data[i] + imgData.data[i+1] + imgData.data[i+2]) / 3;
+        
+        // ← UBAH: gelap area (GELAP < threshold = spawn)
+      if (bright < CFG.brightnessThreshold && imgData.data[i+3] > 50) {
+        particles.push({
+          tx: (x / mem.width) * rW + oX,
+          ty: (y / mem.height) * rH + oY,
+          x: Math.random() * cv.width,
+          y: Math.random() * cv.height,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5,
+          alpha: CFG.alphaScattered
+        });
+        count++;
+      }
+      }
+    }
+  }
+  
+let mouseX = cv.width / 2;
+let mouseY = cv.height / 2;
+
+window.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function loop() {
+  if (visible) {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    
+    particles.forEach(p => {
+      // ===== MOUSE PUSH EFFECT =====
+      const dx = mouseX - p.x;
+      const dy = mouseY - p.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const pushRadius = 20;
+      const pushForce = 1.5;
+      
+      if (dist < pushRadius && dist > 0) {
+        const angle = Math.atan2(dy, dx);
+        const force = ((pushRadius - dist) / pushRadius) * pushForce;
+        p.vx -= Math.cos(angle) * force;
+        p.vy -= Math.sin(angle) * force;
+      }
+      
+      if (isAssembled) {
+        p.x += (p.tx - p.x) * CFG.assemblySpeed;
+        p.y += (p.ty - p.y) * CFG.assemblySpeed;
+        p.alpha = CFG.alphaAssembled;
+      } else {
+        p.vx = (p.vx + (Math.random() - 0.5) * 0.12) * 0.88;
+        p.vy = (p.vy + (Math.random() - 0.5) * 0.12) * 0.88;
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        if (p.x < -50 || p.x > cv.width + 50) {
+          p.x = p.x < 0 ? cv.width + 50 : -50;
+        }
+        if (p.y < -50 || p.y > cv.height + 50) {
+          p.y = p.y < 0 ? cv.height + 50 : -50;
+        }
+        
+        p.alpha = CFG.alphaScattered;
+      }
+      
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, CFG.dotSize, 0, Math.PI * 2);
+      ctx.fillStyle = CFG.dotColor + Math.max(0.05, p.alpha) + ')';
+      ctx.fill();
+    });
+  }
+  
+  requestAnimationFrame(loop);
+}
+  
+  window.addEventListener('resize', resizeCanvas);
+  
+  cv.addEventListener('click', () => {
+    isAssembled = !isAssembled;
+  });
+  
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    imgLoaded = true;
+    resizeCanvas();
+    loop();
+  };
+  
+  img.src = 'https://raw.githubusercontent.com/irfan-wahyu/irfan.site/main/ChatGPT%20Image%20May%2030%2C%202026%2C%2002_09_04%20AM.png';
+  
+  resizeCanvas();
+})();
+
+
+// ===== PHOTO PARTICLE (ABOUT SECTION - RETRO PIXEL GRID) =====
+(function(){
+  const canvas=document.getElementById('particle-canvas');
+  const ctx=canvas.getContext('2d');
+  let particles=[],isAssembled=false,visible=true;
+  let photoImg=new Image();
+  let photoLoaded=false;
+  let animId=null;
+  
+  // INTERSECTION OBSERVER — stop render saat tidak visible
+  const io=new IntersectionObserver(e=>{
+    visible=e[0].isIntersecting;
+  },{threshold:0});
+  io.observe(canvas);
+  
+  function resize(){
+    canvas.width=canvas.offsetWidth;
+    canvas.height=canvas.offsetHeight;
+    if(photoLoaded)initParticles();
+  }
+  
+  function initParticles(){
+    particles=[];
+    if(!photoLoaded)return;
+    
+    // ===== KONFIGURASI GRID - UBAH UNTUK OPTIMIZE =====
+    const COLS = window.innerWidth < 768 ? 15 : 20;  // ← MOBILE: 15, DESKTOP: 25 (semakin besar = lebih banyak tile)
+    const ROWS = window.innerWidth < 768 ? 8 : 12;   // ← MOBILE: 8, DESKTOP: 12
+    const tileW = canvas.width / COLS;
+    const tileH = canvas.height / ROWS;
+    
+    // ===== CROP IMAGE (JANGAN DIUBAH) =====
+    const imgRatio = photoImg.width / photoImg.height;
+    const canvasRatio = canvas.width / canvas.height;
+    let srcW, srcH, srcX, srcY;
+    
+    if (canvasRatio > imgRatio) {
+      srcW = photoImg.width;
+      srcH = photoImg.width / canvasRatio;
+      srcX = 0;
+      srcY = (photoImg.height - srcH) / 2;
+    } else {
+      srcH = photoImg.height;
+      srcW = photoImg.height * canvasRatio;
+      srcX = (photoImg.width - srcW) / 2;
+      srcY = 0;
+    }
+    
+    for(let r=0; r<ROWS; r++){
+      for(let c=0; c<COLS; c++){
+        const sx = srcX + c * (srcW / COLS);
+        const sy = srcY + r * (srcH / ROWS);
+        const sw = srcW / COLS;
+        const sh = srcH / ROWS;
+        const tx = c * tileW;
+        const ty = r * tileH;
+        
+        // ===== KONFIGURASI ASSEMBLY SPEED =====
+        const pSpeed = 0.03 + Math.random() * 0.03;  // ← UBAH range: (0.03-0.05 lambat, 0.05-0.08 cepat)
+        const pDelay = Math.floor(Math.random() * 25);  // ← UBAH: 3=cepat, 5=normal, 8=lambat (assembly delay)
+        
+        // ===== KONFIGURASI SCATTER DISTANCE =====
+        const rx = (Math.random() - 0.5) * canvas.width * 1.5 + canvas.width / 2;  // ← UBAH: 1.2=dekat, 1.5=normal, 2.0=jauh
+        const ry = (Math.random() - 0.5) * canvas.height * 1.5 + canvas.height / 2;
+
+        particles.push({
+          sx: sx, sy: sy, sw: sw, sh: sh,
+          tx: tx, ty: ty,
+          tw: tileW, th: tileH,
+          x: rx, y: ry,
+          angleX: Math.random() * Math.PI * 100,
+          angleY: Math.random() * Math.PI * 100,
+          floatSpeed: 0.05 + Math.random() * 0.5,  // ← UBAH: (0.03 halus, 0.1 normal, 0.15 kasar)
+          moveRange: 50 + Math.random() * 30,      // ← UBAH: (30-40 minimal, 50-75 normal, 100+ ekstrim)
+          speed: pSpeed,
+          delay: pDelay,
+          currentDelay: pDelay
+        });
+      }
+    }
+  }
+  
+  function draw(){
+    if(visible) {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      
+      particles.forEach(p=>{
+        if(isAssembled){
+          if (p.currentDelay > 0) {
+            p.currentDelay--;
+          } else {
+            p.x += (p.tx - p.x) * p.speed;
+            p.y += (p.ty - p.y) * p.speed;
+          }
+        }else{
+          p.currentDelay = p.delay;
+          p.angleX += p.floatSpeed;
+          p.angleY += p.floatSpeed;
+          p.x += Math.sin(p.angleX) * (p.moveRange * 0.05);
+          p.y += Math.cos(p.angleY) * (p.moveRange * 0.05);
+          
+          if(p.x < -100) p.x = canvas.width + 100;
+          if(p.x > canvas.width + 100) p.x = -100;
+          if(p.y < -100) p.y = canvas.height + 100;
+          if(p.y > canvas.height + 100) p.y = -100;
+        }
+        
+        ctx.drawImage(photoImg, p.sx, p.sy, p.sw, p.sh, p.x, p.y, p.tw, p.th);
+        
+        // ===== BORDER EFFECT (OPTIONAL) =====
+        if(isAssembled) {
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';  // ← UBAH: (0 none, 0.05 subtle, 0.2 visible)
+          ctx.lineWidth = 0.5;
+          ctx.strokeRect(p.x, p.y, p.tw, p.th);
+        }
+      });
+      
+      // ===== SCANLINE EFFECT (OPTIONAL) =====
+      ctx.fillStyle = 'rgba(11, 13, 17, 0.05)';  // ← UBAH opacity: (0 none, 0.05 subtle, 0.15 strong)
+      for (let i = 0; i < canvas.height; i += 4) {
+        ctx.fillRect(0, i, canvas.width, 1);
+      }
+    }
+    
+    animId=requestAnimationFrame(draw);
+  }
+  
+  const wrap=document.querySelector('.about-photo-wrap');
+  wrap.addEventListener('click',()=>{isAssembled=!isAssembled;});
+  
+  window.addEventListener('resize',resize);
+  
+  photoImg.crossOrigin='anonymous';
+  photoImg.onload=()=>{photoLoaded=true; initParticles();};
+  photoImg.src='https://raw.githubusercontent.com/irfan-wahyu/irfan.site/main/ChatGPT%20Image%20May%2030%2C%202026%2C%2002_09_04%20AM.png';
+  
+  resize();draw();
+})();
+
+//https://raw.githubusercontent.com/irfan-wahyu/irfan.site/main/ChatGPT%20Image%20May%2030%2C%202026%2C%2002_09_04%20AM.png
+
+// SKILL MODAL
+const overlay=document.getElementById('modalOverlay');
+document.getElementById('modalClose').addEventListener('click',()=>overlay.classList.remove('open'));
+overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('open')});
+document.querySelectorAll('.skill-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    document.getElementById('modalNum').textContent='Domain '+card.dataset.num;
+    document.getElementById('modalDomain').textContent=card.dataset.domain;
+    document.getElementById('modalDesc').textContent=card.dataset.desc;
+    const toolsEl=document.getElementById('modalTools');toolsEl.innerHTML='';
+    const icons=['◈','✦','◉','⟡','▪','◆'];
+    card.dataset.tools.split(',').forEach((t,i)=>{
+      const s=document.createElement('span');s.className='modal-tool';
+      s.innerHTML=`<span class="modal-tool-icon">${icons[i%icons.length]}</span>${t.trim()}`;
+      toolsEl.appendChild(s);
+    });
+    overlay.classList.add('open');
+  });
+});
+
+// SHOW MORE WORKS
+(function(){
+  const grid=document.getElementById('worksGrid');
+  const btn=document.getElementById('btnShowMore');
+  const wrap=document.getElementById('showMoreWrap');
+  const PER_PAGE=3;
+  let shown=PER_PAGE;
+  btn.addEventListener('click',()=>{
+    const hidden=grid.querySelectorAll('.work-card.hidden');
+    let revealed=0;
+    hidden.forEach(c=>{if(revealed<PER_PAGE){c.classList.remove('hidden');revealed++}});
+    shown+=revealed;
+    if(grid.querySelectorAll('.work-card.hidden').length===0)wrap.style.display='none';
+  });
+})();
+
+// SLIDER — manual + auto 20s
+(function(){
+  const slides=document.querySelectorAll('.slide');
+  const dots=document.querySelectorAll('.slider-dot');
+  let current=0,timer;
+  function go(n){
+    slides[current].classList.remove('active');dots[current].classList.remove('active');
+    current=n;slides[current].classList.add('active');dots[current].classList.add('active');
+  }
+  function startAuto(){timer=setInterval(()=>go((current+1)%slides.length),20000)}
+  function stopAuto(){clearInterval(timer)}
+  dots.forEach((d,i)=>{d.addEventListener('click',()=>{stopAuto();go(i);startAuto()})});
+  startAuto();
+})();
+
+// FAQ
+document.querySelectorAll('.faq-question').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item=btn.closest('.faq-item');
+    const wasOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen)item.classList.add('open');
+  });
+});
+
+// TYPING EFFECT — hero heading only
+(function(){
+  const el=document.querySelector('.hero-heading');
+  if(!el)return;
+  const full1='Lagi Debugging Bang.';
+  const full2='Nanti Klo Udh Ga Ngebug.';
+  el.innerHTML='';
+  const line1=document.createElement('span');
+  const br=document.createElement('br');
+  const em=document.createElement('em');
+  const cur=document.createElement('span');
+  cur.className='typing-cursor';
+  el.appendChild(line1);el.appendChild(br);el.appendChild(em);el.appendChild(cur);
+  let i=0,phase=0;
+  const speed=48;
+  function type(){
+    if(phase===0){
+      if(i<=full1.length){line1.textContent=full1.slice(0,i);i++;setTimeout(type,speed)}
+      else{i=0;phase=1;setTimeout(type,280)}
+    } else {
+      if(i<=full2.length){em.textContent=full2.slice(0,i);i++;setTimeout(type,speed)}
+      else{setTimeout(()=>{cur.style.opacity='0';cur.style.transition='opacity .5s'},400)}
+    }
+  }
+  setTimeout(type,800);
+})();
+
+// WORD-BLUR for section headings — safe DOM walk, preserves em/br
+function wrapSentences(el,lineDelay){
+  // Get plain text, split into chunks by sentence-ending punctuation
+  const raw=el.textContent.trim();
+  // Split on ". " or ", " keeping delimiter attached to previous chunk
+  const chunks=raw.match(/[^,\.]+[,\.]?\s*/g)||[raw];
+  // Group into pairs for better visual chunking (avoid too many tiny lines)
+  const groups=[];
+  for(let i=0;i<chunks.length;i+=2){
+    const g=chunks.slice(i,i+2).join('').trim();
+    if(g)groups.push(g);
+  }
+  let html='';
+  groups.forEach((g,i)=>{
+    html+=`<span class="sentence-unit" style="display:block;opacity:0;filter:blur(6px);transform:translateY(12px);transition:opacity .7s ease ${i*lineDelay}ms,filter .7s ease ${i*lineDelay}ms,transform .7s ease ${i*lineDelay}ms">${g}</span>`;
+  });
+  el.innerHTML=html;
+  // Store groups count for observer
+  el.dataset.sentenceCount=groups.length;
+}
+
+function wrapHeadingWords(el,wordDelay){
+  // Walk text nodes only, wrap each word
+  function walk(node){
+    if(node.nodeType===3){
+      // text node — split into words
+      const words=node.textContent.split(/(\s+)/);
+      if(words.length<=1&&!words[0].trim())return;
+      const frag=document.createDocumentFragment();
+      words.forEach(w=>{
+        if(!w.trim()){
+          frag.appendChild(document.createTextNode(w));
+        } else {
+          const s=document.createElement('span');
+          s.className='word-unit';
+          s.textContent=w;
+          frag.appendChild(s);
+        }
+      });
+      node.parentNode.replaceChild(frag,node);
+    } else if(node.nodeType===1&&node.nodeName!=='SCRIPT'&&node.nodeName!=='STYLE'){
+      Array.from(node.childNodes).forEach(walk);
+    }
+  }
+  walk(el);
+  // Assign staggered delays
+  el.querySelectorAll('.word-unit').forEach((w,i)=>{
+    w.style.transitionDelay=(i*wordDelay)+'ms';
+  });
+}
+
+// SCROLL ANIMATIONS
+(function(){
+  // Setup heading-anim elements
+  document.querySelectorAll('.heading-anim').forEach(el=>{
+    if(el.classList.contains('slide-quote')){
+      // Per-sentence/line reveal for philosophy quote
+      wrapSentences(el,180);
+    } else {
+      wrapHeadingWords(el,120);
+    }
+  });
+
+  function reveal(entries,obs){
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const el=e.target;
+      // heading words or sentences
+      if(el.classList.contains('heading-anim')){
+        // word-unit or sentence-unit
+        el.querySelectorAll('.word-unit,.sentence-unit').forEach(w=>{
+          w.style.opacity='1';
+          w.style.filter='blur(0)';
+          w.style.transform='translateY(0)';
+        });
+        obs.unobserve(el);return;
+      }
+      // staggered items
+      const delay=parseInt(el.dataset.delay||0);
+      setTimeout(()=>el.classList.add('visible'),delay);
+      obs.unobserve(el);
+    });
+  }
+
+  const io=new IntersectionObserver(reveal,{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+
+  document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+  document.querySelectorAll('.heading-anim').forEach(el=>io.observe(el));
+  document.querySelectorAll('.card-anim').forEach(el=>io.observe(el));
+  document.querySelectorAll('.work-anim').forEach(el=>io.observe(el));
+  document.querySelectorAll('.slide-left').forEach(el=>io.observe(el));
+})();
+  </script>
+</Layout>

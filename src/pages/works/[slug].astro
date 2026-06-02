@@ -1,0 +1,222 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { data } = project;
+const { title, subtitle, year, duration, status, medium, tools, tags } = data;
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title={`${title} — Irfan Wahyu`} description={subtitle}>
+  <style is:global>
+   @import '../../../public/styles/work-detail.css';
+    /* Article rendered content styles */
+    .article h2{font-family:var(--font-heading);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:500;font-style:italic;color:var(--text);line-height:1.2;margin-top:var(--space-2xl);margin-bottom:var(--space-md);padding-top:var(--space-md);border-top:1px solid var(--border);position:relative}
+    .article h2::before{content:'';position:absolute;top:-1px;left:0;width:40px;height:1px;background:var(--accent)}
+    .article h2:first-child{margin-top:0;padding-top:0;border-top:none}
+    .article h2:first-child::before{display:none}
+    .article h3{font-family:var(--font-heading);font-size:clamp(1.1rem,1.8vw,1.4rem);font-weight:400;font-style:italic;color:var(--text-muted);line-height:1.3;margin-top:var(--space-lg);margin-bottom:var(--space-sm)}
+    .article p{font-family:var(--font-body);font-size:.92rem;color:var(--text-muted);line-height:1.95;margin-bottom:var(--space-md);font-weight:300}
+    .article p strong{color:var(--text);font-weight:500}
+    .article blockquote{border-left:2px solid var(--accent);padding:var(--space-sm) var(--space-md);margin:var(--space-lg) 0;background:var(--bg-secondary);border-radius:0 8px 8px 0}
+    .article blockquote p{font-family:var(--font-heading);font-size:1.05rem;font-style:italic;color:var(--text);opacity:.85;margin:0;line-height:1.7}
+    
+  </style>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lbClose">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-next" id="lbNext">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="lightbox-img-wrap">
+      <img id="lbImg" src="" alt="" />
+    </div>
+    <div class="lightbox-counter" id="lbCounter"></div>
+    <div class="lightbox-caption" id="lbCaption"></div>
+  </div>
+
+  <Nav variant="detail" />
+
+  <!-- PROJECT HERO -->
+  <section id="project-hero" class="has-corners">
+    <span class="c-tl"></span><span class="c-tr"></span>
+    <div class="hero-bg-fill"></div>
+    <div class="hero-bg-texture"></div>
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+
+      <h1 class="project-title" set:html={title.replace('—', '<br>—')} />
+      {subtitle && <p class="project-subtitle">{subtitle}</p>}
+    </div>
+  </section>
+
+  <div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+  <!-- PROJECT BODY -->
+  <div id="project-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <a href={`${base}works`} class="sidebar-back fade-in" data-delay="160">
+        <svg width="12" height="10" viewBox="0 0 14 10" fill="none">
+          <path d="M13 5H1M6 1L1 5l5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        Semua Works
+      </a>
+      
+
+      <div class="sidebar-stats fade-in">
+        <div class="stat-item">
+          <span class="stat-label">Tahun</span>
+          <span class="stat-value">{year}</span>
+        </div>
+        {duration && (
+          <div class="stat-item">
+            <span class="stat-label">Durasi</span>
+            <span class="stat-value">{duration}</span>
+          </div>
+        )}
+        <div class="stat-item">
+          <span class="stat-label">Status</span>
+          <span class="stat-value">{status}</span>
+        </div>
+        {medium && (
+          <div class="stat-item">
+            <span class="stat-label">Medium</span>
+            <span class="stat-value">{medium}</span>
+          </div>
+        )}
+        {tools.length > 0 && (
+          <div class="stat-item">
+            <span class="stat-label">Tools</span>
+            <div class="stat-tags">
+              {tools.map(tool => <span class="stat-tag">{tool}</span>)}
+            </div>
+          </div>
+        )}
+      </div>
+
+
+
+      <!-- TOC — populated by JS -->
+      <div class="sidebar-toc fade-in" data-delay="80">
+        <div class="toc-label">Table of Contents</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+
+    </aside>
+
+<!-- ARTICLE — rendered from .md -->
+<article class="article">
+  <Content />
+</article>
+
+  </div>
+
+  <div class="section-divider"><div class="section-divider-diamond"></div></div>
+
+  <script>
+
+    // LIGHTBOX
+(function(){
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCaption = document.getElementById('lbCaption');
+  const lbCounter = document.getElementById('lbCounter');
+  let images = [], current = 0;
+
+  // Collect semua gambar di artikel
+  document.querySelectorAll('.article img').forEach((img, i) => {
+    images.push({ src: img.src, alt: img.alt });
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => open(i));
+  });
+
+  function open(i) {
+    current = i;
+    lbImg.src = images[i].src;
+    lbCaption.textContent = images[i].alt || '';
+    lbCounter.textContent = (i+1) + ' / ' + images.length;
+    lb.classList.add('open');
+  }
+
+  function close() { lb.classList.remove('open'); }
+
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', () => open((current - 1 + images.length) % images.length));
+  document.getElementById('lbNext').addEventListener('click', () => open((current + 1) % images.length));
+  lb.addEventListener('click', e => { if(e.target === lb) close(); });
+  document.addEventListener('keydown', e => {
+    if(!lb.classList.contains('open')) return;
+    if(e.key === 'Escape') close();
+    if(e.key === 'ArrowLeft') open((current - 1 + images.length) % images.length);
+    if(e.key === 'ArrowRight') open((current + 1) % images.length);
+  });
+})();
+
+  // TOC auto-detect
+  (function(){
+    const article = document.querySelector('.article');
+    const tocList = document.getElementById('tocList');
+    if(!article || !tocList) return;
+    const headings = article.querySelectorAll('h2, h3');
+    if(!headings.length) return;
+    headings.forEach((h, i) => {
+      if(!h.id) h.id = 'section-' + i;
+      const li = document.createElement('li');
+      li.className = 'toc-item ' + (h.tagName === 'H3' ? 'toc-h3' : 'toc-h2');
+      const a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent || '';
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.getElementById(h.id);
+        if(target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
+      });
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          const id = entry.target.id;
+          tocList.querySelectorAll('a').forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+    headings.forEach(h => io.observe(h));
+  })();
+
+
+  // Scroll fade in
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      const el = e.target as HTMLElement;
+      const delay = parseInt(el.dataset.delay || '0');
+      setTimeout(() => el.classList.add('visible'), delay);
+      io.unobserve(el);
+    });
+  }, { threshold: .08 });
+  document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+  </script>
+
+</Layout>
