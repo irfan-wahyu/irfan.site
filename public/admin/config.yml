@@ -1,0 +1,91 @@
+backend:
+  name: github
+  repo: irfan-wahyu/irfan.site
+  branch: main
+
+local_backend: true
+
+public_folder: /irfan.site/assets
+media_folder: public/assets
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      # --- BAGIAN FRONTMATTER (ATAS) ---
+      - { label: "Title", name: "title", widget: "string" }
+      - {
+          label: "Subtitle",
+          name: "subtitle",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Year",
+          name: "year",
+          widget: "number",
+          value_type: "int",
+          default: 2026,
+        }
+      - {
+          label: "Duration",
+          name: "duration",
+          widget: "string",
+          default: "1 Minggu",
+        }
+
+      # Status Proyek (Dropdown biar tinggal pilih)
+      - {
+          label: "Status",
+          name: "status",
+          widget: "select",
+          options: ["Completed", "In Progress", "On Hold"],
+          default: "Completed",
+        }
+
+      - {
+          label: "Medium",
+          name: "medium",
+          widget: "string",
+          default: "Motion Graphics",
+        }
+
+      - {
+          label: "Tools",
+          name: "tools",
+          widget: "list",
+          summary: "{{fields.tool}}", # Ini buat tampilan ringkasnya
+          field: { label: "Tool", name: "tool", widget: "string" },
+        }
+
+      # Ubah Tags jadi widget: list
+      - {
+          label: "Tags",
+          name: "tags",
+          widget: "list",
+          field: { label: "Tag", name: "tag", widget: "string" },
+        }
+
+      # Toggle Featured (On/Off)
+      - {
+          label: "Featured Project?",
+          name: "featured",
+          widget: "boolean",
+          default: true,
+        }
+
+      # Order/Urutan (Untuk mengatur proyek mana yang tampil duluan)
+      - {
+          label: "Order",
+          name: "order",
+          widget: "number",
+          value_type: "int",
+          default: 1,
+        }
+
+      # --- BAGIAN BODY (BAWAH) ---
+      # Editor utama tempat kamu ngetik "KONTOL RAISOH ISOH" dan masukin gambar galeri
+      - { label: "Body", name: "body", widget: "markdown", allow_images: true }
