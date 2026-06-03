@@ -7,7 +7,8 @@ import { skills } from '../data/skills';
 export const prerender = true;
 
 const allProjects = await getCollection('projects');
-const sorted = allProjects.sort((a, b) => a.data.order - b.data.order);
+// Pengaman sorting biar ga crash kalo data order dari CMS kosong
+const sorted = allProjects.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
 const base = import.meta.env.BASE_URL;
 ---
 <Layout title="Irfan Wahyu — Systemic Thinker. Visual Maker.">
@@ -94,50 +95,127 @@ const base = import.meta.env.BASE_URL;
   <div class="deco-line fade-in"><div class="deco-line-mark">◆</div></div>
   <p class="skill-heading fade-in">Areas of Practice</p>
 
-
-<div class="skill-grid">
-  {skills.map((skill) => (
-    <div 
-      class="skill-card clickable card-anim" 
-      data-delay={skill.delay}
-      data-num={skill.num}
-      data-domain={skill.domain}
-      data-desc={skill.desc}
-      data-tools={skill.tools.join(',')}
-    >
-      <span class="skill-card-num">{skill.num}</span>
-      <span class="skill-card-arrow">↗</span>
-      <div class="skill-card-domain">{skill.domain}</div>
-      <div class="skill-card-essence">{skill.essence}</div>
-    </div>
-  ))}
-</div>
-
+  <div class="skill-grid">
+    {skills.map((skill) => (
+      <div 
+        class="skill-card clickable card-anim" 
+        data-delay={skill.delay}
+        data-num={skill.num}
+        data-domain={skill.domain}
+        data-desc={skill.desc}
+        data-tools={skill.tools.join(',')}
+      >
+        <span class="skill-card-num">{skill.num}</span>
+        <span class="skill-card-arrow">↗</span>
+        <div class="skill-card-domain">{skill.domain}</div>
+        <div class="skill-card-essence">{skill.essence}</div>
+      </div>
+    ))}
+  </div>
 </section>
 
 <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
 <!-- WORKS -->
-<section id="works" class="has-corners corner-bottom">
+<section id="works" class="has-corners">
+  <!-- FIX 1: Memasukkan kembali tulisan header Selected Works & All Projects yang hilang -->
   <div class="works-header fade-in">
-    <h2 class="works-title heading-anim">Selected<em> Works</em></h2>
-    <a href="/irfan.site/works/" class="works-all">All Projects <svg width="13" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
+    <h2 class="works-title heading-anim">Selected <em>Works</em></h2>
+    <a href={`${base}works`} class="works-all">
+      All Projects 
+      <svg width="13" height="10" viewBox="0 0 14 10" fill="none">
+        <path d="M1 5h12M8 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      </svg>
+    </a>
   </div>
+
   <div class="works-grid" id="worksGrid">
-    {sorted.map((project, idx) => (
-      <a href={`${base}works/${project.id}/`} class={`work-card work-anim${idx >= 3 ? ' hidden' : ''}`} data-delay={idx >= 3 ? '0' : String(idx * 100)}>
-        <div class="work-placeholder">
-          <div class="work-placeholder-title">{project.data.title}</div>
-          <div class="work-placeholder-arrow">View Project <svg width="11" height="9" viewBox="0 0 12 10" fill="none"><path d="M1 5h10M6 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
-        </div>
-        <div class="work-overlay">
-          <div class="work-title">{project.data.title}</div>
-          <div class="work-tags">
-            {project.data.tags.map(tag => <span class="work-tag">{tag}</span>)}
+{sorted.map((project, idx) => (
+  <a 
+    href={`${base}works/${project.id}/`} 
+    class={`work-card work-anim${idx >= 3 ? ' hidden' : ''}`} 
+    data-delay={idx >= 3 ? '0' : String(idx * 100)} 
+    style="position: relative; overflow: hidden; display: block;"
+  >
+    
+    {/* 1. GAMBAR THUMBNAIL */}
+    {project.data.thumbnail && (
+      <img 
+        src={project.data.thumbnail.startsWith('http') || project.data.thumbnail.startsWith('/') 
+          ? project.data.thumbnail 
+          : `${base}images/${project.data.thumbnail}`} 
+        alt={project.data.title} 
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;" 
+      />
+    )}
+
+    {/* 2. DIMMER AWAL */}
+    <div class="work-card-dimmer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 13, 17, 0.4); z-index: 2; pointer-events: none; transition: opacity 0.3s ease;"></div>
+
+    {/* 3. JUDUL TENGAH (Awal sebelum hover) */}
+    <div class="work-initial-center-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 3; pointer-events: none; transition: transform 0.4s ease, opacity 0.4s ease;">
+      <div class="work-title">{project.data.title}</div>
+    </div>
+
+    {/* 4. HOVER OVERLAY (Formasi Aman: Mengikuti Struktur Kiri-Kanan) */}
+    <div 
+      class="work-overlay" 
+      style="z-index: 5 !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; padding: 1.5rem !important; display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: flex-end !important; box-sizing: border-box !important;"
+    >
+      
+{/* FRAME KIRI: TITLE -> SUBTITLE -> TAGS -> DESCRIPTION (Nempel Kiri Bawah) */}
+      <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; align-items: flex-start !important; max-width: 60% !important; text-align: left !important; margin: 0 !important;">
+        {/* Title */}
+        <div class="work-title" style="margin: 0 !important;">{project.data.title}</div>
+        
+          {/* Subtitle (Ditambah class work-title biar ikut meluncur ke atas) */}
+        {project.data.subtitle && (
+          <div 
+            class="work-title" 
+            style="font-size: 0.9rem !important; font-weight: normal !important; font-style: normal !important; opacity: 0.8; margin: 0 !important; text-transform: none !important; letter-spacing: normal !important;"
+          >
+            {project.data.subtitle.split(' ').length > 6 
+              ? project.data.subtitle.split(' ').slice(0, 6).join(' ') + '...' 
+              : project.data.subtitle}
           </div>
+        )}
+
+        {/* Tags / Kategori */}
+        <div class="work-tags" style="margin-top: 4px !important; display: flex !important; flex-wrap: wrap !important; gap: 5px !important;">
+          {project.data.tags?.map(tag => (
+            <span class="work-tag">{tag}</span>
+          ))}
         </div>
-      </a>
-    ))}
+
+        {/* Deskripsi (POTONG PER KATA: Maksimal 12 Kata) */}
+        {project.data.description && (
+          <p style="color: #ffffff; font-size: 0.8rem; opacity: 0.7; margin-top: 6px !important; margin-bottom: 0 !important; max-width: 100% !important;">
+            {project.data.description.split(' ').length > 12 
+              ? project.data.description.split(' ').slice(0, 12).join(' ') + '...' 
+              : project.data.description}
+          </p>
+        )}
+      </div>
+
+      {/* FRAME KANAN: VIEW PROJECT DIKASIH KELAS ANIMASI KEMBARANNYA */}
+      <div class="work-tags" style="margin: 0 !important; display: flex !important; align-items: center !important;">
+        {/* Di sini dia pakai class="work-tag", otomatis dapet animasi up ke atas bawaan CSS lu */}
+        <div 
+          class="work-tag" 
+          style="display: flex !important; align-items: center !important; gap: 0.5rem !important; margin: 0 !important;"
+        >
+          View Project
+          <svg width="11" height="9" viewBox="0 0 12 10" fill="none" style="display: inline-block; vertical-align: middle;">
+            <path d="M1 5h10M6 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </a>
+))}
+
+
   </div>
   <div class="works-show-more" id="showMoreWrap">
     <button class="btn-show-more" id="btnShowMore">
@@ -258,23 +336,22 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   const cv = document.getElementById('ascii-canvas');
   if (!cv) return;
   
-  const ctx = cv.getContext('2d');
+  const ctx = (cv as HTMLCanvasElement).getContext('2d');
   let particles = [];
   let img = new Image();
   let imgLoaded = false;
   let isAssembled = false;
   let visible = true;
   
-  // ===== CONFIG (UBAH DI SINI) =====
   const CFG = {
-    dotSize: 1.75,              // ← Ukuran dot (1-5)
-    gridSpacing: 5,          // ← Jarak dot (2=rapat, 4=normal, 8=sparse)
-    brightnessThreshold: 138, // ← Brightness cutoff (20-200, LEBIH KECIL = lebih banyak dot)
+    dotSize: 1.75,
+    gridSpacing: 5,
+    brightnessThreshold: 138,
     dotColor: 'rgba(201,169,110,',
-    alphaScattered: 0.5,    // ← Alpha saat scattered
-    alphaAssembled: 0.9,     // ← Alpha saat assembled
-    assemblySpeed: 0.1,      // ← Kecepatan assembly (0.05=lambat, 0.2=cepat)
-    maxParticles: 5000       // ← Max particle (1000-8000)
+    alphaScattered: 0.5,
+    alphaAssembled: 0.9,
+    assemblySpeed: 0.1,
+    maxParticles: 5000
   };
   
   const io = new IntersectionObserver(e => {
@@ -283,8 +360,8 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   io.observe(cv);
   
   function resizeCanvas() {
-    cv.width = window.innerWidth;
-    cv.height = window.innerHeight;
+    (cv as HTMLCanvasElement).width = window.innerWidth;
+    (cv as HTMLCanvasElement).height = window.innerHeight;
     if (imgLoaded) initParticles();
   }
   
@@ -292,7 +369,6 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
     particles = [];
     if (!imgLoaded) return;
     
-    // ===== MEMORY CANVAS (FIXED REFERENCE) =====
     const mem = document.createElement('canvas');
     mem.width = 800;
     mem.height = 450;
@@ -300,25 +376,21 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
     mCtx.drawImage(img, 0, 0, mem.width, mem.height);
     let imgData = mCtx.getImageData(0, 0, mem.width, mem.height);
     
-    // ===== OBJECT-FIT COVER LOGIC (RESPONSIVE) =====
-    const cRatio = cv.width / cv.height;  // current canvas ratio
+    const cRatio = (cv as HTMLCanvasElement).width / (cv as HTMLCanvasElement).height;
     let rW, rH, oX, oY;
     
     if (cRatio > 16/9) {
-      // Canvas lebih lebar (landscape) → scale to width
-      rW = cv.width;
-      rH = cv.width / (16/9);
+      rW = (cv as HTMLCanvasElement).width;
+      rH = (cv as HTMLCanvasElement).width / (16/9);
       oX = 0;
-      oY = (cv.height - rH) / 2;
+      oY = ((cv as HTMLCanvasElement).height - rH) / 2;
     } else {
-      // Canvas lebih tinggi (portrait) → scale to height
-      rW = cv.height * (16/9);
-      rH = cv.height;
-      oX = (cv.width - rW) / 2;
+      rW = (cv as HTMLCanvasElement).height * (16/9);
+      rH = (cv as HTMLCanvasElement).height;
+      oX = ((cv as HTMLCanvasElement).width - rW) / 2;
       oY = 0;
     }
     
-    // ===== SPAWN PARTICLES (BRIGHTNESS-BASED) =====
     let count = 0;
     for (let y = 0; y < mem.height; y += CFG.gridSpacing) {
       for (let x = 0; x < mem.width; x += CFG.gridSpacing) {
@@ -327,13 +399,12 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
         let i = (y * imgData.width + x) * 4;
         let bright = (imgData.data[i] + imgData.data[i+1] + imgData.data[i+2]) / 3;
         
-        // ← UBAH: gelap area (GELAP < threshold = spawn)
       if (bright < CFG.brightnessThreshold && imgData.data[i+3] > 50) {
         particles.push({
           tx: (x / mem.width) * rW + oX,
           ty: (y / mem.height) * rH + oY,
-          x: Math.random() * cv.width,
-          y: Math.random() * cv.height,
+          x: Math.random() * (cv as HTMLCanvasElement).width,
+          y: Math.random() * (cv as HTMLCanvasElement).height,
           vx: (Math.random() - 0.5) * 1.5,
           vy: (Math.random() - 0.5) * 1.5,
           alpha: CFG.alphaScattered
@@ -344,8 +415,8 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
     }
   }
   
-let mouseX = cv.width / 2;
-let mouseY = cv.height / 2;
+let mouseX = (cv as HTMLCanvasElement).width / 2;
+let mouseY = (cv as HTMLCanvasElement).height / 2;
 
 window.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
@@ -353,11 +424,10 @@ window.addEventListener('mousemove', (e) => {
 });
 
 function loop() {
-  if (visible) {
-    ctx.clearRect(0, 0, cv.width, cv.height);
+  if (visible && ctx) {
+    ctx.clearRect(0, 0, (cv as HTMLCanvasElement).width, (cv as HTMLCanvasElement).height);
     
     particles.forEach(p => {
-      // ===== MOUSE PUSH EFFECT =====
       const dx = mouseX - p.x;
       const dy = mouseY - p.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -381,11 +451,11 @@ function loop() {
         p.x += p.vx;
         p.y += p.vy;
         
-        if (p.x < -50 || p.x > cv.width + 50) {
-          p.x = p.x < 0 ? cv.width + 50 : -50;
+        if (p.x < -50 || p.x > (cv as HTMLCanvasElement).width + 50) {
+          p.x = p.x < 0 ? (cv as HTMLCanvasElement).width + 50 : -50;
         }
-        if (p.y < -50 || p.y > cv.height + 50) {
-          p.y = p.y < 0 ? cv.height + 50 : -50;
+        if (p.y < -50 || p.y > (cv as HTMLCanvasElement).height + 50) {
+          p.y = p.y < 0 ? (cv as HTMLCanvasElement).height + 50 : -50;
         }
         
         p.alpha = CFG.alphaScattered;
@@ -420,24 +490,24 @@ function loop() {
 })();
 
 
-// ===== PHOTO PARTICLE (ABOUT SECTION - RETRO PIXEL GRID) =====
+// ===== PHOTO PARTICLE (ABOUT SECTION) =====
 (function(){
   const canvas=document.getElementById('particle-canvas');
-  const ctx=canvas.getContext('2d');
+  if (!canvas) return;
+  const ctx=(canvas as HTMLCanvasElement).getContext('2d');
   let particles=[],isAssembled=false,visible=true;
   let photoImg=new Image();
   let photoLoaded=false;
   let animId=null;
   
-  // INTERSECTION OBSERVER — stop render saat tidak visible
   const io=new IntersectionObserver(e=>{
-    visible=e[0].isIntersecting;
+    visible = e[0].isIntersecting;
   },{threshold:0});
   io.observe(canvas);
   
   function resize(){
-    canvas.width=canvas.offsetWidth;
-    canvas.height=canvas.offsetHeight;
+    (canvas as HTMLCanvasElement).width=(canvas as HTMLCanvasElement).offsetWidth;
+    (canvas as HTMLCanvasElement).height=(canvas as HTMLCanvasElement).offsetHeight;
     if(photoLoaded)initParticles();
   }
   
@@ -445,15 +515,13 @@ function loop() {
     particles=[];
     if(!photoLoaded)return;
     
-    // ===== KONFIGURASI GRID - UBAH UNTUK OPTIMIZE =====
-    const COLS = window.innerWidth < 768 ? 15 : 20;  // ← MOBILE: 15, DESKTOP: 25 (semakin besar = lebih banyak tile)
-    const ROWS = window.innerWidth < 768 ? 8 : 12;   // ← MOBILE: 8, DESKTOP: 12
-    const tileW = canvas.width / COLS;
-    const tileH = canvas.height / ROWS;
+    const COLS = window.innerWidth < 768 ? 15 : 20;
+    const ROWS = window.innerWidth < 768 ? 8 : 12;
+    const tileW = (canvas as HTMLCanvasElement).width / COLS;
+    const tileH = (canvas as HTMLCanvasElement).height / ROWS;
     
-    // ===== CROP IMAGE (JANGAN DIUBAH) =====
     const imgRatio = photoImg.width / photoImg.height;
-    const canvasRatio = canvas.width / canvas.height;
+    const canvasRatio = (canvas as HTMLCanvasElement).width / (canvas as HTMLCanvasElement).height;
     let srcW, srcH, srcX, srcY;
     
     if (canvasRatio > imgRatio) {
@@ -477,13 +545,10 @@ function loop() {
         const tx = c * tileW;
         const ty = r * tileH;
         
-        // ===== KONFIGURASI ASSEMBLY SPEED =====
-        const pSpeed = 0.03 + Math.random() * 0.03;  // ← UBAH range: (0.03-0.05 lambat, 0.05-0.08 cepat)
-        const pDelay = Math.floor(Math.random() * 25);  // ← UBAH: 3=cepat, 5=normal, 8=lambat (assembly delay)
-        
-        // ===== KONFIGURASI SCATTER DISTANCE =====
-        const rx = (Math.random() - 0.5) * canvas.width * 1.5 + canvas.width / 2;  // ← UBAH: 1.2=dekat, 1.5=normal, 2.0=jauh
-        const ry = (Math.random() - 0.5) * canvas.height * 1.5 + canvas.height / 2;
+        const pSpeed = 0.03 + Math.random() * 0.03;
+        const pDelay = Math.floor(Math.random() * 25);
+        const rx = (Math.random() - 0.5) * (canvas as HTMLCanvasElement).width * 1.5 + (canvas as HTMLCanvasElement).width / 2;
+        const ry = (Math.random() - 0.5) * (canvas as HTMLCanvasElement).height * 1.5 + (canvas as HTMLCanvasElement).height / 2;
 
         particles.push({
           sx: sx, sy: sy, sw: sw, sh: sh,
@@ -492,8 +557,8 @@ function loop() {
           x: rx, y: ry,
           angleX: Math.random() * Math.PI * 100,
           angleY: Math.random() * Math.PI * 100,
-          floatSpeed: 0.05 + Math.random() * 0.5,  // ← UBAH: (0.03 halus, 0.1 normal, 0.15 kasar)
-          moveRange: 50 + Math.random() * 30,      // ← UBAH: (30-40 minimal, 50-75 normal, 100+ ekstrim)
+          floatSpeed: 0.05 + Math.random() * 0.5,
+          moveRange: 50 + Math.random() * 30,
           speed: pSpeed,
           delay: pDelay,
           currentDelay: pDelay
@@ -503,8 +568,8 @@ function loop() {
   }
   
   function draw(){
-    if(visible) {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(visible && ctx) {
+      ctx.clearRect(0,0,(canvas as HTMLCanvasElement).width,(canvas as HTMLCanvasElement).height);
       
       particles.forEach(p=>{
         if(isAssembled){
@@ -521,37 +586,33 @@ function loop() {
           p.x += Math.sin(p.angleX) * (p.moveRange * 0.05);
           p.y += Math.cos(p.angleY) * (p.moveRange * 0.05);
           
-          if(p.x < -100) p.x = canvas.width + 100;
-          if(p.x > canvas.width + 100) p.x = -100;
-          if(p.y < -100) p.y = canvas.height + 100;
-          if(p.y > canvas.height + 100) p.y = -100;
+          if(p.x < -100) p.x = (canvas as HTMLCanvasElement).width + 100;
+          if(p.x > (canvas as HTMLCanvasElement).width + 100) p.x = -100;
+          if(p.y < -100) p.y = (canvas as HTMLCanvasElement).height + 100;
+          if(p.y > (canvas as HTMLCanvasElement).height + 100) p.y = -100;
         }
         
         ctx.drawImage(photoImg, p.sx, p.sy, p.sw, p.sh, p.x, p.y, p.tw, p.th);
         
-        // ===== BORDER EFFECT (OPTIONAL) =====
         if(isAssembled) {
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';  // ← UBAH: (0 none, 0.05 subtle, 0.2 visible)
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
           ctx.lineWidth = 0.5;
           ctx.strokeRect(p.x, p.y, p.tw, p.th);
         }
       });
       
-      // ===== SCANLINE EFFECT (OPTIONAL) =====
-      ctx.fillStyle = 'rgba(11, 13, 17, 0.05)';  // ← UBAH opacity: (0 none, 0.05 subtle, 0.15 strong)
-      for (let i = 0; i < canvas.height; i += 4) {
-        ctx.fillRect(0, i, canvas.width, 1);
+      ctx.fillStyle = 'rgba(11, 13, 17, 0.05)';
+      for (let i = 0; i < (canvas as HTMLCanvasElement).height; i += 4) {
+        ctx.fillRect(0, i, (canvas as HTMLCanvasElement).width, 1);
       }
     }
-    
     animId=requestAnimationFrame(draw);
   }
   
   const wrap=document.querySelector('.about-photo-wrap');
-  wrap.addEventListener('click',()=>{isAssembled=!isAssembled;});
+  wrap?.addEventListener('click',()=>{isAssembled=!isAssembled;});
   
   window.addEventListener('resize',resize);
-  
   photoImg.crossOrigin='anonymous';
   photoImg.onload=()=>{photoLoaded=true; initParticles();};
   photoImg.src='https://raw.githubusercontent.com/irfan-wahyu/irfan.site/main/ChatGPT%20Image%20May%2030%2C%202026%2C%2002_09_04%20AM.png';
@@ -559,25 +620,24 @@ function loop() {
   resize();draw();
 })();
 
-//https://raw.githubusercontent.com/irfan-wahyu/irfan.site/main/ChatGPT%20Image%20May%2030%2C%202026%2C%2002_09_04%20AM.png
-
 // SKILL MODAL
 const overlay=document.getElementById('modalOverlay');
-document.getElementById('modalClose').addEventListener('click',()=>overlay.classList.remove('open'));
-overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('open')});
+document.getElementById('modalClose')?.addEventListener('click',()=>overlay?.classList.remove('open'));
+overlay?.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('open')});
 document.querySelectorAll('.skill-card').forEach(card=>{
   card.addEventListener('click',()=>{
-    document.getElementById('modalNum').textContent='Domain '+card.dataset.num;
-    document.getElementById('modalDomain').textContent=card.dataset.domain;
-    document.getElementById('modalDesc').textContent=card.dataset.desc;
-    const toolsEl=document.getElementById('modalTools');toolsEl.innerHTML='';
+    const c = card as HTMLElement;
+    document.getElementById('modalNum')!.textContent='Domain '+c.dataset.num;
+    document.getElementById('modalDomain')!.textContent=c.dataset.domain||'';
+    document.getElementById('modalDesc')!.textContent=c.dataset.desc||'';
+    const toolsEl=document.getElementById('modalTools')!;toolsEl.innerHTML='';
     const icons=['◈','✦','◉','⟡','▪','◆'];
-    card.dataset.tools.split(',').forEach((t,i)=>{
+    c.dataset.tools?.split(',').forEach((t,i)=>{
       const s=document.createElement('span');s.className='modal-tool';
       s.innerHTML=`<span class="modal-tool-icon">${icons[i%icons.length]}</span>${t.trim()}`;
       toolsEl.appendChild(s);
     });
-    overlay.classList.add('open');
+    overlay?.classList.add('open');
   });
 });
 
@@ -588,7 +648,8 @@ document.querySelectorAll('.skill-card').forEach(card=>{
   const wrap=document.getElementById('showMoreWrap');
   const PER_PAGE=3;
   let shown=PER_PAGE;
-  btn.addEventListener('click',()=>{
+  btn?.addEventListener('click',()=>{
+    if(!grid || !wrap) return;
     const hidden=grid.querySelectorAll('.work-card.hidden');
     let revealed=0;
     hidden.forEach(c=>{if(revealed<PER_PAGE){c.classList.remove('hidden');revealed++}});
@@ -597,12 +658,12 @@ document.querySelectorAll('.skill-card').forEach(card=>{
   });
 })();
 
-// SLIDER — manual + auto 20s
+// SLIDER
 (function(){
   const slides=document.querySelectorAll('.slide');
   const dots=document.querySelectorAll('.slider-dot');
-  let current=0,timer;
-  function go(n){
+  let current=0,timer:any;
+  function go(n:number){
     slides[current].classList.remove('active');dots[current].classList.remove('active');
     current=n;slides[current].classList.add('active');dots[current].classList.add('active');
   }
@@ -616,13 +677,14 @@ document.querySelectorAll('.skill-card').forEach(card=>{
 document.querySelectorAll('.faq-question').forEach(btn=>{
   btn.addEventListener('click',()=>{
     const item=btn.closest('.faq-item');
+    if(!item) return;
     const wasOpen=item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
     if(!wasOpen)item.classList.add('open');
   });
 });
 
-// TYPING EFFECT — hero heading only
+// TYPING EFFECT
 (function(){
   const el=document.querySelector('.hero-heading');
   if(!el)return;
@@ -649,36 +711,29 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
   setTimeout(type,800);
 })();
 
-// WORD BLUR for section headings — safe DOM walk, preserves em/br
-function wrapSentences(el,lineDelay){
-  // Get plain text, split into chunks by sentence-ending punctuation
+function wrapSentences(el:any,lineDelay:number){
   const raw=el.textContent.trim();
-  // Split on ". " or ", " keeping delimiter attached to previous chunk
   const chunks=raw.match(/[^,\.]+[,\.]?\s*/g)||[raw];
-  // Group into pairs for better visual chunking (avoid too many tiny lines)
-  const groups=[];
+  const groups:any=[];
   for(let i=0;i<chunks.length;i+=2){
     const g=chunks.slice(i,i+2).join('').trim();
     if(g)groups.push(g);
   }
   let html='';
-  groups.forEach((g,i)=>{
+  groups.forEach((g:any,i:number)=>{
     html+=`<span class="sentence-unit" style="display:block;opacity:0;filter:blur(6px);transform:translateY(12px);transition:opacity .7s ease ${i*lineDelay}ms,filter .7s ease ${i*lineDelay}ms,transform .7s ease ${i*lineDelay}ms">${g}</span>`;
   });
   el.innerHTML=html;
-  // Store groups count for observer
   el.dataset.sentenceCount=groups.length;
 }
 
-function wrapHeadingWords(el,wordDelay){
-  // Walk text nodes only, wrap each word
-  function walk(node){
+function wrapHeadingWords(el:any,wordDelay:number){
+  function walk(node:any){
     if(node.nodeType===3){
-      // text node — split into words
       const words=node.textContent.split(/(\s+)/);
       if(words.length<=1&&!words[0].trim())return;
       const frag=document.createDocumentFragment();
-      words.forEach(w=>{
+      words.forEach((w:any)=>{
         if(!w.trim()){
           frag.appendChild(document.createTextNode(w));
         } else {
@@ -694,39 +749,33 @@ function wrapHeadingWords(el,wordDelay){
     }
   }
   walk(el);
-  // Assign staggered delays
-  el.querySelectorAll('.word-unit').forEach((w,i)=>{
+  el.querySelectorAll('.word-unit').forEach((w:any,i:number)=>{
     w.style.transitionDelay=(i*wordDelay)+'ms';
   });
 }
 
 // SCROLL ANIMATIONS
 (function(){
-  // Setup heading-anim elements
   document.querySelectorAll('.heading-anim').forEach(el=>{
     if(el.classList.contains('slide-quote')){
-      // Per-sentence/line reveal for philosophy quote
       wrapSentences(el,180);
     } else {
       wrapHeadingWords(el,120);
     }
   });
 
-  function reveal(entries,obs){
-    entries.forEach(e=>{
+  function reveal(entries:any,obs:any){
+    entries.forEach((e:any)=>{
       if(!e.isIntersecting)return;
       const el=e.target;
-      // heading words or sentences
       if(el.classList.contains('heading-anim')){
-        // word-unit or sentence-unit
-        el.querySelectorAll('.word-unit,.sentence-unit').forEach(w=>{
+        el.querySelectorAll('.word-unit,.sentence-unit').forEach((w:any)=>{
           w.style.opacity='1';
           w.style.filter='blur(0)';
           w.style.transform='translateY(0)';
         });
         obs.unobserve(el);return;
       }
-      // staggered items
       const delay=parseInt(el.dataset.delay||0);
       setTimeout(()=>el.classList.add('visible'),delay);
       obs.unobserve(el);
@@ -734,7 +783,6 @@ function wrapHeadingWords(el,wordDelay){
   }
 
   const io=new IntersectionObserver(reveal,{threshold:.08,rootMargin:'0px 0px -30px 0px'});
-
   document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
   document.querySelectorAll('.heading-anim').forEach(el=>io.observe(el));
   document.querySelectorAll('.card-anim').forEach(el=>io.observe(el));

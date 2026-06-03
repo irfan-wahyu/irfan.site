@@ -5,8 +5,9 @@ backend:
 
 local_backend: true
 
-public_folder: /irfan.site/assets
-media_folder: public/assets
+# Jalur pencarian gambar yang aman untuk Astro & Decap
+public_folder: /irfan.site/images
+media_folder: public/images
 
 collections:
   - name: "projects"
@@ -15,12 +16,17 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      # --- BAGIAN FRONTMATTER (ATAS) ---
       - { label: "Title", name: "title", widget: "string" }
       - {
           label: "Subtitle",
           name: "subtitle",
           widget: "string",
+          required: false,
+        }
+      - {
+          label: "Cover Thumbnail",
+          name: "thumbnail",
+          widget: "image",
           required: false,
         }
       - {
@@ -36,8 +42,6 @@ collections:
           widget: "string",
           default: "1 Minggu",
         }
-
-      # Status Proyek (Dropdown biar tinggal pilih)
       - {
           label: "Status",
           name: "status",
@@ -45,39 +49,30 @@ collections:
           options: ["Completed", "In Progress", "On Hold"],
           default: "Completed",
         }
-
       - {
           label: "Medium",
           name: "medium",
           widget: "string",
           default: "Motion Graphics",
         }
-
       - {
           label: "Tools",
           name: "tools",
           widget: "list",
-          summary: "{{fields.tool}}", # Ini buat tampilan ringkasnya
           field: { label: "Tool", name: "tool", widget: "string" },
         }
-
-      # Ubah Tags jadi widget: list
       - {
           label: "Tags",
           name: "tags",
           widget: "list",
           field: { label: "Tag", name: "tag", widget: "string" },
         }
-
-      # Toggle Featured (On/Off)
       - {
           label: "Featured Project?",
           name: "featured",
           widget: "boolean",
           default: true,
         }
-
-      # Order/Urutan (Untuk mengatur proyek mana yang tampil duluan)
       - {
           label: "Order",
           name: "order",
@@ -85,7 +80,4 @@ collections:
           value_type: "int",
           default: 1,
         }
-
-      # --- BAGIAN BODY (BAWAH) ---
-      # Editor utama tempat kamu ngetik "KONTOL RAISOH ISOH" dan masukin gambar galeri
       - { label: "Body", name: "body", widget: "markdown", allow_images: true }

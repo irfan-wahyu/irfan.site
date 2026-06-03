@@ -6,11 +6,13 @@ import { getCollection } from 'astro:content';
 export const prerender = true;
 
 const allProjects = await getCollection('projects');
-const sorted = allProjects.sort((a, b) => a.data.order - b.data.order);
+
+// PERBAIKAN 1: Pengaman sorting agar tidak crash jika ada data 'order' yang kosong/undefined
+const sorted = allProjects.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
 const base = import.meta.env.BASE_URL;
 
-// Collect all unique tags across projects
-const allTags = [...new Set(sorted.flatMap(p => p.data.tags))];
+// PERBAIKAN 2: Pengaman flatMap jika ada file .md yang tidak sengaja mengosongkan field tags
+const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
 ---
 
 <Layout title="Works — Irfan Wahyu">
@@ -55,8 +57,9 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags))];
         <div
           class={`work-card card-anim${idx >= 3 ? ' hidden' : ''}`}
           data-delay={idx >= 3 ? '0' : String(idx * 80)}
-          data-tags={project.data.tags.join(',')}
+          data-tags={project.data.tags ? project.data.tags.join(',') : ''}
         >
+          {/* PERBAIKAN 3: Pada Astro v5 Loader, slug halaman detail dibaca dari project.id yang bersih */}
           <a href={`${base}works/${project.id}/`} class="work-link"></a>
           <div class="work-thumb">
             {project.data.thumbnail ? (
@@ -69,18 +72,16 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags))];
             <div class="work-overlay">
               <div class="work-overlay-title">{project.data.title}</div>
               {project.data.subtitle && (
-              <div class="work-desc">{project.data.subtitle}</div>
-            )}
+                <div class="work-desc">{project.data.subtitle}</div>
+              )}
               <div class="work-overlay-tags">
-                {project.data.tags.map(tag => (
+                {/* PERBAIKAN 4: Tambahkan tanda tanya (?) opsional agar tidak crash saat rendering list tag kosong */}
+                {project.data.tags?.map(tag => (
                   <span class="work-overlay-tag">{tag}</span>
                 ))}
               </div>
             </div>
           </div>
-          
-
-
         </div>
       ))}
     </div>
@@ -143,15 +144,14 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags))];
           else card.classList.remove('hidden');
         });
         
-if (filter !== 'all') {
-  grid.querySelectorAll('.work-card').forEach(card => {
-    const tags = (card.dataset.tags || '').split(',').map(t => t.trim());
-    console.log('Card tags:', tags, 'Filter:', filter, 'Match:', tags.includes(filter));
-    if (!tags.includes(filter)) {
-      card.classList.add('filtered-out');
-    }
-  });
-}
+        if (filter !== 'all') {
+          grid.querySelectorAll('.work-card').forEach(card => {
+            const tags = (card.dataset.tags || '').split(',').map(t => t.trim());
+            if (!tags.includes(filter)) {
+              card.classList.add('filtered-out');
+            }
+          });
+        }
         updateCount();
       });
     });
@@ -171,7 +171,6 @@ if (filter !== 'all') {
     updateCount();
   }
 
-  // Run setelah DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initFilter);
   } else {
