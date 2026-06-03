@@ -310,11 +310,23 @@ section {
   animation-delay: 0.2s;
   pointer-events: none;
 }
-.hero-btn-wrap {
-  animation: fadeUp 1s ease forwards;
-  animation-delay: 2.8s;
-  opacity: 0;
-  display: inline-block;
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 34px;
+  background: var(--accent);
+  color: var(--bg) !important;
+
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.35s;
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
 }
 .hero-eyebrow {
   font-family: var(--font-label);
@@ -1436,7 +1448,7 @@ section {
   gap: 12px;
   padding: 16px 42px;
   background: var(--accent);
-  color: var(--bg);
+  color: var(--bg) !important;
   font-family: var(--font-body);
   font-size: 0.7rem;
   letter-spacing: 0.2em;
@@ -1450,6 +1462,7 @@ section {
 .contact-btn:hover {
   background: #d4b07a;
   gap: 18px;
+  color: var(--bg) !important;
 }
 .contact-note {
   font-family: var(--font-display);
