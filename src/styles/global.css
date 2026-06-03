@@ -45,6 +45,18 @@ body {
   cursor: none;
 }
 
+a,
+.works-grid a,
+.work-card {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+a:hover,
+.works-grid a:hover {
+  text-decoration: none !important;
+}
+
 /* GRAIN */
 body::before {
   content: "";
