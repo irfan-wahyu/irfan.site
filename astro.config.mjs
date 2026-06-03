@@ -8,4 +8,5 @@ export default defineConfig({
   site: "https://irfan-wahyu.github.io",
   base: isDev ? "/" : "/irfan.site/",
   integrations: [react(), keystatic()],
+  output: "static",
 });
