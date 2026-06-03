@@ -133,16 +133,18 @@ const base = import.meta.env.BASE_URL;
 
   <script>
 
-    // LIGHTBOX
+ // LIGHTBOX WITH DETECTED ZOOM TRANSITION
 (function(){
   const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lbImg');
+  const lbImg = document.getElementById('lbImg') as HTMLImageElement;
   const lbCaption = document.getElementById('lbCaption');
   const lbCounter = document.getElementById('lbCounter');
+  if (!lb || !lbImg) return;
+  
   let images = [], current = 0;
 
-  // Collect semua gambar di artikel
-  document.querySelectorAll('.article img').forEach((img, i) => {
+  // Ambil semua gambar di dalam konten artikel
+  document.querySelectorAll('.article img').forEach((img: HTMLImageElement, i) => {
     images.push({ src: img.src, alt: img.alt });
     img.style.cursor = 'zoom-in';
     img.addEventListener('click', () => open(i));
@@ -150,17 +152,45 @@ const base = import.meta.env.BASE_URL;
 
   function open(i) {
     current = i;
+    
+    // Reset state transisi gambar biar selalu mulai dari kecil setiap ganti gambar
+    lbImg.style.transform = 'scale(0.85)';
+    lbImg.style.opacity = '0';
+    lbImg.style.filter = 'blur(8px)';
+    
     lbImg.src = images[i].src;
-    lbCaption.textContent = images[i].alt || '';
-    lbCounter.textContent = (i+1) + ' / ' + images.length;
+    if (lbCaption) lbCaption.textContent = images[i].alt || '';
+    if (lbCounter) lbCounter.textContent = (i+1) + ' / ' + images.length;
+    
+    // Buka container utama
     lb.classList.add('open');
+    
+    // Beri jeda micro-task lewat requestAnimationFrame agar browser sempat merender scale(1)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        lbImg.style.transform = '';
+        lbImg.style.opacity = '';
+        lbImg.style.filter = '';
+      });
+    });
   }
 
-  function close() { lb.classList.remove('open'); }
+  function close() { 
+    // Biarkan gambar menyusut mengecil dulu sebelum container utama hilang tertutup
+    lbImg.style.transform = 'scale(0.85)';
+    lbImg.style.opacity = '0';
+    lbImg.style.filter = 'blur(8px)';
+    
+    // Beri waktu delay transisi jalan (400ms) baru hilangkan kelas 'open'
+    setTimeout(() => {
+      lb.classList.remove('open');
+    }, 350);
+  }
 
-  document.getElementById('lbClose').addEventListener('click', close);
-  document.getElementById('lbPrev').addEventListener('click', () => open((current - 1 + images.length) % images.length));
-  document.getElementById('lbNext').addEventListener('click', () => open((current + 1) % images.length));
+  document.getElementById('lbClose')?.addEventListener('click', close);
+  document.getElementById('lbPrev')?.addEventListener('click', () => open((current - 1 + images.length) % images.length));
+  document.getElementById('lbNext')?.addEventListener('click', () => open((current + 1) % images.length));
+  
   lb.addEventListener('click', e => { if(e.target === lb) close(); });
   document.addEventListener('keydown', e => {
     if(!lb.classList.contains('open')) return;

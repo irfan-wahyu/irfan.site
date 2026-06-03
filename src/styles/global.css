@@ -45,9 +45,12 @@ body {
   cursor: none;
 }
 
+/* PERBAIKAN UNDERLINE GLOBAL + MODAL FIX */
 a,
 .works-grid a,
-.work-card {
+.work-card,
+.footer-nav-links a,
+.footer-social-links a {
   text-decoration: none !important;
   color: inherit !important;
 }
@@ -55,6 +58,17 @@ a,
 a:hover,
 .works-grid a:hover {
   text-decoration: none !important;
+}
+
+/* Biar link navigasi atas & bawah warnanya kembali normal pas di-hover (tidak hilang/ikut putih) */
+.nav-links a:hover {
+  color: var(--text) !important;
+}
+.footer-nav-links a:hover {
+  color: var(--text) !important;
+}
+.footer-social-links a:hover {
+  color: var(--accent) !important;
 }
 
 /* GRAIN */
@@ -310,24 +324,6 @@ section {
   animation-delay: 0.2s;
   pointer-events: none;
 }
-.hero-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 34px;
-  background: var(--accent);
-  color: var(--bg) !important;
-
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: all 0.35s;
-  position: relative;
-  overflow: hidden;
-  font-weight: 500;
-}
 .hero-eyebrow {
   font-family: var(--font-label);
   font-size: 0.58rem;
@@ -384,7 +380,7 @@ section {
   gap: 12px;
   padding: 14px 34px;
   background: var(--accent);
-  color: var(--bg);
+  color: var(--bg) !important; /* Memaksa tulisan tombol tetap hitam pekat */
   font-family: var(--font-body);
   font-size: 0.72rem;
   letter-spacing: 0.18em;
@@ -410,6 +406,7 @@ section {
 .hero-btn:hover {
   gap: 20px;
   letter-spacing: 0.22em;
+  color: var(--bg) !important; /* Tetap hitam pekat pas di-hover */
 }
 .hero-btn svg {
   transition: transform 0.35s;
@@ -570,12 +567,6 @@ section {
   margin-bottom: var(--space-lg);
   letter-spacing: 0.05em;
 }
-.skill-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-md);
-  background: transparent;
-}
 
 /* SKILL CARD — double stroke*/
 .skill-grid {
@@ -594,40 +585,6 @@ section {
     background 0.4s,
     box-shadow 0.4s;
   border: 0.2px solid rgba(201, 169, 110, 0.1);
-}
-.skill-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    var(--accent) 40%,
-    rgba(201, 169, 110, 0.3) 70%,
-    transparent 100%
-  );
-  opacity: 0.7;
-  transition: opacity 0.5s;
-}
-.skill-card:hover::after {
-  opacity: 1;
-}
-.skill-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-.skill-card:hover::before {
-  opacity: 1;
-}
-.skill-card:hover {
-  box-shadow: inset 0 0 0 1px rgba(201, 169, 110, 0.25);
 }
 
 /* Gradient stroke — top edge fade left to right */
@@ -982,7 +939,6 @@ section {
   text-align: center;
   padding: 0 20px;
   line-height: 1.35;
-  opacity: 0.7;
 }
 .work-placeholder-arrow {
   color: var(--accent);
@@ -1168,6 +1124,59 @@ section {
   position: relative;
   max-width: 840px;
   margin: 0 auto;
+}
+.roadmap-node {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.roadmap-node:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--accent),
+    rgba(201, 169, 110, 0.15)
+  );
+}
+.roadmap-dot {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 18px;
+  transition: background 0.3s;
+  cursor: none;
+}
+.roadmap-dot.active-dot {
+  background: var(--accent);
+  box-shadow: 0 0 16px rgba(201, 169, 110, 0.35);
+}
+.roadmap-phase {
+  font-family: var(--font-label);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 7px;
+  opacity: 0.65;
+}
+.roadmap-label {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 7px;
 }
 .roadmap-node {
   flex: 1;
@@ -1448,7 +1457,9 @@ section {
   gap: 12px;
   padding: 16px 42px;
   background: var(--accent);
-  color: var(--bg) !important;
+  color: var(
+    --bg
+  ) !important; /* Memaksa tulisan tombol kontak tetap hitam pekat */
   font-family: var(--font-body);
   font-size: 0.7rem;
   letter-spacing: 0.2em;
@@ -1462,7 +1473,7 @@ section {
 .contact-btn:hover {
   background: #d4b07a;
   gap: 18px;
-  color: var(--bg) !important;
+  color: var(--bg) !important; /* Tetap hitam pekat pas di-hover */
 }
 .contact-note {
   font-family: var(--font-display);

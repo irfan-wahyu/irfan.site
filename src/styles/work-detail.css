@@ -1048,3 +1048,53 @@ footer {
     padding: var(--space-xl) 24px 0;
   }
 }
+
+/* ======================================================== */
+/* EFECT LIGHTBOX ZOOM ANIMATION MODERN (POP-UP BOUNCY) */
+/* ======================================================== */
+
+/* 1. Atur container utama lightbox saat transisi */
+.lightbox {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* 2. Keadaan awal gambar sebelum membesar (Kecil + Blur halus) */
+.lightbox-img-wrap img {
+  transform: scale(0.85);
+  filter: blur(8px);
+  opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.4s ease,
+    opacity 0.4s ease;
+}
+
+/* 3. Keadaan ketika lightbox terbuka (Nge-zoom Gede, Membal Halus & Tajam) */
+.lightbox.open .lightbox-img-wrap img {
+  transform: scale(1);
+  filter: blur(0);
+  opacity: 1;
+}
+
+/* 4. Tombol navigasi dan keterangan biar muncul memudar elegan */
+.lightbox-close,
+.lightbox-nav,
+.lightbox-counter,
+.lightbox-caption {
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s; /* Diberi delay sedikit agar gambar membesar duluan */
+}
+
+.lightbox.open .lightbox-close,
+.lightbox.open .lightbox-nav,
+.lightbox.open .lightbox-counter,
+.lightbox.open .lightbox-caption {
+  opacity: 1;
+}
