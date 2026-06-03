@@ -3,6 +3,9 @@ import BaseHead from '../components/BaseHead.astro';
 import Cursor from '../components/Cursor.astro';
 import Footer from '../components/Footer.astro';
 
+// Mengambil base path secara otomatis dari sistem Astro
+const base = import.meta.env.BASE_URL;
+
 export interface Props {
   title: string;
   description?: string;
@@ -14,8 +17,12 @@ const { title, description, pageStyle } = Astro.props;
 <html lang="en">
 <head>
   <BaseHead title={title} description={description} />
-  {pageStyle && <link rel="stylesheet" href={pageStyle} />}
-<link rel="stylesheet" href={import.meta.env.BASE_URL + "styles/global.css"}>
+  
+  <!-- CSS pageStyle jika ada -->
+  {pageStyle && <link rel="stylesheet" href={`${base}${pageStyle.replace(/^\//, '')}`} />}
+  
+  <!-- CSS Global yang pasti jalan -->
+  <link rel="stylesheet" href={`${base}styles/global.css`}>
 </head>
 <body>
   <Cursor />
