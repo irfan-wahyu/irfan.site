@@ -5,7 +5,7 @@
   --text-muted: #787470;
   --accent: #c9a96e;
   --accent-dim: rgba(201, 169, 110, 0.1);
-  --border: rgba(228, 224, 216, 0.07);
+  --border: rgba(228, 224, 216, 0.1);
   --font-heading: "Alegreya", serif;
   --font-display: "Alegreya", serif;
   --font-body: "Inter", sans-serif;
@@ -31,6 +31,10 @@ html {
   scroll-behavior: smooth;
 }
 body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
@@ -254,21 +258,26 @@ section {
 
 /* ===================== HERO ===================== */
 #hero {
-  padding: 0;
+  width: 100%;
   height: 100vh;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
+  margin: 0;
 }
 #ascii-canvas {
-  position: relative;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-  opacity: 0.14;
-  transition: opacity 0.5s ease;
+  opacity: 0.15;
+  transition: 0.5s ease;
   cursor: none;
 }
 
@@ -494,6 +503,7 @@ section {
   gap: 12px;
   align-items: flex-start;
   transition: background 0.3s;
+  border: 1px solid var(--border);
 }
 .about-info-card:hover {
   background: #0f1219;
@@ -539,9 +549,16 @@ section {
 .skill-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  background: transparent;
+}
+
+/* SKILL CARD — double stroke*/
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--border);
-  border: 1px solid var(--border);
 }
 .skill-card {
   background: var(--bg-secondary);
@@ -549,20 +566,30 @@ section {
   position: relative;
   cursor: none;
   overflow: hidden;
-  transition: background 0.4s;
+  transition:
+    background 0.4s,
+    box-shadow 0.4s;
+  border: 0.2px solid rgba(201, 169, 110, 0.1);
 }
 .skill-card::after {
   content: "";
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--accent);
-  transition: width 0.5s ease;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--accent) 40%,
+    rgba(201, 169, 110, 0.3) 70%,
+    transparent 100%
+  );
+  opacity: 0.7;
+  transition: opacity 0.5s;
 }
 .skill-card:hover::after {
-  width: 100%;
+  opacity: 1;
 }
 .skill-card::before {
   content: "";
@@ -574,6 +601,50 @@ section {
 }
 .skill-card:hover::before {
   opacity: 1;
+}
+.skill-card:hover {
+  box-shadow: inset 0 0 0 1px rgba(201, 169, 110, 0.25);
+}
+
+/* Gradient stroke — top edge fade left to right */
+.skill-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--accent) 40%,
+    rgba(201, 169, 110, 0.3) 70%,
+    transparent 100%
+  );
+  transition: opacity 0.5s;
+  opacity: 0.7;
+}
+.skill-card:hover::after {
+  opacity: 1;
+}
+/* Hover glow — gradient bg */
+.skill-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.skill-card:hover::before {
+  opacity: 1;
+}
+/* Hover — border brightens + subtle glow */
+.skill-card:hover {
+  box-shadow:
+    inset 0 0 0 1px var(--accent),
+    0 0 10px rgba(201, 169, 110, 0.1);
+  z-index: 2;
 }
 .skill-card-num {
   position: absolute;
@@ -1461,6 +1532,7 @@ footer {
   max-width: 300px;
   font-weight: 300;
   opacity: 0.55;
+  margin-bottom: 50px;
 }
 
 /* RIGHT */
@@ -1736,10 +1808,13 @@ footer {
   }
   .roadmap {
     flex-direction: column;
-    gap: 36px;
+    gap: 28px;
   }
   .roadmap-node::after {
     display: none;
+  }
+  .roadmap-dot {
+    margin-bottom: 14px;
   }
   .footer-top {
     grid-template-columns: 1fr;
@@ -1761,8 +1836,14 @@ footer {
     min-height: auto;
   }
   .slide {
-    padding: var(--space-xl) 28px 90px;
-    position: relative;
+    position: relative !important;
+    inset: auto !important;
+    display: none; /* ← TAMBAH INI */
+    padding: var(--space-xl) 28px var(--space-2xl);
+  }
+
+  .slide.active {
+    display: block; /* ← TAMBAH INI */
   }
   .section-divider {
     padding: 0 28px;

@@ -569,6 +569,7 @@ section {
   transition:
     background 0.4s,
     box-shadow 0.4s;
+  border: 0.2px solid rgba(201, 169, 110, 0.1);
 }
 .skill-card::after {
   content: "";
@@ -640,11 +641,10 @@ section {
 }
 /* Hover — border brightens + subtle glow */
 .skill-card:hover {
-  border-color: rgba(201, 169, 110, 0.35);
-  outline-color: rgba(201, 169, 110, 0.12);
   box-shadow:
-    0 0 28px rgba(201, 169, 110, 0.06),
-    inset 0 0 0 1px rgba(201, 169, 110, 0.08);
+    inset 0 0 0 1px var(--accent),
+    0 0 10px rgba(201, 169, 110, 0.1);
+  z-index: 2;
 }
 .skill-card-num {
   position: absolute;
