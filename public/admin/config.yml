@@ -29,6 +29,15 @@ collections:
           widget: "image",
           required: false,
         }
+
+      - {
+          label: "Raw Asset URL (G-Drive/Figma/External)",
+          name: "raw_asset_url",
+          widget: "string",
+          required: false,
+          hint: "Masukkan link Google Drive, Figma, atau file kerjaan luar jika ada.",
+        }
+
       - {
           label: "Year",
           name: "year",

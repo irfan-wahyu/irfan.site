@@ -2,6 +2,7 @@
 title: Tes Ini
 subtitle: Tes buat semoga bisa
 thumbnail: /irfan.site/images/The Wanderer.png
+raw_asset_url: https://www.youtube.com/
 year: 2026
 duration: 1 Minggu
 status: Completed

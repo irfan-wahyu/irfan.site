@@ -4,7 +4,7 @@ export const skills = [
     domain: "Motion & Narrative",
     essence: "Bercerita lewat gerak dan timing.",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada, ut consequat enim fringilla. Phasellus ornare nibh at arcu dignissim gravida sed vitae enim.",
-    tools: ["After Effects,Moho,Premiere Pro"],
+    tools: ["After Effects", "Moho", "Premiere Pro"], // <-- SUDAH DIPISAH
     delay: 0,
   },
   {
@@ -12,7 +12,7 @@ export const skills = [
     domain: "Visual Systems",
     essence: "Estetika yang punya lapisan makna.",
     desc: "Curabitur luctus felis ac nunc venenatis, vitae sodales purus ultrices. Integer convallis magna nec lacus consequat, vel vestibulum nisl accumsan vivamus sagittis dignissim.",
-    tools: ["Illustrator,Figma,Mixed Media,AI-assisted"],
+    tools: ["Illustrator", "Figma", "Mixed Media", "AI-assisted"], // <-- SUDAH DIPISAH
     delay: 80,
   },
   {
@@ -20,7 +20,7 @@ export const skills = [
     domain: "Concept & Research",
     essence: "Dari pertanyaan menuju bentuk konkret.",
     desc: "Sed euismod tortor vel nunc pretium, eu tempor arcu suscipit. Nullam commodo libero id velit dictum, nec bibendum eros placerat donec fringilla nisi tincidunt.",
-    tools: ["Secondary Research,Visual Thinking,Iterative Process"],
+    tools: ["Secondary Research", "Visual Thinking", "Iterative Process"], // <-- SUDAH DIPISAH
     delay: 160,
   },
   {
@@ -28,7 +28,7 @@ export const skills = [
     domain: "Educational Technology",
     essence: "Membangun sistem yang bisa berpikir sendiri.",
     desc: "Donec fringilla nisi nec turpis tincidunt hendrerit. Vivamus sagittis ante a felis dignissim, ut luctus odio fermentum. Phasellus ornare nibh at arcu dignissim gravida.",
-    tools: ["Instructional Design,Web,Systems Thinking"],
+    tools: ["Instructional Design", "Web", "Systems Thinking"], // <-- SUDAH DIPISAH
     delay: 60,
   },
   {
@@ -36,7 +36,7 @@ export const skills = [
     domain: "Writing & Narrative",
     essence: "Bahasa sebagai medium pembentuk makna.",
     desc: "Integer convallis magna nec lacus consequat, vel vestibulum nisl accumsan. Vivamus sagittis ante a felis dignissim, ut luctus odio fermentum sed euismod.",
-    tools: ["Long-form Writing,Content Strategy,Copywriting"],
+    tools: ["Long-form Writing", "Content Strategy", "Copywriting"], // <-- SUDAH DIPISAH
     delay: 140,
   },
   {
@@ -44,7 +44,7 @@ export const skills = [
     domain: "Systems Thinking",
     essence: "Struktur yang memungkinkan kebebasan.",
     desc: "Curabitur luctus felis ac nunc venenatis, vitae sodales purus ultrices. Integer convallis magna nec lacus consequat vel vestibulum accumsan vivamus.",
-    tools: ["Information Architecture,Notion,Workflow Design"],
+    tools: ["Information Architecture", "Notion", "Workflow Design"], // <-- SUDAH DIPISAH
     delay: 220,
   },
 ];

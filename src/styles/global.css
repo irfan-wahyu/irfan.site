@@ -55,6 +55,17 @@ a,
   color: inherit !important;
 }
 
+/* Saat kartu di-hover, paksa judul tengah meluncur ke atas dan menghilang */
+.work-card:hover .work-initial-center-content {
+  transform: translateY(-30px);
+  opacity: 0;
+}
+
+/* Biar lapisan hitam awal memudar pas hover, jadi gak numpuk sama overlay asli lu */
+.work-card:hover .work-card-dimmer {
+  opacity: 0;
+}
+
 a:hover,
 .works-grid a:hover {
   text-decoration: none !important;
