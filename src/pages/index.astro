@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import { getCollection } from 'astro:content';
 import { skills } from '../data/skills';
+import { GraduationCap, Bookmark, University, User } from '@lucide/astro';
 
 export const prerender = true;
 
@@ -13,11 +14,6 @@ const base = import.meta.env.BASE_URL;
 <Layout title="Irfan Wahyu — Systemic Thinker. Visual Maker.">
   <Nav variant="home" />
   <style is:global>
-    /* ========================================================
-       ✨ OVERRIDE CSS STRUKTUR ANIMASI BARU (HP & TEXT EFFECT)
-       ======================================================== */
-    
-    /* 1. Paksa Judul About Center & Rapi khusus di Layar HP */
     @media (max-width: 768px) {
       .about-text .heading-anim {
         text-align: center !important;
@@ -34,24 +30,22 @@ const base = import.meta.env.BASE_URL;
       }
     }
 
-    /* ⚡⚡ JURUS PAMUNGKAS: MEMAKSA STRUKTUR TEKS JS MEMENUHI BORDER EMAS SAMPAI MENTOK (JUSTIFY) ⚡⚡ */
     .about-container p.about-body.heading-anim.about-text-fade {
       width: 100% !important;
       max-width: 100% !important;
       display: block !important;
     }
     
-    /* Menembus isolation element hasil garapan JavaScript wrapSentences */
+
     .about-container .sentence-unit,
     .about-container p.about-body .sentence-unit {
       width: 100% !important;
       max-width: 100% !important;
       display: block !important;
-      text-align: justify !important; /* Paksa merenggang rata kanan-kiri memenuhi boks */
-      text-align-last: left !important; /* Baris paling terakhir tetep rata kiri biar natural */
+      text-align: justify !important; 
+      text-align-last: left !important; 
     }
 
-    /* Khusus tampilan HP, teks di dalam boks emas otomatis beralih ke rata tengah seimbang */
     @media (max-width: 768px) {
       .about-container .sentence-unit,
       .about-container p.about-body .sentence-unit {
@@ -59,8 +53,6 @@ const base = import.meta.env.BASE_URL;
         text-align-last: center !important;
       }
     }
-
-    /* 2. Style Dasar Unit Teks Kalimat (Sentence) & Kata (Word) */
     .word-unit {
       display: inline-block;
       opacity: 0;
@@ -80,7 +72,6 @@ const base = import.meta.env.BASE_URL;
                   transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* 3. Animasi Fade Up Santai untuk Kartu Praktek & Info */
     .about-info-card {
       opacity: 0;
       transform: translateY(25px) !important; 
@@ -144,16 +135,122 @@ const base = import.meta.env.BASE_URL;
   <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
   <canvas id="ascii-canvas"></canvas>
   <div class="hero-content">
-    <div class="hero-eyebrow">Portfolio</div>
-    <h1 class="hero-heading">Lagi Debugging Bang.<br><em>Nanti Kalo Ga Ngebug.</em></h1>
-    <p class="hero-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada, ut consequat enim fringilla dignissim gravida.</p>
-    <div class="hero-btn-wrap">
-      <a href="#" class="hero-btn" style="pointer-events:all">
+    <div class="hero-eyebrow">Personal Website</div>
+    <h1 class="hero-heading">Thinking in systems<br><em>Building in layers</em></h1>
+    <p class="hero-paragraph">Still learning how to think & build. Ed-tech student by day, visual thinker by habit. exploring the overlap between systems, design, and digital craft. This space is part archive & part experiment.</p>
+{/* Pembungkus tombol di-center */}
+    <div class="hero-btn-wrap hero-btn-animate-intro" style="display: flex; gap: 16px; align-items: center; justify-content: center; width: 100%;">
+      
+      {/* Tombol Utama: Get in Touch */}
+      <a href="#contact" class="hero-btn primary-bounce-btn" style="pointer-events:all">
         Get in Touch
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+
+      {/* Tombol Kedua: See My Work (Flow Emas-Krem-Transparan dari Kanan ke Kiri) */}
+      <a href="/work" class="hero-btn secondary-stroke-btn" style="pointer-events:all">
+        See My Work
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </a>
     </div>
   </div>
+
+{/* CSS Efek Flow Gradasi Emas Kuning + Krem */}
+<style>
+  .hero-btn-wrap {
+    margin-top: 32px;
+  }
+
+  /* --- 1. INTRO DENGAN JEDA DELAY 2 DETIK --- */
+  .hero-btn-animate-intro {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(15px);
+    animation: heroBtnIntro 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 2s forwards;
+  }
+
+  @keyframes heroBtnIntro {
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  /* --- 2. ANIMASI GET IN TOUCH --- */
+  .primary-bounce-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  }
+  
+  .primary-bounce-btn svg {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  }
+
+  .primary-bounce-btn:hover {
+    transform: scale(1.05) !important;
+  }
+
+  .primary-bounce-btn:hover svg {
+    transform: translateX(4px) !important;
+  }
+
+  /* --- 3. SEEM MY WORK (Tetap Transparan + Flow Emas Krem) --- */
+  .secondary-stroke-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden; /* Memotong aliran warna agar rapi di dalam batas tombol */
+    z-index: 1;
+    
+    /* Mengunci tombol tetap transparan dengan border emas-kuning bawaan */
+    background: transparent !important;
+    border: 1px solid #d4b373 !important;
+    color: #d4b373 !important;
+    
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease !important;
+  }
+
+  /* Efek Kilatan Gradasi Mengalir (Flow) */
+  .secondary-stroke-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 130%; /* Berada di kanan luar tombol saat kondisi awal */
+    width: 130%; /* Dibuat sedikit lebih lebar agar transisi mengalirnya halus */
+    height: 100%;
+    
+    /* Perpaduan Gradasi: Emas Kuning (#d4b373) -> Krem hangat (#f5e6ca) -> Transparan */
+    background: linear-gradient(to left, #d4b373, #f5e6ca, transparent) !important;
+    opacity: 0.35; /* Diberi opasitas 35% agar efek flow menyala terang tapi background web di belakangnya tetap tembus pandang */
+    
+    z-index: -1;
+    transition: left 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .secondary-stroke-btn svg {
+    stroke: #d4b373 !important;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  }
+
+  /* Efek pas kursor di-hover */
+  .secondary-stroke-btn:hover {
+    transform: scale(1.05) !important;
+    border-color: #f5e6ca !important; /* Border sedikit menghangat ke arah warna krem */
+  }
+
+  /* Mengalirkan gradasi emas-krem meluncur melintasi tombol ke arah kiri */
+  .secondary-stroke-btn:hover::before {
+    left: -30%;
+  }
+
+  .secondary-stroke-btn:hover svg {
+    transform: translateX(4px) !important;
+  }
+</style>
 </section>
 
 <div class="section-divider"><div class="section-divider-diamond"></div></div>
@@ -165,26 +262,26 @@ const base = import.meta.env.BASE_URL;
       <canvas id="particle-canvas"></canvas>
     </div>
     <div class="about-text">
-      <h2 class="heading-anim">bla bla bla<br><em>bli bli bli.</em></h2>
+      <h2 class="heading-anim">You're here<br><em>I'm Irfan Wahyu</em></h2>
       <div class="about-container">
-        <p class="about-body heading-anim about-text-fade">Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking</p>
+        <p class="about-body heading-anim about-text-fade">Currently finding ground in Yogyakarta. Still learning & still exploring across systems technology and the visual world. That curiosity led me to Educational Technology at UNY, a field sitting at the intersection of Philosophical Science, Digital Technology and Education.It's not the most obvious path but i think it's the one that felt most honest i choice. I'm still figuring out who I am and what I'm building toward, this space reflects that process Some things here are finished Most are still forming.</p>
       </div>
       <div class="about-info-grid">
         <div class="about-info-card" data-delay="0">
-          <div class="about-info-icon">✦</div>
-          <div><div class="about-info-label">Pendidikan</div><div class="about-info-value">Maunya sih Informatika<br>UNYEAH</div></div>
+          <div class="about-info-icon"><GraduationCap size={18} /></div>
+          <div><div class="about-info-label">Pendidikan</div><div class="about-info-value">Teknologi Pendidikan<br>Universitas Negeri Yogyakarta</div></div>
         </div>
         <div class="about-info-card" data-delay="120">
-          <div class="about-info-icon">◈</div>
-          <div><div class="about-info-label">Keahlian</div><div class="about-info-value">Lorem Ipsum, Ipsum Lorem,<br>Dolor sit</div></div>
+          <div class="about-info-icon"><Bookmark size={18} /></div>
+          <div><div class="about-info-label">Minat</div><div class="about-info-value">Lorem ipsum dolor<br>sit amet</div></div>
         </div>
         <div class="about-info-card" data-delay="240">
-          <div class="about-info-icon">◉</div>
-          <div><div class="about-info-label">Minat</div><div class="about-info-value">Amet Amet,Cogito,<br>Ergo Sum</div></div>
+          <div class="about-info-icon"><University size={18} /></div>
+          <div><div class="about-info-label">Status</div><div class="about-info-value">First Year<br>2026</div></div>
         </div>
         <div class="about-info-card" data-delay="360">
-          <div class="about-info-icon">⟡</div>
-          <div><div class="about-info-label">Berbasis di</div><div class="about-info-value">Watasi,Wakatta<br>Wakaranai</div></div>
+          <div class="about-info-icon"><User size={18} /></div>
+          <div><div class="about-info-label">Persona</div><div class="about-info-value">INTJ-T(Turbulent Architect)</div></div>
         </div>
       </div>
     </div>
@@ -306,26 +403,74 @@ const base = import.meta.env.BASE_URL;
   <div class="slider-wrap">
     <div class="slide active" id="slide-1">
       <div class="slide-section-label">Philosophy</div>
+
       <div class="slide-1-content" style="width: 100% !important; max-width: 100% !important; padding: 0 !important;">
-        <div class="slide-quote heading-anim slide-quote">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada fringilla et consequat dignissim.
-        </div>
-        <div class="slide-deco"><div class="slide-deco-mark">✦</div></div>
-        <p class="slide-body heading-anim about-text-fade" style="width: 100% !important; max-width: 850px !important; margin-left: auto !important; margin-right: auto !important; padding: 0 !important; text-align: center !important;">
-          Curabitur luctus felis ac nunc venenatis, vitae sodales purus ultrices. Integer convallis magna nec lacus consequat, vel vestibulum nisl accumsan. Vivamus sagittis ante a felis dignissim, ut luctus odio fermentum sed euismod tortor vel nunc pretium.
-        </p>
-      </div>
+  
+  {/* 1. Blok Kutipan */}
+  <div class="slide-quote heading-anim slide-quote" style="text-align: center !important; margin-bottom: 0px !important; padding-bottom: 0px !important;">
+    "Die jugendliche Seele blicke auf das Leben zurück mit der Frage: was hast du bisher wirklich geliebt, was hat deine Seele gezogen was hat sie beherrscht und gleichzeitig beglückt? Stelle diese Reihe verehrter Gegenstände vor dir auf, und vielleicht zeigen sie dir ein Grundgesetz deines eigentlichen Selbst: werde der du bist!"
+  </div>
+  
+  {/* 2. Blok Nama Penulis - STYLING DIJAMIN 100% KEMBAR SIAM TAPI BEBAS TANDA PETIK */}
+  <div class="slide-quote heading-anim slide-quote" style="text-align: center !important; margin-top: 1.5rem !important; padding-top: 0px !important;">
+    <span style="content: none !important; display: block !important; width: 100% !important; text-align: center !important;">
+      — Friedrich Nietzsche
+    </span>
+    {/* Style tag di bawah ini untuk mematikan paksa tanda petik CSS :before/:after khusus di blok ini */}
+    <style>
+      #slide-1 .slide-quote:nth-child(2)::before,
+      #slide-1 .slide-quote:nth-child(2)::after {
+        content: none !important;
+      }
+    </style>
+  </div>
+  
+  <div class="slide-deco"><div class="slide-deco-mark">✦</div></div>
+  
+  {/* 3. Paragraf Caption Bawah */}
+  <p class="slide-body heading-anim about-text-fade" style="width: 100% !important; max-width: 700px !important; margin-left: auto !important; margin-right: auto !important; padding: 0 !important; text-align: center !important; line-height: 1.7;">
+  For me, this archive is a deliberate space to gather the things I focus on. Combining the logic of computing systems and the expression of visual forms is my independent way to deconstruct how structures work. In a world full of pre-made directions and exploring these layers honestly is my personal process to build a solid foundation and slowly become who I am.
+  </p>
+</div>
+  </div>
+<div class="slide" id="slide-2">
+  <div class="slide-section-label">Roadmap</div>
+  <h3 class="roadmap-title heading-anim">Where I'm Heading</h3>
+  
+  <div class="roadmap">
+    {/* Phase 01: Tahun Pertama Kuliah */}
+    <div class="roadmap-node" data-delay="0">
+      <div class="roadmap-dot active-dot"></div>
+      <div class="roadmap-phase">Phase 01 — First Year</div>
+      <div class="roadmap-label">Foundation</div>
+      <div class="roadmap-desc">Establishing the core academic pillars while aligning personal digital interests and creative baselines.</div>
     </div>
-    <div class="slide" id="slide-2">
-      <div class="slide-section-label">Roadmap</div>
-      <h3 class="roadmap-title heading-anim">Where I'm Heading</h3>
-      <div class="roadmap">
-        <div class="roadmap-node" data-delay="0"><div class="roadmap-dot active-dot"></div><div class="roadmap-phase">Phase 01 — Now</div><div class="roadmap-label">Foundation</div><div class="roadmap-desc">Lorem ipsum dolor sit amet consectetur adipiscing elit quisque vehicula sapien.</div></div>
-        <div class="roadmap-node" data-delay="150"><div class="roadmap-dot"></div><div class="roadmap-phase">Phase 02 — 2026</div><div class="roadmap-label">Expansion</div><div class="roadmap-desc">Curabitur luctus felis ac nunc venenatis vitae sodales purus ultrices.</div></div>
-        <div class="roadmap-node" data-delay="300"><div class="roadmap-dot"></div><div class="roadmap-phase">Phase 03 — 2027</div><div class="roadmap-label">Building</div><div class="roadmap-desc">Integer convallis magna nec lacus consequat vel vestibulum nisl acc.</div></div>
-        <div class="roadmap-node" data-delay="450"><div class="roadmap-dot"></div><div class="roadmap-phase">Phase 04 — 2028+</div><div class="roadmap-label">Launch</div><div class="roadmap-desc">Vivamus sagittis ante a felis dignissim ut luctus odio fermentum.</div></div>
-      </div>
+    
+    {/* Phase 02: Eksperimen & Ngulik */}
+    <div class="roadmap-node" data-delay="150">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-phase">Phase 02 — Soon</div>
+      <div class="roadmap-label">Exploration</div>
+      <div class="roadmap-desc">Expanding into independent system environments, exploring command logic, and testing visual boundaries.</div>
     </div>
+    
+    {/* Phase 03: Mulai Ngebangun Karya */}
+    <div class="roadmap-node" data-delay="300">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-phase">Phase 03 — Soon</div>
+      <div class="roadmap-label">Synthesis</div>
+      <div class="roadmap-desc">Synthesizing technical logic and design principles to construct structured, interactive digital spaces.</div>
+    </div>
+    
+    {/* Phase 04: Goal Jangka Panjang / Dampak Sosia */}
+    <div class="roadmap-node" data-delay="450">
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-phase">Phase 04 — Soon</div>
+      <div class="roadmap-label">Impact</div>
+      <div class="roadmap-desc">Utilizing accumulated knowledge and digital mediums to empower others, helping them navigate clarity, gain understanding, and discover their own purpose in life.</div>
+    </div>
+  </div>
+</div>
     <div class="slider-controls">
       <div class="slider-dot active" data-slide="0"></div>
       <div class="slider-dot" data-slide="1"></div>
@@ -336,30 +481,42 @@ const base = import.meta.env.BASE_URL;
 <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
 <section id="faq-section" class="has-corners corner-bottom">
-  <div class="faq-inner">
+<div class="faq-inner">
     <div class="slide-section-label fade-in" style="margin-bottom:var(--space-lg)">Questions</div>
-    <h2 class="faq-title heading-anim">Ini nanti harusnya<br><em>Faq sih</em></h2>
-    <p class="faq-subtitle heading-anim about-text-fade">bla bla bla bli bli bli blu blu blu.</p>
+    
+    {/* Judul dan Subtitle Baru yang Lebih Elegan */}
+    <h2 class="faq-title heading-anim">Frequently Asked<br><em>Questions.</em></h2>
+    <p class="faq-subtitle heading-anim about-text-fade"> </p>
+    
     <div class="faq-list">
+      {/* FAQ 01 */}
       <div class="faq-item fade-in">
-        <button class="faq-question">Lorem ipsum dolor sit amet consectetur adipiscing?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-        <div class="faq-answer"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada, ut consequat enim fringilla. Phasellus ornare nibh at arcu dignissim gravida sed vitae enim curabitur luctus.</p></div>
+        <button class="faq-question">Apa yang bisa ditemukan di website ini?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Website ini berisi kumpulan proyek, dokumentasi pembelajaran, serta berbagai eksplorasi yang berkaitan dengan teknologi, media digital, dan hal-hal yang sedang dipelajari. Selain menjadi tempat menyimpan hasil karya, website ini juga berfungsi sebagai ruang untuk mencatat proses perkembangan dan perjalanan belajar yang terus berlangsung.</p></div>
       </div>
+      
+      {/* FAQ 02 */}
       <div class="faq-item fade-in">
-        <button class="faq-question">Quisque vehicula sapien vel urna malesuada fringilla?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-        <div class="faq-answer"><p>Curabitur luctus felis ac nunc venenatis, vitae sodales purus ultrices. Integer convallis magna nec lacus consequat, vel vestibulum nisl accumsan vivamus sagittis ante <em>a felis dignissim</em>.</p></div>
+        <button class="faq-question">Kenapa memilih Teknologi Pendidikan?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Ketertarikan pada hubungan antara teknologi, media, dan proses belajar menjadi alasan utama memilih bidang ini. Teknologi Pendidikan memberikan ruang untuk mempelajari bagaimana informasi dapat disampaikan dengan lebih efektif, sekaligus memahami bagaimana teknologi dapat dimanfaatkan untuk membantu proses pembelajaran.</p></div>
       </div>
+      
+      {/* FAQ 03 */}
       <div class="faq-item fade-in">
-        <button class="faq-question">Phasellus ornare nibh at arcu dignissim gravida?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-        <div class="faq-answer"><p>Sed euismod tortor vel nunc pretium, eu tempor arcu suscipit. Nullam commodo libero id velit dictum, nec bibendum eros placerat donec fringilla nisi <em>tincidunt hendrerit</em> lorem ipsum.</p></div>
+        <button class="faq-question">Apakah semua proyek yang ditampilkan sudah selesai?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Tidak semuanya. Beberapa proyek telah selesai dikembangkan, sementara sebagian lainnya masih berada dalam tahap eksplorasi, pengembangan, atau penyempurnaan. Website ini tidak hanya menampilkan hasil akhir, tetapi juga menjadi tempat untuk mendokumentasikan proses yang sedang berjalan.</p></div>
       </div>
+      
+      {/* FAQ 04 */}
       <div class="faq-item fade-in">
-        <button class="faq-question">Integer convallis magna nec lacus consequat vel?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-        <div class="faq-answer"><p>Vivamus sagittis ante a felis dignissim, ut luctus odio fermentum. Phasellus ornare nibh at arcu dignissim gravida sed vitae enim lorem ipsum dolor sit amet <em>consectetur adipiscing elit</em>.</p></div>
+        <button class="faq-question">Bidang apa yang paling sering dieksplorasi?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Sebagian besar eksplorasi berada di sekitar teknologi digital, media pembelajaran, desain visual, dan berbagai topik yang berkaitan dengan pengembangan media. Ketertarikan tersebut sering kali bertemu pada satu titik yang sama, yaitu bagaimana teknologi dapat digunakan untuk menyampaikan informasi dengan lebih baik.</p></div>
       </div>
+      
+      {/* FAQ 05 */}
       <div class="faq-item fade-in">
-        <button class="faq-question">Vivamus sagittis ante a felis dignissim ultrices?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-        <div class="faq-answer"><p>Donec fringilla nisi nec turpis tincidunt hendrerit. Integer convallis magna nec lacus consequat vel vestibulum nisl accumsan curabitur luctus felis ac nunc venenatis vitae sodales.</p></div>
+        <button class="faq-question">Apa output dari memilih jurusan ini?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><p>Pilihan terhadap Teknologi Pendidikan berangkat dari visi untuk memahami hubungan antara manusia, teknologi, dan proses belajar. Dalam jangka panjang, bidang ini diharapkan dapat menjadi fondasi untuk menciptakan sesuatu yang memiliki nilai dan manfaat nyata, baik dalam bentuk media, sistem, maupun solusi yang dapat membantu orang lain memperoleh akses terhadap informasi dan pembelajaran dengan lebih baik.</p></div>
       </div>
     </div>
   </div>
@@ -370,16 +527,53 @@ const base = import.meta.env.BASE_URL;
 <section id="contact" class="has-corners corner-bottom">
   <div class="contact-ring-1"></div><div class="contact-ring-2"></div>
   <div class="contact-eyebrow fade-in">Let's Connect</div>
-  <h2 class="contact-heading heading-anim">ini nanti<br><em>kontak sih.</em></h2>
   
-  <p class="contact-para heading-anim about-text-fade">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel urna malesuada fringilla dignissim et consequat. Curabitur luctus felis nunc venenatis vitae sodales.</p>
+  <h2 class="contact-heading heading-anim">Get In<br><em>Touch</em></h2>
+  
+  <p class="contact-para heading-anim about-text-fade">
+    Connecting points across various networks. Find the relevant profiles and digital platforms listed through the link below.
+  </p>
   
   <div class="contact-deco fade-in"><div class="contact-deco-line"></div><div class="contact-deco-mark">◆</div><div class="contact-deco-line"></div></div>
-  <a href="#" class="contact-btn fade-in">Open Links <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></a>
+  
+  {/* Tombol dengan class kustom untuk efek bounce */}
+  <a href="https://avely.me/irfan-wahyu" target="_blank" class="contact-btn fade-in custom-bounce-btn">
+    Open Links 
+    <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+      <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </a>
 </section>
 
+{/* Gaya CSS Tambahan untuk Animasi Bounce & Panah */}
+<style>
+  /* Base state untuk tombol */
+  .custom-bounce-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    /* cubic-bezier ini yang bikin efek membal/bounce pas transisi */
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease !important;
+  }
+
+  /* Base state untuk icon panah di dalam tombol */
+  .custom-bounce-btn svg {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  }
+
+  /* Efek pas kursor di-hover ke tombol */
+  .custom-bounce-btn:hover {
+    transform: scale(1.06); /* Tombol sedikit membesar */
+  }
+
+  /* Efek pas kursor di-hover, panah ikut geser ke kanan */
+  .custom-bounce-btn:hover svg {
+    transform: translateX(5px); /* Panah bergeser ke kanan */
+  }
+</style>
+
 <script>
-// CURSOR
+// =====CURSOR======
 const cursor=document.getElementById('cursor');
 const ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
@@ -484,7 +678,7 @@ if(cursor && ring){
   resizeCanvas();
 })();
 
-// ===== PHOTO PARTICLE (ABOUT SECTION) =====
+// ===== PHOTO PARTICLE =====
 (function(){
   const canvas=document.getElementById('particle-canvas');
   if (!canvas) return;
@@ -564,7 +758,7 @@ if(cursor && ring){
   resize(); draw();
 })();
 
-// SKILL MODAL
+// ===== SKILL MODAL =====
 const overlay=document.getElementById('modalOverlay');
 document.getElementById('modalClose')?.addEventListener('click',()=>overlay?.classList.remove('open'));
 overlay?.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('open')});
@@ -585,7 +779,7 @@ document.querySelectorAll('.skill-card').forEach(card=>{
   });
 });
 
-// SHOW MORE WORKS
+// ===== SHOW MORE =====
 (function(){
   const grid=document.getElementById('worksGrid');
   const btn=document.getElementById('btnShowMore');
@@ -600,7 +794,7 @@ document.querySelectorAll('.skill-card').forEach(card=>{
   });
 })();
 
-// SLIDER
+// ===== SLIDER =====
 (function(){
   const slides=document.querySelectorAll('.slide');
   const dots=document.querySelectorAll('.slider-dot');
@@ -615,7 +809,7 @@ document.querySelectorAll('.skill-card').forEach(card=>{
   startAuto();
 })();
 
-// FAQ
+// ===== FAQ =====
 document.querySelectorAll('.faq-question').forEach(btn=>{
   btn.addEventListener('click',()=>{
     const item=btn.closest('.faq-item');
@@ -626,11 +820,11 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
   });
 });
 
-// TYPING EFFECT
+// ===== TYPING EFFECT =====
 (function(){
   const el=document.querySelector('.hero-heading');
   if(!el)return;
-  const full1='Lagi Debugging Bang.'; const full2='Nanti Klo Udh Ga Ngebug.';
+  const full1='Thinking in systems'; const full2='Building in layers';
   el.innerHTML='';
   const line1=document.createElement('span'); const br=document.createElement('br'); const em=document.createElement('em'); const cur=document.createElement('span');
   cur.className='typing-cursor'; el.appendChild(line1);el.appendChild(br);el.appendChild(em);el.appendChild(cur);
@@ -647,7 +841,7 @@ document.querySelectorAll('.faq-question').forEach(btn=>{
   setTimeout(type,800);
 })();
 
-// STRUKTUR DATA WRAPPER ANIMASI SINKRON
+// ===== STRUKTUR DATA WRAPPER ANIMASI SINKRON ======
 function wrapSentences(el:any,lineDelay:number){
   const raw=el.textContent.trim();
   const chunks=raw.match(/[^,\.]+[,\.]?\s*/g)||[raw];
@@ -686,7 +880,7 @@ function wrapHeadingWords(el:any,wordDelay:number){
   });
 }
 
-// SCROLL ANIMATIONS
+// ===== SCROLL ANIMATIONS =====
 (function(){
   document.querySelectorAll('.heading-anim').forEach(el=>{
     if(el.classList.contains('slide-quote') || el.classList.contains('about-text-fade')){ 
