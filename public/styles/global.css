@@ -1502,16 +1502,18 @@ footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* Penting: biar nama raksasa yang kepotong nggak bikin bocor */
   padding: var(--space-2xl) 68px 0;
 }
+
 .footer-name-bg {
   position: absolute;
-  bottom: -60px;
+  bottom: -70px;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-heading);
-  font-size: clamp(230px, 25vw, 150px);
+  /* DI SINI JURUSNYA: Font gede di desktop, menciut di HP (min 4rem, max 10rem) */
+  font-size: clamp(7rem, 21vw, 16rem);
   font-weight: 700;
   font-style: italic;
   color: var(--text);
@@ -1521,6 +1523,53 @@ footer {
   letter-spacing: 0.02em;
   line-height: 1;
   z-index: 0;
+}
+
+/* ========================================================
+   📱 KONFIGURASI RESPONSIVE (UBAH BAGIAN INI)
+   ======================================================== */
+
+/* 1. Tablet & HP (Bawah 1024px) */
+@media (max-width: 1024px) {
+  footer {
+    padding: var(--space-xl) 32px 0; /* Padding kiri-kanan dikurangi biar lega */
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr; /* Jadi satu kolom atas-bawah */
+    gap: var(--space-lg);
+  }
+
+  .footer-name-bg {
+    bottom: -30px; /* Posisi teks "tenggelam" disesuaikan */
+    font-size: 9rem; /* Ukuran statis biar pas satu baris "Irfan" aja kalau mau */
+    line-height: 1;
+  }
+}
+
+/* 2. HP Sempit (Bawah 600px) */
+@media (max-width: 600px) {
+  .footer-name-bg {
+    font-size: 13rem; /* Ukuran statis biar pas satu baris "Irfan" aja kalau mau */
+    line-height: 1;
+    bottom: -50px;
+  }
+  .footer-name-bg span {
+    display: none;
+  }
+  .footer-right {
+    grid-template-columns: 1fr; /* Nav & Connect jadi satu kolom */
+    gap: var(--space-lg);
+  }
+
+  .footer-left {
+    text-align: center;
+  }
+
+  .footer-about {
+    margin-left: auto;
+    margin-right: auto; /* Biar deskripsi center di HP */
+  }
 }
 .footer-top {
   display: grid;
