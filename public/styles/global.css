@@ -519,13 +519,31 @@ section {
   color: var(--text-muted);
   line-height: 1.95;
   margin-bottom: 0;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+}
+
+.about-container .sentence-unit {
+  display: block !important; /* Paksa span berubah jadi block biar bisa menerima perintah justify */
+  width: 100% !important;
+  max-width: 100% !important;
+  text-align: justify !important; /* Paksa merenggang dari ujung kiri sampai mentok ujung kanan boks border! */
+  text-align-last: left !important; /* Baris paling akhir dari cerita tetep rata kiri biar natural */
+}
+
+@media (max-width: 768px) {
+  .about-container .sentence-unit {
+    text-align: center !important;
+    text-align-last: center !important;
+  }
 }
 .about-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-secondary);
   margin-top: var(--space-lg);
 }
 .about-info-card {
@@ -568,6 +586,24 @@ section {
   line-height: 1.45;
 }
 
+/* ========================================================
+   📱 FIX KHUSUS TEKS HEADING ABOUT (BLA BLA BLA) DI HP
+   ======================================================== */
+@media (max-width: 768px) {
+  /* Memaksa elemen h2 di dalam about-text untuk mengalir normal */
+  .about-text h2 {
+    display: block !important;
+    text-align: center !important;
+  }
+
+  /* Menjinakkan pecahan kata hasil JS agar menyatu kembali, anti-melorot vertikal */
+  .about-text h2 .word-unit {
+    display: inline !important; /* Paksa mengalir horizontal kesamping */
+    white-space: normal !important;
+    letter-spacing: normal !important;
+  }
+}
+
 /* SKILL CARDS — 3 columns */
 .skill-heading {
   font-family: var(--font-heading);
@@ -584,10 +620,10 @@ section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: var(--border);
+  background: var(--bg-secondary);
 }
 .skill-card {
-  background: var(--bg-secondary);
+  background: var(--bg);
   padding: var(--space-xl) var(--space-lg) var(--space-lg);
   position: relative;
   cursor: none;
@@ -1502,7 +1538,7 @@ footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
   position: relative;
-  overflow: hidden; /* Penting: biar nama raksasa yang kepotong nggak bikin bocor */
+  overflow: hidden;
   padding: var(--space-2xl) 68px 0;
 }
 
@@ -1512,7 +1548,6 @@ footer {
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-heading);
-  /* DI SINI JURUSNYA: Font gede di desktop, menciut di HP (min 4rem, max 10rem) */
   font-size: clamp(7rem, 21vw, 16rem);
   font-weight: 700;
   font-style: italic;
