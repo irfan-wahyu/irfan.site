@@ -1,3 +1,6 @@
+/* ========================================================
+   VARIABLES & BASE PROPERTIES
+   ======================================================== */
 :root {
   --bg: #0c0e13;
   --bg-secondary: #111419;
@@ -25,9 +28,11 @@
   margin: 0;
   padding: 0;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -39,7 +44,7 @@ body {
   cursor: none;
 }
 
-/* GRAIN */
+/* --- OVERLAY GRAIN BACKGROUND --- */
 body::before {
   content: "";
   position: fixed;
@@ -50,7 +55,7 @@ body::before {
   opacity: 0.5;
 }
 
-/* CURSOR */
+/* --- CUSTOM CURSOR MARKS --- */
 .cursor {
   position: fixed;
   width: 8px;
@@ -64,6 +69,7 @@ body::before {
     width 0.2s,
     height 0.2s;
 }
+
 .cursor-ring {
   position: fixed;
   width: 30px;
@@ -75,6 +81,7 @@ body::before {
   transform: translate(-50%, -50%);
   transition: all 0.1s ease;
 }
+
 body:has(img:hover) .cursor {
   width: 48px;
   height: 48px;
@@ -82,7 +89,11 @@ body:has(img:hover) .cursor {
   border: 1px solid var(--accent);
 }
 
-/* NAV */
+/* ========================================================
+   LAYOUT COMPONENTS
+   ======================================================== */
+
+/* --- NAVIGATION --- */
 nav {
   position: fixed;
   top: 0;
@@ -99,6 +110,7 @@ nav {
     transparent 100%
   );
 }
+
 .nav-logo {
   font-family: var(--font-label);
   font-size: 0.95rem;
@@ -108,6 +120,7 @@ nav {
   text-decoration: none;
   opacity: 0.85;
 }
+
 .nav-back {
   display: flex;
   align-items: center;
@@ -122,21 +135,25 @@ nav {
     color 0.3s,
     gap 0.3s;
 }
+
 .nav-back:hover {
   color: var(--accent);
   gap: 14px;
 }
+
 .nav-back svg {
   transition: transform 0.3s;
 }
+
 .nav-back:hover svg {
   transform: translateX(-3px);
 }
 
-/* CORNER MARKS */
+/* --- EDITORIAL CORNER MARKS --- */
 .has-corners {
   position: relative;
 }
+
 .c-tl,
 .c-tr,
 .c-bl,
@@ -147,24 +164,28 @@ nav {
   pointer-events: none;
   z-index: 2;
 }
+
 .c-tl {
   top: 26px;
   left: 26px;
   border-top: 1px solid rgba(201, 169, 110, 0.3);
   border-left: 1px solid rgba(201, 169, 110, 0.3);
 }
+
 .c-tr {
   top: 26px;
   right: 26px;
   border-top: 1px solid rgba(201, 169, 110, 0.3);
   border-right: 1px solid rgba(201, 169, 110, 0.3);
 }
+
 .c-bl {
   bottom: 26px;
   left: 26px;
   border-bottom: 1px solid rgba(201, 169, 110, 0.3);
   border-left: 1px solid rgba(201, 169, 110, 0.3);
 }
+
 .c-br {
   bottom: 26px;
   right: 26px;
@@ -172,7 +193,7 @@ nav {
   border-right: 1px solid rgba(201, 169, 110, 0.3);
 }
 
-/* SECTION DIVIDER */
+/* --- DECORATIVE LAYOUT LINES --- */
 .section-divider {
   display: flex;
   align-items: center;
@@ -180,6 +201,7 @@ nav {
   opacity: 0.18;
   margin: 0;
 }
+
 .section-divider::before,
 .section-divider::after {
   content: "";
@@ -187,6 +209,7 @@ nav {
   height: 1px;
   background: var(--accent);
 }
+
 .section-divider-diamond {
   width: 5px;
   height: 5px;
@@ -195,7 +218,9 @@ nav {
   flex-shrink: 0;
 }
 
-/* ===================== PROJECT HERO ===================== */
+/* ========================================================
+   SECTION: PROJECT HERO
+   ======================================================== */
 #project-hero {
   padding: 0;
   min-height: 72vh;
@@ -205,6 +230,7 @@ nav {
   position: relative;
   overflow: hidden;
 }
+
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -216,12 +242,13 @@ nav {
   );
   z-index: 1;
 }
+
 .hero-bg-fill {
   position: absolute;
   inset: 0;
   background: var(--bg-secondary);
 }
-/* Placeholder visual texture */
+
 .hero-bg-texture {
   position: absolute;
   inset: 0;
@@ -242,6 +269,7 @@ nav {
       transparent 60px
     );
 }
+
 .hero-content {
   position: relative;
   text-align: left;
@@ -249,6 +277,7 @@ nav {
   padding: 0 68px var(--space-2xl);
   max-width: 900px;
 }
+
 .hero-eyebrow {
   display: flex;
   flex-direction: row-reverse;
@@ -262,6 +291,7 @@ nav {
   margin-bottom: var(--space-md);
   opacity: 0.8;
 }
+
 .hero-eyebrow::before {
   content: "";
   width: 40px;
@@ -269,6 +299,7 @@ nav {
   background: var(--accent);
   opacity: 0.5;
 }
+
 .project-title {
   font-family: var(--font-heading);
   font-size: clamp(3rem, 6vw, 5.5rem);
@@ -279,6 +310,7 @@ nav {
   margin-bottom: var(--space-md);
   letter-spacing: -0.01em;
 }
+
 .project-subtitle {
   font-family: var(--font-heading);
   font-size: clamp(1.1rem, 2vw, 1.5rem);
@@ -289,7 +321,9 @@ nav {
   max-width: 620px;
 }
 
-/* ===================== MAIN LAYOUT ===================== */
+/* ========================================================
+   SECTION: MAIN PROJECT LAYOUT & SIDEBAR
+   ======================================================== */
 #project-body {
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -298,19 +332,16 @@ nav {
   align-items: start;
 }
 
-/* ===================== SIDEBAR ===================== */
 .sidebar {
   position: sticky;
   top: 110px;
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  max-height: calc(
-    100vh - 120px
-  ); /* Biar sidebar nggak bablas ke bawah layar */
+  max-height: calc(100vh - 120px);
 }
 
-/* 1. STATS CONTAINER */
+/* --- SIDEBAR: META DETAILS --- */
 .sidebar-stats {
   border: 1px solid rgba(201, 169, 110, 0.18);
   border-radius: 12px;
@@ -320,6 +351,7 @@ nav {
   overflow: hidden;
   height: fit-content;
 }
+
 .sidebar-stats::before {
   content: "";
   position: absolute;
@@ -336,6 +368,7 @@ nav {
   );
   opacity: 0.4;
 }
+
 .stat-item {
   display: flex;
   flex-direction: column;
@@ -343,13 +376,16 @@ nav {
   padding: var(--space-sm) 0;
   border-bottom: 1px solid var(--border);
 }
+
 .stat-item:last-child {
   border-bottom: none;
   padding-bottom: 0;
 }
+
 .stat-item:first-child {
   padding-top: 0;
 }
+
 .stat-label {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -358,6 +394,7 @@ nav {
   color: var(--accent);
   opacity: 0.65;
 }
+
 .stat-value {
   font-family: var(--font-body);
   font-size: 0.82rem;
@@ -365,12 +402,14 @@ nav {
   line-height: 1.4;
   font-weight: 400;
 }
+
 .stat-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   margin-top: 4px;
 }
+
 .stat-tag {
   font-family: var(--font-label);
   font-size: 0.48rem;
@@ -382,7 +421,7 @@ nav {
   border-radius: 2px;
 }
 
-/* 2. TOC CONTAINER */
+/* --- SIDEBAR: TABLE OF CONTENTS --- */
 .sidebar-toc {
   border: 1px solid rgba(201, 169, 110, 0.18);
   border-radius: 12px;
@@ -390,8 +429,9 @@ nav {
   background: var(--bg-secondary);
   position: relative;
   overflow: hidden;
-  height: fit-content; /* Kotak memeluk konten */
+  height: fit-content;
 }
+
 .sidebar-toc::before {
   content: "";
   position: absolute;
@@ -407,6 +447,7 @@ nav {
   );
   opacity: 0.4;
 }
+
 .toc-label {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -419,6 +460,7 @@ nav {
   align-items: center;
   gap: 10px;
 }
+
 .toc-label::after {
   content: "";
   flex: 1;
@@ -426,32 +468,34 @@ nav {
   background: var(--border);
 }
 
-/* DAFTAR TOC (Bisa di-scroll) */
 .toc-list {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  max-height: 45vh; /* Maksimal tinggi sebelum muncul scroll */
+  max-height: 45vh;
   overflow-y: auto;
   padding-right: 8px;
 }
+
 .toc-list::-webkit-scrollbar {
   width: 4px;
 }
+
 .toc-list::-webkit-scrollbar-track {
   background: rgba(228, 224, 216, 0.02);
   border-radius: 4px;
 }
+
 .toc-list::-webkit-scrollbar-thumb {
   background: rgba(201, 169, 110, 0.3);
   border-radius: 4px;
 }
+
 .toc-list::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
 
-/* ITEM LINK TOC */
 .toc-item a {
   display: block;
   font-family: var(--font-body);
@@ -466,26 +510,29 @@ nav {
   font-weight: 500 !important;
   margin-bottom: 4px;
 }
+
 .toc-item a:hover {
   color: var(--text) !important;
   background: var(--accent-dim);
   border-left-color: rgba(201, 169, 110, 0.3);
 }
+
 .toc-item a.active {
   color: var(--accent) !important;
   background: var(--accent-dim);
   border-left-color: var(--accent);
 }
+
 .toc-item.toc-h3 a {
   font-size: 0.72rem !important;
   padding-left: 20px !important;
   opacity: 0.8;
 }
+
 .toc-item.toc-h3 a.active {
   opacity: 1;
 }
 
-/* Back link */
 .sidebar-back {
   display: flex;
   align-items: center;
@@ -501,17 +548,19 @@ nav {
     gap 0.3s;
   padding: var(--space-sm) 0;
 }
+
 .sidebar-back:hover {
   color: var(--accent);
   gap: 12px;
 }
 
-/* ===================== ARTICLE ===================== */
+/* ========================================================
+   SECTION: ARTICLE CONTENT SYSTEM
+   ======================================================== */
 .article {
   min-width: 0;
 }
 
-/* Article heading styles */
 .article h2 {
   font-family: var(--font-heading);
   font-size: clamp(1.6rem, 2.5vw, 2.2rem);
@@ -525,6 +574,7 @@ nav {
   border-top: 1px solid var(--border);
   position: relative;
 }
+
 .article h2::before {
   content: "";
   position: absolute;
@@ -534,14 +584,17 @@ nav {
   height: 1px;
   background: var(--accent);
 }
+
 .article h2:first-child {
   margin-top: 0;
   padding-top: 0;
   border-top: none;
 }
+
 .article h2:first-child::before {
   display: none;
 }
+
 .article h3 {
   font-family: var(--font-heading);
   font-size: clamp(1.1rem, 1.8vw, 1.4rem);
@@ -552,6 +605,7 @@ nav {
   margin-top: var(--space-lg);
   margin-bottom: var(--space-sm);
 }
+
 .article p {
   font-family: var(--font-body);
   font-size: 0.92rem;
@@ -560,10 +614,12 @@ nav {
   margin-bottom: var(--space-md);
   font-weight: 300;
 }
+
 .article p strong {
   color: var(--text);
   font-weight: 500;
 }
+
 .article blockquote {
   border-left: 2px solid var(--accent);
   padding: var(--space-sm) var(--space-md);
@@ -571,6 +627,7 @@ nav {
   background: var(--bg-secondary);
   border-radius: 0 8px 8px 0;
 }
+
 .article blockquote p {
   font-family: var(--font-heading);
   font-size: 1.05rem;
@@ -581,10 +638,39 @@ nav {
   line-height: 1.7;
 }
 
-/* GALLERY inside article */
+/* --- CMS IMAGE CORE SYSTEM --- */
+.article img {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 500px !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: var(--space-md) auto !important;
+  border-radius: 8px !important;
+}
+
+.article p:has(img:nth-of-type(2)) {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  gap: 8px !important;
+  margin: var(--space-lg) 0 !important;
+  align-items: center !important;
+}
+
+.article p:has(img:nth-of-type(2)) img {
+  margin: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 350px !important;
+  object-fit: cover !important;
+}
+
+/* --- COMPONENT: STATIC GALLERY --- */
 .article-gallery {
   margin: var(--space-lg) 0;
 }
+
 .gallery-label {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -597,16 +683,19 @@ nav {
   align-items: center;
   gap: 12px;
 }
+
 .gallery-label::after {
   content: "";
   flex: 1;
   height: 1px;
   background: var(--border);
 }
+
 .gallery-grid {
   display: grid;
   gap: 3px;
 }
+
 .gallery-grid.cols-1 {
   grid-template-columns: 1fr;
 }
@@ -616,6 +705,7 @@ nav {
 .gallery-grid.cols-3 {
   grid-template-columns: 1fr 1fr 1fr;
 }
+
 .gallery-item {
   position: relative;
   overflow: hidden;
@@ -623,12 +713,14 @@ nav {
   aspect-ratio: 16/9;
   background: var(--bg-secondary);
 }
+
 .gallery-item.tall {
   aspect-ratio: 4/5;
 }
 .gallery-item.square {
   aspect-ratio: 1/1;
 }
+
 .gallery-item img {
   width: 100%;
   height: 100%;
@@ -639,10 +731,12 @@ nav {
     filter 0.5s ease;
   filter: brightness(0.9);
 }
+
 .gallery-item:hover img {
   transform: scale(1.03);
   filter: brightness(1);
 }
+
 .gallery-item-overlay {
   position: absolute;
   inset: 0;
@@ -653,9 +747,11 @@ nav {
   align-items: center;
   justify-content: center;
 }
+
 .gallery-item:hover .gallery-item-overlay {
   opacity: 1;
 }
+
 .gallery-zoom-icon {
   width: 40px;
   height: 40px;
@@ -669,10 +765,11 @@ nav {
   transform: scale(0.8);
   transition: transform 0.3s;
 }
+
 .gallery-item:hover .gallery-zoom-icon {
   transform: scale(1);
 }
-/* Placeholder for dummy images */
+
 .gallery-placeholder {
   width: 100%;
   height: 100%;
@@ -682,23 +779,28 @@ nav {
   background: var(--bg-secondary);
   transition: background 0.3s;
 }
+
 .gallery-item:hover .gallery-placeholder {
   background: #161b24;
 }
+
 .gallery-placeholder-inner {
   text-align: center;
   opacity: 0.25;
 }
+
 .gallery-placeholder-inner svg {
   display: block;
   margin: 0 auto 8px;
 }
+
 .gallery-placeholder-inner span {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.1em;
   color: var(--text-muted);
 }
+
 .gallery-caption {
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -709,7 +811,6 @@ nav {
   line-height: 1.5;
 }
 
-/* Article deco line */
 .article-deco {
   display: flex;
   align-items: center;
@@ -717,6 +818,7 @@ nav {
   margin: var(--space-lg) 0;
   opacity: 0.25;
 }
+
 .article-deco::before,
 .article-deco::after {
   content: "";
@@ -724,6 +826,7 @@ nav {
   height: 1px;
   background: var(--accent);
 }
+
 .article-deco-mark {
   width: 4px;
   height: 4px;
@@ -731,38 +834,10 @@ nav {
   transform: rotate(45deg);
   flex-shrink: 0;
 }
-/* 1. STYLING GAMBAR STANDAR (Tunggal) */
-.article img {
-  width: auto !important;
-  max-width: 100% !important;
-  height: auto !important;
-  max-height: 500px !important; /* Paksa batas tinggi biar ga menuhi layar */
-  object-fit: contain !important;
-  display: block !important;
-  margin: var(--space-md) auto !important;
-  border-radius: 8px !important; /* Opsional: Biar ujungnya ga kaku */
-}
 
-/* 2. MAGIC GRID / MASONRY KOLASE */
-/* Aktif OTOMATIS jika dalam 1 paragraf ada 2 gambar atau lebih */
-.article p:has(img:nth-of-type(2)) {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
-  gap: 8px !important;
-  margin: var(--space-lg) 0 !important;
-  align-items: center !important;
-}
-
-/* 3. STYLING GAMBAR DI DALAM KOLASE */
-.article p:has(img:nth-of-type(2)) img {
-  margin: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-height: 350px !important;
-  object-fit: cover !important; /* Biar rapi mengisi grid (ga gepeng) */
-}
-
-/* ===================== LIGHTBOX ===================== */
+/* ========================================================
+   COMPONEENT: LIGHTBOX SYSTEM (INTERACTIVE ZOOM)
+   ======================================================== */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -771,16 +846,18 @@ nav {
   backdrop-filter: blur(20px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
 }
+
 .lightbox.open {
   opacity: 1;
   pointer-events: all;
 }
+
 .lightbox-img-wrap {
   position: relative;
   max-width: 90vw;
@@ -788,16 +865,32 @@ nav {
   transform: scale(0.96);
   transition: transform 0.4s ease;
 }
+
 .lightbox.open .lightbox-img-wrap {
   transform: scale(1);
 }
+
 .lightbox-img-wrap img {
   max-width: 90vw;
   max-height: 85vh;
   object-fit: contain;
   display: block;
   border: 1px solid var(--border);
+  transform: scale(0.85);
+  filter: blur(8px);
+  opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.4s ease,
+    opacity 0.4s ease;
 }
+
+.lightbox.open .lightbox-img-wrap img {
+  transform: scale(1);
+  filter: blur(0);
+  opacity: 1;
+}
+
 .lightbox-close {
   position: fixed;
   top: 28px;
@@ -815,10 +908,12 @@ nav {
   justify-content: center;
   border-radius: 50%;
 }
+
 .lightbox-close:hover {
   color: var(--text);
   border-color: var(--accent);
 }
+
 .lightbox-caption {
   position: fixed;
   bottom: 32px;
@@ -831,6 +926,7 @@ nav {
   letter-spacing: 0.06em;
   text-align: center;
 }
+
 .lightbox-counter {
   position: fixed;
   top: 32px;
@@ -842,6 +938,7 @@ nav {
   letter-spacing: 0.12em;
   opacity: 0.5;
 }
+
 .lightbox-nav {
   position: fixed;
   top: 50%;
@@ -858,10 +955,12 @@ nav {
   justify-content: center;
   border-radius: 50%;
 }
+
 .lightbox-nav:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
+
 .lightbox-prev {
   left: 24px;
 }
@@ -869,7 +968,24 @@ nav {
   right: 24px;
 }
 
-/* ===================== FOOTER ===================== */
+.lightbox-close,
+.lightbox-nav,
+.lightbox-counter,
+.lightbox-caption {
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s;
+}
+
+.lightbox.open .lightbox-close,
+.lightbox.open .lightbox-nav,
+.lightbox.open .lightbox-counter,
+.lightbox.open .lightbox-caption {
+  opacity: 1;
+}
+
+/* ========================================================
+   SECTION: FOOTER BRANDING
+   ======================================================== */
 footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
@@ -896,52 +1012,6 @@ footer {
   z-index: 0;
 }
 
-/* ========================================================
-   📱 KONFIGURASI RESPONSIVE (UBAH BAGIAN INI)
-   ======================================================== */
-
-/* 1. Tablet & HP (Bawah 1024px) */
-@media (max-width: 1024px) {
-  footer {
-    padding: var(--space-xl) 32px 0; /* Padding kiri-kanan dikurangi biar lega */
-  }
-
-  .footer-top {
-    grid-template-columns: 1fr; /* Jadi satu kolom atas-bawah */
-    gap: var(--space-lg);
-  }
-
-  .footer-name-bg {
-    bottom: -30px; /* Posisi teks "tenggelam" disesuaikan */
-    font-size: 9rem; /* Ukuran statis biar pas satu baris "Irfan" aja kalau mau */
-    line-height: 1;
-  }
-}
-
-/* 2. HP Sempit (Bawah 600px) */
-@media (max-width: 600px) {
-  .footer-name-bg {
-    font-size: 13rem; /* Ukuran statis biar pas satu baris "Irfan" aja kalau mau */
-    line-height: 1;
-    bottom: -50px;
-  }
-  .footer-name-bg span {
-    display: none;
-  }
-  .footer-right {
-    grid-template-columns: 1fr; /* Nav & Connect jadi satu kolom */
-    gap: var(--space-lg);
-  }
-
-  .footer-left {
-    text-align: center;
-  }
-
-  .footer-about {
-    margin-left: auto;
-    margin-right: auto; /* Biar deskripsi center di HP */
-  }
-}
 .footer-top {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -950,9 +1020,7 @@ footer {
   position: relative;
   z-index: 1;
 }
-/* LEFT */
-.footer-left {
-}
+
 .footer-name {
   font-family: var(--font-heading);
   font-size: 3rem;
@@ -961,6 +1029,7 @@ footer {
   color: var(--text);
   margin-bottom: 6px;
 }
+
 .footer-tagline {
   font-family: var(--font-label);
   font-size: 0.58rem;
@@ -968,7 +1037,7 @@ footer {
   text-transform: uppercase;
   color: var(--accent);
   opacity: 0.6;
-  margin-bottom: 10px; /* ← di sini aja */
+  margin-bottom: 10px;
 }
 
 .footer-quote {
@@ -978,7 +1047,7 @@ footer {
   color: var(--text-muted);
   line-height: 1.65;
   opacity: 0.6;
-  margin-bottom: 10px; /* ← di sini aja */
+  margin-bottom: 10px;
 }
 
 .footer-quote-attr {
@@ -988,7 +1057,7 @@ footer {
   color: var(--accent);
   opacity: 0.5;
   text-transform: uppercase;
-  margin-bottom: 10px; /* ← ubah juga dari var(--space-lg) */
+  margin-bottom: 10px;
 }
 
 .footer-about {
@@ -1002,14 +1071,12 @@ footer {
   margin-bottom: 50px;
 }
 
-/* RIGHT */
 .footer-right {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-xl);
 }
-.footer-nav-col {
-}
+
 .footer-col-title {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -1019,11 +1086,13 @@ footer {
   margin-bottom: var(--space-md);
   opacity: 0.6;
 }
+
 .footer-nav-links {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .footer-nav-links a {
   font-family: var(--font-body);
   font-size: 0.8rem;
@@ -1033,15 +1102,18 @@ footer {
   letter-spacing: 0.02em;
   opacity: 0.7;
 }
+
 .footer-nav-links a:hover {
   color: var(--text);
   opacity: 1;
 }
+
 .footer-social-links {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .footer-social-links a {
   font-family: var(--font-body);
   font-size: 0.8rem;
@@ -1053,10 +1125,12 @@ footer {
   gap: 8px;
   opacity: 0.7;
 }
+
 .footer-social-links a:hover {
   color: var(--accent);
   opacity: 1;
 }
+
 .social-icon {
   width: 20px;
   height: 20px;
@@ -1069,9 +1143,11 @@ footer {
   flex-shrink: 0;
   transition: border-color 0.3s;
 }
+
 .footer-social-links a:hover .social-icon {
   border-color: rgba(201, 169, 110, 0.4);
 }
+
 .footer-bottom {
   border-top: 1px solid var(--border);
   padding: var(--space-md) 0 var(--space-xl);
@@ -1083,6 +1159,7 @@ footer {
   position: relative;
   z-index: 1;
 }
+
 .footer-copy {
   font-family: var(--font-body);
   font-size: 0.65rem;
@@ -1090,11 +1167,13 @@ footer {
   letter-spacing: 0.05em;
   opacity: 0.45;
 }
+
 .footer-links {
   display: flex;
   gap: 22px;
   list-style: none;
 }
+
 .footer-links a {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -1105,12 +1184,15 @@ footer {
   transition: color 0.3s;
   opacity: 0.45;
 }
+
 .footer-links a:hover {
   color: var(--accent);
   opacity: 1;
 }
 
-/* FADE IN */
+/* ========================================================
+   GLOBAL CORE TRANSITION ANIMATIONS
+   ======================================================== */
 .fade-in {
   opacity: 0;
   filter: blur(6px);
@@ -1120,81 +1202,82 @@ footer {
     filter 0.75s ease,
     transform 0.75s ease;
 }
+
 .fade-in.visible {
   opacity: 1;
   filter: blur(0);
   transform: translateY(0);
 }
 
-/* RESPONSIVE */
+/* ========================================================
+   MEDIA QUERIES (RESPONSIVE SYSTEM)
+   ======================================================== */
+@media (max-width: 1024px) {
+  footer {
+    padding: var(--space-xl) 32px 0;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .footer-name-bg {
+    bottom: -30px;
+    font-size: 9rem;
+    line-height: 1;
+  }
+}
+
 @media (max-width: 900px) {
   nav {
     padding: 22px 24px;
   }
+
   #project-hero .hero-content {
     padding: 0 24px var(--space-xl);
   }
+
   #project-body {
     grid-template-columns: 1fr;
     padding: var(--space-xl) 24px;
   }
+
   .sidebar {
     position: static;
   }
+
   .sidebar-toc {
     display: none;
   }
+
   footer {
     padding: var(--space-xl) 24px 0;
   }
 }
 
-/* ======================================================== */
-/* EFECT LIGHTBOX ZOOM ANIMATION MODERN (POP-UP BOUNCY) */
-/* ======================================================== */
+@media (max-width: 600px) {
+  .footer-name-bg {
+    font-size: 13rem;
+    line-height: 1;
+    bottom: -50px;
+  }
 
-/* 1. Atur container utama lightbox saat transisi */
-.lightbox {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
+  .footer-name-bg span {
+    display: none;
+  }
 
-.lightbox.open {
-  opacity: 1;
-  pointer-events: all;
-}
+  .footer-right {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
 
-/* 2. Keadaan awal gambar sebelum membesar (Kecil + Blur halus) */
-.lightbox-img-wrap img {
-  transform: scale(0.85);
-  filter: blur(8px);
-  opacity: 0;
-  transition:
-    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-    filter 0.4s ease,
-    opacity 0.4s ease;
-}
+  .footer-left {
+    text-align: center;
+  }
 
-/* 3. Keadaan ketika lightbox terbuka (Nge-zoom Gede, Membal Halus & Tajam) */
-.lightbox.open .lightbox-img-wrap img {
-  transform: scale(1);
-  filter: blur(0);
-  opacity: 1;
-}
-
-/* 4. Tombol navigasi dan keterangan biar muncul memudar elegan */
-.lightbox-close,
-.lightbox-nav,
-.lightbox-counter,
-.lightbox-caption {
-  opacity: 0;
-  transition: opacity 0.3s ease 0.15s; /* Diberi delay sedikit agar gambar membesar duluan */
-}
-
-.lightbox.open .lightbox-close,
-.lightbox.open .lightbox-nav,
-.lightbox.open .lightbox-counter,
-.lightbox.open .lightbox-caption {
-  opacity: 1;
+  .footer-about {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

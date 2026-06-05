@@ -6,12 +6,8 @@ import { getCollection } from 'astro:content';
 export const prerender = true;
 
 const allProjects = await getCollection('projects');
-
-// PERBAIKAN 1: Pengaman sorting agar tidak crash jika ada data 'order' yang kosong/undefined
 const sorted = allProjects.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
 const base = import.meta.env.BASE_URL;
-
-// PERBAIKAN 2: Pengaman flatMap jika ada file .md yang tidak sengaja mengosongkan field tags
 const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
 ---
 
@@ -21,33 +17,26 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
   </style>
   <Nav variant="works" />
 
-<!-- HERO -->
-<section id="hero" class="has-corners" style="position: relative; overflow: hidden; background: var(--bg-secondary);">
+  {/* --- SECTION: HERO ACCENT TITLE --- */}
+  <section id="hero" class="has-corners" style="position: relative; overflow: hidden; background: var(--bg-secondary);">
     <span class="c-tl"></span><span class="c-tr"></span>
     
-    {/* 1. CANVAS UNTUK HUJAN MATRIX VERTIKAL */}
     <canvas 
       id="matrix-rain-canvas" 
       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"
     ></canvas>
 
-    {/* 2. GRADIENT BIAR BAGIAN BAWAH HERO EMAS/HITAM HALUS */}
     <div class="hero-gradient" style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%); z-index: 2; pointer-events: none;"></div>
     
-    {/* 3. KONTEN UTAMA TEXT ALL WORKS */}
     <div class="hero-inner" style="position: relative; z-index: 3;">
       <div class="hero-eyebrow">Archive</div>
       <h1 class="hero-heading">All Works</h1>
     </div>
-
-
   </section>
-
-
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
-  <!-- FILTER BAR -->
+  {/* --- SECTION: ARCHIVE FILTER BAR --- */}
   <div id="filter-bar">
     <span class="filter-label">Filter</span>
     <div class="filter-divider"></div>
@@ -60,7 +49,7 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
     <span class="filter-count" id="filterCount"></span>
   </div>
 
-  <!-- WORKS -->
+  {/* --- SECTION: WORKS ARCHIVE GRID --- */}
   <section id="works-section" class="has-corners">
     <span class="c-tl"></span><span class="c-tr"></span>
     <span class="c-bl"></span><span class="c-br"></span>
@@ -73,14 +62,10 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
           data-tags={project.data.tags ? project.data.tags.join(',') : ''}
           style="position: relative; overflow: hidden; display: block;"
         >
-          
-          {/* Tag pembungkus utama kartu */}
           <a 
             href={`${base}works/${project.id}/`} 
             style="text-decoration: none; display: block; width: 100%; height: 100%;"
           >
-            
-            {/* 1. GAMBAR THUMBNAIL */}
             {project.data.thumbnail && (
               <img 
                 src={project.data.thumbnail.startsWith('http') || project.data.thumbnail.startsWith('/') 
@@ -91,26 +76,19 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
               />
             )}
 
-            {/* 2. DIMMER AWAL */}
             <div class="work-card-dimmer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 13, 17, 0.4); z-index: 2; pointer-events: none; transition: opacity 0.3s ease;"></div>
 
-            {/* 3. JUDUL TENGAH (Awal sebelum hover) */}
             <div class="work-initial-center-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 3; pointer-events: none; transition: transform 0.4s ease, opacity 0.4s ease;">
               <div class="work-title" style="font-family: var(--font-heading); font-size: 1.2rem; font-style: italic; color: var(--text); font-weight: 400;">{project.data.title}</div>
             </div>
 
-            {/* 4. HOVER OVERLAY */}
             <div 
               class="work-overlay" 
               style="z-index: 5 !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; padding: 1.5rem !important; display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: flex-end !important; box-sizing: border-box !important;"
             >
-              
-              {/* FRAME KIRI: TITLE -> SUBTITLE -> TAGS -> DESCRIPTION */}
               <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; align-items: flex-start !important; max-width: 60% !important; text-align: left !important; margin: 0 !important;">
-                {/* Title */}
                 <div class="work-title" style="margin: 0 !important; font-family: var(--font-heading); font-size: 1.15rem; font-style: italic; color: var(--text); font-weight: 400;">{project.data.title}</div>
                 
-                {/* Subtitle */}
                 {project.data.subtitle && (
                   <div 
                     class="work-title" 
@@ -122,7 +100,6 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
                   </div>
                 )}
 
-                {/* KATEGORI KOTAK STROKE EMAS */}
                 <div class="work-tags" style="margin-top: 4px !important; display: flex !important; flex-wrap: wrap !important; gap: 5px !important;">
                   {project.data.tags?.map(tag => (
                     <span 
@@ -134,7 +111,6 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
                   ))}
                 </div>
 
-                {/* Deskripsi */}
                 {project.data.description && (
                   <p style="color: #ffffff; font-size: 0.8rem; opacity: 0.7; margin-top: 6px !important; margin-bottom: 0 !important; max-width: 100% !important;">
                     {project.data.description.split(' ').length > 12 
@@ -144,7 +120,6 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
                 )}
               </div>
 
-              {/* FRAME KANAN: VIEW PROJECT KOTAK STROKE EMAS IDENTIK */}
               <div class="work-tags" style="margin: 0 !important; display: flex !important; align-items: center !important;">
                 <div 
                   class="work-tag" 
@@ -156,15 +131,12 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
                   </svg>
                 </div>
               </div>
-
             </div>
           </a>
-
         </div>
       ))}
     </div>
 
-    <!-- SHOW MORE + COUNT -->
     <div class="works-footer" id="worksFooter">
       <button class="btn-show-more" id="btnShowMore">
         Show More
@@ -174,144 +146,124 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
       </button>
       <span class="works-shown-count" id="shownCount"></span>
     </div>
-
   </section>
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
+  {/* --- CORE ENGINE INTERACTION SCRIPT --- */}
   <script define:vars={{ totalProjects: sorted.length }}>
-  const PER_PAGE = 3;
-  
-function initFilter() {
-    // =================================================================
-    // ⚙️ KONFIGURASI MATRIX RAIN VERTIKAL (ANTI-PUSING & ELEGAN)
-    // =================================================================
-    const canvas = document.getElementById('matrix-rain-canvas');
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
+    const PER_PAGE = 3;
+    
+    function initFilter() {
+      // ===== BACKGROUND ENGINE: MATRIX RAIN VERTIKAL =====
+      const canvas = document.getElementById('matrix-rain-canvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
 
-      // Set ukuran canvas sesuai boks Hero lu
-      function resizeCanvas() {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-      }
-      resizeCanvas();
-      window.addEventListener('resize', resizeCanvas);
-
-      // Karakter yang dijatuhkan (Brutalist cyber style)
-      const alphabet = "X01Ø§¶#@+=_-*^%!&[$]αβγδεζηθικλμνξοπρστυφχψω∆∇∂∑∏√∞∫≈≠≤≥+=¬∧∨⊕⊗⇄⇆⇇⇉⇈⇊↱↲↳↵🛠⚙⛓⚿⛭⛮⎔⎕⏃⏄⏆⏇⏈⏉⏊⏋⏌⎾⎿⏁⏂⍚⍛⍜⍝⍞⍟⍠⍡⍢⍣⍤⍥⍦⍧⍨⍩⍪⍫⍬⍭⍮⍯⍰⍱⍲⍳⍴⍵⍶⍷⍸⍹⍺⎈⎉⎊⎋⎌⎍⎎⎏⎐⎑⎒⎓⎔⎕/******/+=_-*^%!&[$]01ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝX01Ø§¶#@+=_-*^%!&[$]⇄⇆⇇⇉⇈⇊↱↲↳↵";
-      
-      // 🛠️ SETTINGAN BIAR GAK BIKIN MATA PUSING (Bisa lu tweak sesuka hati)
-      const fontSize = 13;             // Ukuran teks hujan (makin kecil makin halus)
-      const columns = canvas.width / fontSize;
-      const rainDrops = Array(Math.floor(columns)).fill(1);
-      
-      // Kecepatan & Aliran Hujan
-      const speed = 35;                // Kecepatan jeda frame (milidetik). Makin gede makin lambat jalannya.
-
-      function drawMatrix() {
-        // KUNCI UTAMA ANTI PUSING: Menggambar background transparan tipis untuk efek ekor memudar (fading tail)
-        // Nilai 0.08 di akhir adalah opacity ekornya. Makin kecil makin panjang ekor bayangannya.
-        ctx.fillStyle = 'rgba(12, 14, 19, 0.03)'; 
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Setelan warna teks hujan (Pakai warna emas redup web lu dengan alpha transparan biar adem)
-        ctx.fillStyle = 'rgba(201, 169, 110, 0.1)'; // <-- Opacity huruf hujan diatur cuma 15% (0.15) biar super samar!
-        ctx.font = fontSize + 'px monospace';
-
-        for (let i = 0; i < rainDrops.length; i++) {
-          const text = alphabet[Math.floor(Math.random() * alphabet.length)];
-          const x = i * fontSize;
-          const y = rainDrops[i] * fontSize;
-
-          ctx.fillText(text, x, y);
-
-          // Jika hujan sudah menyentuh dasar atau diacak secara random, kembalikan ke atas
-          if (y > canvas.height && Math.random() * 100 > 97.5) {
-            rainDrops[i] = 0;
-          }
-          rainDrops[i]++;
+        function resizeCanvas() {
+          canvas.width = canvas.offsetWidth;
+          canvas.height = canvas.offsetHeight;
         }
-      }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-      // Jalankan interval animasi hujan matrix vertikal selamanya
-      setInterval(drawMatrix, speed);
-    }
-    // =================================================================
+        const alphabet = "X01Ø§¶#@+=_-*^%!&[$]αβγδεζηθικλμνξοπρστυφχψω∆∇∂∑∏√∞∫≈≠≤≥+=¬∧∨⊕⊗⇄⇆⇇⇉⇈⇊↱↲↳↵🛠⚙⛓⚿⛭⛮⎔⎕⏃⏄⏆⏇⏈⏉⏊⏋⏌⎾⎿⏁⏂⍚⍛⍜⍝⍞⍟⍠⍡⍢⍣⍤⍥⍦⍧⍨⍩⍪⍫⍬⍭⍮⍯⍰⍱⍲⍳⍴⍵⍶⍷⍸⍹⍺⎈⎉⎊⎋⎌⎍⎎⎏⎐⎑⎒⎓⎔⎕/******/+=_-*^%!&[$]01ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝX01Ø§¶#@+=_-*^%!&[$]⇄⇆⇇⇉⇈⇊↱↲↳↵";
+        const fontSize = 13;
+        const columns = canvas.width / fontSize;
+        const rainDrops = Array(Math.floor(columns)).fill(1);
+        const speed = 35;
 
-    const grid = document.getElementById('worksGrid');
-    const btn = document.getElementById('btnShowMore');
-    const shownCount = document.getElementById('shownCount');
+        function drawMatrix() {
+          ctx.fillStyle = 'rgba(12, 14, 19, 0.03)'; 
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = 'rgba(201, 169, 110, 0.1)';
+          ctx.font = fontSize + 'px monospace';
 
-    if (!grid || !btn || !shownCount) {
-      console.error('Missing elements');
-      return;
-    }
+          for (let i = 0; i < rainDrops.length; i++) {
+            const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+            const x = i * fontSize;
+            const y = rainDrops[i] * fontSize;
 
-    // PENGAMAN: Memasukkan kembali fungsi updateCount yang sempat hilang
-    function updateCount() {
-      const visible = grid.querySelectorAll('.work-card:not(.hidden):not(.filtered-out)');
-      const total = grid.querySelectorAll('.work-card:not(.filtered-out)');
-      shownCount.textContent = 'showing ' + visible.length + ' of ' + total.length;
-      const hasMore = grid.querySelectorAll('.work-card.hidden:not(.filtered-out)').length > 0;
-      btn.style.display = hasMore ? 'inline-flex' : 'none';
-    }
+            ctx.fillText(text, x, y);
 
-    // TOMBOL SHOW MORE
-    btn.addEventListener('click', () => {
-      const hidden = Array.from(grid.querySelectorAll('.work-card.hidden:not(.filtered-out)')).slice(0, PER_PAGE);
-      hidden.forEach((c, i) => {
-        c.classList.remove('hidden');
-        setTimeout(() => c.classList.add('visible'), i * 80);
-      });
-      updateCount();
-    });
-
-    // FILTER TAGS
-    document.querySelectorAll('.filter-tag').forEach(tag => {
-      tag.addEventListener('click', () => {
-        document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-        tag.classList.add('active');
-        const filter = tag.dataset.filter;
-
-        grid.querySelectorAll('.work-card').forEach((card, idx) => {
-          card.classList.remove('filtered-out');
-          if (idx >= PER_PAGE) card.classList.add('hidden');
-          else card.classList.remove('hidden');
-        });
-        
-        if (filter !== 'all') {
-          grid.querySelectorAll('.work-card').forEach(card => {
-            const tags = (card.dataset.tags || '').split(',').map(t => t.trim());
-            if (!tags.includes(filter)) {
-              card.classList.add('filtered-out');
+            if (y > canvas.height && Math.random() * 100 > 97.5) {
+              rainDrops[i] = 0;
             }
-          });
+            rainDrops[i]++;
+          }
         }
+        setInterval(drawMatrix, speed);
+      }
+
+      // ===== UI COMPONENT: INTERACTIVE ARCHIVE SYSTEM =====
+      const grid = document.getElementById('worksGrid');
+      const btn = document.getElementById('btnShowMore');
+      const shownCount = document.getElementById('shownCount');
+
+      if (!grid || !btn || !shownCount) {
+        console.error('Missing elements');
+        return;
+      }
+
+      function updateCount() {
+        const visible = grid.querySelectorAll('.work-card:not(.hidden):not(.filtered-out)');
+        const total = grid.querySelectorAll('.work-card:not(.filtered-out)');
+        shownCount.textContent = 'showing ' + visible.length + ' of ' + total.length;
+        const hasMore = grid.querySelectorAll('.work-card.hidden:not(.filtered-out)').length > 0;
+        btn.style.display = hasMore ? 'inline-flex' : 'none';
+      }
+
+      btn.addEventListener('click', () => {
+        const hidden = Array.from(grid.querySelectorAll('.work-card.hidden:not(.filtered-out)')).slice(0, PER_PAGE);
+        hidden.forEach((c, i) => {
+          c.classList.remove('hidden');
+          setTimeout(() => c.classList.add('visible'), i * 80);
+        });
         updateCount();
       });
-    });
 
-    // SCROLL ANIMATIONS
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        setTimeout(() => el.classList.add('visible'), parseInt(el.dataset.delay || '0'));
-        io.unobserve(el);
+      document.querySelectorAll('.filter-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+          tag.classList.add('active');
+          const filter = tag.dataset.filter;
+
+          grid.querySelectorAll('.work-card').forEach((card, idx) => {
+            card.classList.remove('filtered-out');
+            if (idx >= PER_PAGE) card.classList.add('hidden');
+            else card.classList.remove('hidden');
+          });
+          
+          if (filter !== 'all') {
+            grid.querySelectorAll('.work-card').forEach(card => {
+              const tags = (card.dataset.tags || '').split(',').map(t => t.trim());
+              if (!tags.includes(filter)) {
+                card.classList.add('filtered-out');
+              }
+            });
+          }
+          updateCount();
+        });
       });
-    }, { threshold: .06, rootMargin: '0px 0px -20px 0px' });
 
-    document.querySelectorAll('.card-anim:not(.hidden)').forEach(el => io.observe(el));
+      // ===== PERFORMANCE: ENGINE SCROLL OBSERVER =====
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const el = e.target;
+          setTimeout(() => el.classList.add('visible'), parseInt(el.dataset.delay || '0'));
+          io.unobserve(el);
+        });
+      }, { threshold: .06, rootMargin: '0px 0px -20px 0px' });
 
-    updateCount();
-  }
+      document.querySelectorAll('.card-anim:not(.hidden)').forEach(el => io.observe(el));
+      updateCount();
+    }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFilter);
-  } else {
-    initFilter();
-  }
-</script>
-
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFilter);
+    } else {
+      initFilter();
+    }
+  </script>
 </Layout>

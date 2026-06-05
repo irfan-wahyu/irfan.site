@@ -5,7 +5,6 @@ backend:
 
 local_backend: true
 
-# Jalur pencarian gambar yang aman untuk Astro & Decap
 public_folder: /irfan.site/images
 media_folder: public/images
 

@@ -1,3 +1,6 @@
+/* ========================================================
+   VARIABLES & BASE PROPERTIES
+   ======================================================== */
 :root {
   --bg: #0c0e13;
   --bg-secondary: #111419;
@@ -11,7 +14,6 @@
   --font-body: "Inter", sans-serif;
   --font-label: "Alegreya SC", serif;
   --font-mono: "DM Mono", monospace;
-  /* Golden ratio spacing */
   --space-xs: 10px;
   --space-sm: 16px;
   --space-md: 26px;
@@ -27,9 +29,11 @@
   margin: 0;
   padding: 0;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
   width: 100%;
   height: 100%;
@@ -45,25 +49,13 @@ body {
   cursor: none;
 }
 
-/* PERBAIKAN UNDERLINE GLOBAL + MODAL FIX */
+/* --- GLOBAL LINK & HOVER RESET --- */
 a,
 .works-grid a,
-.work-card,
 .footer-nav-links a,
 .footer-social-links a {
   text-decoration: none !important;
-  color: inherit !important;
-}
-
-/* Saat kartu di-hover, paksa judul tengah meluncur ke atas dan menghilang */
-.work-card:hover .work-initial-center-content {
-  transform: translateY(-30px);
-  opacity: 0;
-}
-
-/* Biar lapisan hitam awal memudar pas hover, jadi gak numpuk sama overlay asli lu */
-.work-card:hover .work-card-dimmer {
-  opacity: 0;
+  color: inherit;
 }
 
 a:hover,
@@ -71,18 +63,16 @@ a:hover,
   text-decoration: none !important;
 }
 
-/* Biar link navigasi atas & bawah warnanya kembali normal pas di-hover (tidak hilang/ikut putih) */
-.nav-links a:hover {
-  color: var(--text) !important;
-}
+.nav-links a:hover,
 .footer-nav-links a:hover {
   color: var(--text) !important;
 }
+
 .footer-social-links a:hover {
   color: var(--accent) !important;
 }
 
-/* GRAIN */
+/* --- OVERLAY GRAIN BACKGROUND --- */
 body::before {
   content: "";
   position: fixed;
@@ -93,7 +83,7 @@ body::before {
   opacity: 0.5;
 }
 
-/* CURSOR */
+/* --- CUSTOM CURSOR MARKS --- */
 .cursor {
   position: fixed;
   width: 8px;
@@ -107,6 +97,7 @@ body::before {
     width 0.2s,
     height 0.2s;
 }
+
 .cursor-ring {
   position: fixed;
   width: 30px;
@@ -119,7 +110,11 @@ body::before {
   transition: all 0.1s ease;
 }
 
-/* NAV */
+/* ========================================================
+   LAYOUT COMPONENTS
+   ======================================================== */
+
+/* --- NAVIGATION --- */
 nav {
   position: fixed;
   top: 0;
@@ -136,6 +131,7 @@ nav {
     transparent 100%
   );
 }
+
 .nav-logo {
   font-family: var(--font-label);
   font-size: 0.95rem;
@@ -145,11 +141,13 @@ nav {
   text-decoration: none;
   opacity: 0.85;
 }
+
 .nav-links {
   display: flex;
   gap: 38px;
   list-style: none;
 }
+
 .nav-links a {
   font-size: 0.68rem;
   letter-spacing: 0.18em;
@@ -159,6 +157,7 @@ nav {
   transition: color 0.3s;
   position: relative;
 }
+
 .nav-links a::after {
   content: "";
   position: absolute;
@@ -169,18 +168,17 @@ nav {
   background: var(--accent);
   transition: width 0.3s;
 }
-.nav-links a:hover {
-  color: var(--text);
-}
+
 .nav-links a:hover::after {
   width: 100%;
 }
 
-/* SECTION BASE */
+/* --- SECTION GENERAL --- */
 section {
   padding: var(--space-2xl) 68px;
   position: relative;
 }
+
 .section-label {
   font-family: var(--font-label);
   font-size: 0.58rem;
@@ -192,6 +190,7 @@ section {
   align-items: center;
   gap: 14px;
 }
+
 .section-label::after {
   content: "";
   width: 40px;
@@ -199,6 +198,7 @@ section {
   background: var(--accent);
   opacity: 0.5;
 }
+
 .section-caption {
   font-family: var(--font-display);
   font-size: 0.95rem;
@@ -209,10 +209,11 @@ section {
   max-width: 480px;
 }
 
-/* CORNER MARKS — L-shape, 4 sudut via injected spans */
+/* --- EDITORIAL CORNER MARKS --- */
 .has-corners {
   position: relative;
 }
+
 .c-tl,
 .c-tr,
 .c-bl,
@@ -223,24 +224,28 @@ section {
   pointer-events: none;
   z-index: 2;
 }
+
 .c-tl {
   top: 26px;
   left: 26px;
   border-top: 1px solid rgba(201, 169, 110, 0.3);
   border-left: 1px solid rgba(201, 169, 110, 0.3);
 }
+
 .c-tr {
   top: 26px;
   right: 26px;
   border-top: 1px solid rgba(201, 169, 110, 0.3);
   border-right: 1px solid rgba(201, 169, 110, 0.3);
 }
+
 .c-bl {
   bottom: 26px;
   left: 26px;
   border-bottom: 1px solid rgba(201, 169, 110, 0.3);
   border-left: 1px solid rgba(201, 169, 110, 0.3);
 }
+
 .c-br {
   bottom: 26px;
   right: 26px;
@@ -248,7 +253,7 @@ section {
   border-right: 1px solid rgba(201, 169, 110, 0.3);
 }
 
-/* SECTION DIVIDER */
+/* --- DECORATIVE LAYOUT LINES --- */
 .section-divider {
   display: flex;
   align-items: center;
@@ -256,6 +261,7 @@ section {
   opacity: 0.18;
   margin: 0;
 }
+
 .section-divider::before,
 .section-divider::after {
   content: "";
@@ -263,6 +269,7 @@ section {
   height: 1px;
   background: var(--accent);
 }
+
 .section-divider-diamond {
   width: 5px;
   height: 5px;
@@ -271,13 +278,13 @@ section {
   flex-shrink: 0;
 }
 
-/* DECO LINE */
 .deco-line {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: var(--space-lg) 0;
 }
+
 .deco-line::before,
 .deco-line::after {
   content: "";
@@ -285,6 +292,7 @@ section {
   height: 1px;
   background: var(--border);
 }
+
 .deco-line-mark {
   font-family: var(--font-heading);
   font-size: 0.85rem;
@@ -293,7 +301,9 @@ section {
   flex-shrink: 0;
 }
 
-/* ===================== HERO ===================== */
+/* ========================================================
+   SECTION: HERO
+   ======================================================== */
 #hero {
   width: 100%;
   height: 100vh;
@@ -305,13 +315,12 @@ section {
   position: relative;
   margin: 0;
 }
+
 #ascii-canvas {
   width: 100%;
   height: 100vh;
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
   display: block;
   opacity: 0.15;
   transition: 0.5s ease;
@@ -325,6 +334,7 @@ section {
 #ascii-canvas.locked {
   opacity: 0.4;
 }
+
 .hero-content {
   position: relative;
   z-index: 2;
@@ -335,6 +345,7 @@ section {
   animation-delay: 0.2s;
   pointer-events: none;
 }
+
 .hero-eyebrow {
   font-family: var(--font-label);
   font-size: 0.58rem;
@@ -346,11 +357,11 @@ section {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  opacity: 0.8;
   animation: fadeUp 0.9s ease forwards;
   animation-delay: 0.5s;
   opacity: 0;
 }
+
 .hero-eyebrow::before,
 .hero-eyebrow::after {
   content: "";
@@ -359,6 +370,7 @@ section {
   background: var(--accent);
   opacity: 0.6;
 }
+
 .hero-heading {
   font-family: var(--font-heading);
   font-size: clamp(2.8rem, 5.5vw, 5.2rem);
@@ -369,10 +381,12 @@ section {
   color: var(--text);
   text-shadow: 0 2px 40px rgba(12, 14, 19, 0.8);
 }
+
 .hero-heading em {
   font-style: italic;
   color: var(--accent);
 }
+
 .hero-paragraph {
   font-family: var(--font-body);
   font-size: 0.95rem;
@@ -385,13 +399,14 @@ section {
   animation-delay: 2.2s;
   opacity: 0;
 }
+
 .hero-btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   padding: 14px 34px;
   background: var(--accent);
-  color: var(--bg) !important; /* Memaksa tulisan tombol tetap hitam pekat */
+  color: var(--bg) !important;
   font-family: var(--font-body);
   font-size: 0.72rem;
   letter-spacing: 0.18em;
@@ -402,6 +417,7 @@ section {
   overflow: hidden;
   font-weight: 500;
 }
+
 .hero-btn::before {
   content: "";
   position: absolute;
@@ -411,26 +427,33 @@ section {
   transform-origin: left;
   transition: transform 0.35s ease;
 }
+
 .hero-btn:hover::before {
   transform: scaleX(1);
 }
+
 .hero-btn:hover {
   gap: 20px;
   letter-spacing: 0.22em;
-  color: var(--bg) !important; /* Tetap hitam pekat pas di-hover */
+  color: var(--bg) !important;
 }
+
 .hero-btn svg {
   transition: transform 0.35s;
   flex-shrink: 0;
 }
+
 .hero-btn:hover svg {
   transform: translateX(6px);
 }
 
-/* ===================== ABOUT ===================== */
+/* ========================================================
+   SECTION: ABOUT
+   ======================================================== */
 #about {
   background: var(--bg-secondary);
 }
+
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1.6fr;
@@ -438,16 +461,19 @@ section {
   align-items: start;
   margin-bottom: var(--space-xl);
 }
+
 .about-photo-wrap {
   position: relative;
   aspect-ratio: 3/4;
   max-width: 300px;
 }
+
 #particle-canvas {
   width: 100%;
   height: 100%;
   display: block;
 }
+
 .about-text h2 {
   font-family: var(--font-heading);
   font-size: clamp(1.3rem, 2vw, 1.85rem);
@@ -456,16 +482,19 @@ section {
   margin-bottom: var(--space-md);
   color: var(--text);
 }
+
 .about-text h2 em {
   font-style: italic;
   color: var(--accent);
 }
+
 .about-container {
   border: 1px solid var(--border);
   padding: var(--space-md);
   position: relative;
   margin-bottom: 0;
 }
+
 .about-container::before,
 .about-container::after {
   content: "";
@@ -473,18 +502,21 @@ section {
   width: 12px;
   height: 12px;
 }
+
 .about-container::before {
   top: -1px;
   left: -1px;
   border-top: 2px solid var(--accent);
   border-left: 2px solid var(--accent);
 }
+
 .about-container::after {
   bottom: -1px;
   right: -1px;
   border-bottom: 2px solid var(--accent);
   border-right: 2px solid var(--accent);
 }
+
 .about-intro {
   font-family: var(--font-display);
   font-size: 1rem;
@@ -494,12 +526,14 @@ section {
   margin-bottom: 0;
   opacity: 0.85;
 }
+
 .about-divider-star {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: var(--space-md) 0;
 }
+
 .about-divider-star::before,
 .about-divider-star::after {
   content: "";
@@ -507,6 +541,7 @@ section {
   height: 1px;
   background: var(--border);
 }
+
 .about-divider-star-mark {
   font-family: var(--font-heading);
   font-size: 0.8rem;
@@ -514,6 +549,7 @@ section {
   opacity: 0.4;
   flex-shrink: 0;
 }
+
 .about-body {
   font-size: 0.86rem;
   color: var(--text-muted);
@@ -525,19 +561,13 @@ section {
 }
 
 .about-container .sentence-unit {
-  display: block !important; /* Paksa span berubah jadi block biar bisa menerima perintah justify */
+  display: block !important;
   width: 100% !important;
   max-width: 100% !important;
-  text-align: justify !important; /* Paksa merenggang dari ujung kiri sampai mentok ujung kanan boks border! */
-  text-align-last: left !important; /* Baris paling akhir dari cerita tetep rata kiri biar natural */
+  text-align: justify !important;
+  text-align-last: left !important;
 }
 
-@media (max-width: 768px) {
-  .about-container .sentence-unit {
-    text-align: center !important;
-    text-align-last: center !important;
-  }
-}
 .about-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -546,6 +576,7 @@ section {
   border: 1px solid var(--bg-secondary);
   margin-top: var(--space-lg);
 }
+
 .about-info-card {
   background: var(--bg);
   padding: 16px 18px;
@@ -555,9 +586,11 @@ section {
   transition: background 0.3s;
   border: 1px solid var(--border);
 }
+
 .about-info-card:hover {
   background: #0f1219;
 }
+
 .about-info-icon {
   width: 28px;
   height: 28px;
@@ -570,6 +603,7 @@ section {
   margin-top: 2px;
   font-size: 0.8rem;
 }
+
 .about-info-label {
   font-family: var(--font-mono);
   font-size: 0.52rem;
@@ -579,6 +613,7 @@ section {
   margin-bottom: 4px;
   opacity: 0.7;
 }
+
 .about-info-value {
   font-family: var(--font-body);
   font-size: 0.88rem;
@@ -586,25 +621,7 @@ section {
   line-height: 1.45;
 }
 
-/* ========================================================
-   📱 FIX KHUSUS TEKS HEADING ABOUT (BLA BLA BLA) DI HP
-   ======================================================== */
-@media (max-width: 768px) {
-  /* Memaksa elemen h2 di dalam about-text untuk mengalir normal */
-  .about-text h2 {
-    display: block !important;
-    text-align: center !important;
-  }
-
-  /* Menjinakkan pecahan kata hasil JS agar menyatu kembali, anti-melorot vertikal */
-  .about-text h2 .word-unit {
-    display: inline !important; /* Paksa mengalir horizontal kesamping */
-    white-space: normal !important;
-    letter-spacing: normal !important;
-  }
-}
-
-/* SKILL CARDS — 3 columns */
+/* --- GRID: SKILL CARDS --- */
 .skill-heading {
   font-family: var(--font-heading);
   font-size: 1.1rem;
@@ -615,13 +632,13 @@ section {
   letter-spacing: 0.05em;
 }
 
-/* SKILL CARD — double stroke*/
 .skill-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--bg-secondary);
 }
+
 .skill-card {
   background: var(--bg);
   padding: var(--space-xl) var(--space-lg) var(--space-lg);
@@ -634,7 +651,6 @@ section {
   border: 0.2px solid rgba(201, 169, 110, 0.1);
 }
 
-/* Gradient stroke — top edge fade left to right */
 .skill-card::after {
   content: "";
   position: absolute;
@@ -652,10 +668,11 @@ section {
   transition: opacity 0.5s;
   opacity: 0.7;
 }
+
 .skill-card:hover::after {
   opacity: 1;
 }
-/* Hover glow — gradient bg */
+
 .skill-card::before {
   content: "";
   position: absolute;
@@ -664,16 +681,18 @@ section {
   opacity: 0;
   transition: opacity 0.4s;
 }
+
 .skill-card:hover::before {
   opacity: 1;
 }
-/* Hover — border brightens + subtle glow */
+
 .skill-card:hover {
   box-shadow:
     inset 0 0 0 1px var(--accent),
     0 0 10px rgba(201, 169, 110, 0.1);
   z-index: 2;
 }
+
 .skill-card-num {
   position: absolute;
   top: 16px;
@@ -684,6 +703,7 @@ section {
   color: var(--accent);
   opacity: 0.35;
 }
+
 .skill-card-arrow {
   position: absolute;
   top: 16px;
@@ -695,10 +715,12 @@ section {
   color: var(--accent);
   font-size: 1rem;
 }
+
 .skill-card:hover .skill-card-arrow {
   opacity: 1;
   transform: translate(3px, -3px);
 }
+
 .skill-card-domain {
   font-family: var(--font-heading);
   font-size: 1.15rem;
@@ -709,6 +731,7 @@ section {
   line-height: 1.2;
   position: relative;
 }
+
 .skill-card-essence {
   font-size: 0.8rem;
   color: var(--text-muted);
@@ -716,7 +739,7 @@ section {
   position: relative;
 }
 
-/* MODAL */
+/* --- OVERLAY MODAL BASE --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -731,10 +754,12 @@ section {
   justify-content: center;
   padding: 40px;
 }
+
 .modal-overlay.open {
   opacity: 1;
   pointer-events: all;
 }
+
 .modal {
   background: var(--bg);
   border: 1px solid rgba(201, 169, 110, 0.15);
@@ -745,14 +770,17 @@ section {
   position: relative;
   overflow: hidden;
 }
+
 .modal-overlay.open .modal {
   transform: translateY(0) scale(1);
 }
+
 .modal-header {
   padding: 32px 38px 24px;
   border-bottom: 1px solid var(--border);
   position: relative;
 }
+
 .modal-header::before {
   content: "";
   position: absolute;
@@ -762,6 +790,7 @@ section {
   height: 100%;
   background: var(--accent);
 }
+
 .modal-close {
   position: absolute;
   top: 18px;
@@ -778,10 +807,12 @@ section {
   align-items: center;
   justify-content: center;
 }
+
 .modal-close:hover {
   color: var(--text);
   border-color: var(--accent);
 }
+
 .modal-num {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -791,6 +822,7 @@ section {
   margin-bottom: 8px;
   opacity: 0.6;
 }
+
 .modal-domain {
   font-family: var(--font-heading);
   font-size: 1.8rem;
@@ -799,9 +831,11 @@ section {
   color: var(--text);
   line-height: 1.1;
 }
+
 .modal-body {
   padding: 24px 38px 32px;
 }
+
 .modal-desc {
   font-size: 0.88rem;
   color: var(--text-muted);
@@ -809,6 +843,7 @@ section {
   margin-bottom: 24px;
   font-family: var(--font-body);
 }
+
 .modal-section-label {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -821,17 +856,20 @@ section {
   gap: 10px;
   opacity: 0.8;
 }
+
 .modal-section-label::after {
   content: "";
   flex: 1;
   height: 1px;
   background: var(--border);
 }
+
 .modal-tools {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
 }
+
 .modal-tool {
   font-size: 0.7rem;
   color: var(--text-muted);
@@ -845,10 +883,12 @@ section {
     border-color 0.2s,
     color 0.2s;
 }
+
 .modal-tool:hover {
   border-color: rgba(201, 169, 110, 0.3);
   color: var(--text);
 }
+
 .modal-tool-icon {
   width: 14px;
   height: 14px;
@@ -861,16 +901,20 @@ section {
   flex-shrink: 0;
 }
 
-/* ===================== WORKS ===================== */
+/* ========================================================
+   SECTION: WORKS (PORTFOLIO GRID)
+   ======================================================== */
 #works {
   background: var(--bg);
 }
+
 .works-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: var(--space-xl);
 }
+
 .works-title {
   font-family: var(--font-heading);
   font-size: clamp(1.8rem, 3vw, 2.8rem);
@@ -879,6 +923,7 @@ section {
   color: var(--text);
   line-height: 1.1;
 }
+
 .works-all {
   font-family: var(--font-label);
   font-size: 0.58rem;
@@ -893,10 +938,12 @@ section {
     color 0.3s,
     gap 0.3s;
 }
+
 .works-all:hover {
   color: var(--accent);
   gap: 13px;
 }
+
 .works-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -904,6 +951,8 @@ section {
   background: transparent;
   contain: layout style;
 }
+
+/* --- ITEM MAVEN CARD CODE --- */
 .work-card {
   position: relative;
   aspect-ratio: 4/3;
@@ -912,6 +961,7 @@ section {
   background: var(--bg-secondary);
   will-change: auto;
 }
+
 .work-overlay {
   position: absolute;
   inset: 0;
@@ -927,9 +977,11 @@ section {
   justify-content: flex-end;
   padding: 24px;
 }
+
 .work-card:hover .work-overlay {
   opacity: 1;
 }
+
 .work-title {
   font-family: var(--font-heading);
   font-size: 1.15rem;
@@ -939,9 +991,11 @@ section {
   transform: translateY(10px);
   transition: transform 0.4s ease;
 }
+
 .work-card:hover .work-title {
   transform: translateY(0);
 }
+
 .work-tags {
   display: flex;
   gap: 6px;
@@ -950,10 +1004,12 @@ section {
   transition: transform 0.4s ease 0.05s;
   opacity: 0;
 }
+
 .work-card:hover .work-tags {
   transform: translateY(0);
   opacity: 1;
 }
+
 .work-tag {
   font-family: var(--font-label);
   font-size: 0.55rem;
@@ -963,6 +1019,8 @@ section {
   border: 1px solid rgba(201, 169, 110, 0.28);
   padding: 3px 7px;
 }
+
+/* --- CMS PREVIEW LAYOUT --- */
 .work-placeholder {
   width: 100%;
   height: 100%;
@@ -974,9 +1032,11 @@ section {
   background: var(--bg-secondary);
   transition: background 0.3s;
 }
+
 .work-card:hover .work-placeholder {
   background: #131720;
 }
+
 .work-placeholder-title {
   font-family: var(--font-heading);
   font-size: 1.05rem;
@@ -987,6 +1047,7 @@ section {
   padding: 0 20px;
   line-height: 1.35;
 }
+
 .work-placeholder-arrow {
   color: var(--accent);
   font-size: 0.72rem;
@@ -1000,19 +1061,22 @@ section {
     opacity 0.3s,
     transform 0.3s;
 }
+
 .work-card:hover .work-placeholder-arrow {
   opacity: 1;
   transform: translateX(0);
 }
-/* hidden extra cards */
+
 .work-card.hidden {
   display: none;
 }
+
 .works-show-more {
   display: flex;
   justify-content: center;
   margin-top: var(--space-lg);
 }
+
 .btn-show-more {
   display: inline-flex;
   align-items: center;
@@ -1028,27 +1092,34 @@ section {
   background: none;
   transition: all 0.3s;
 }
+
 .btn-show-more:hover {
   border-color: rgba(201, 169, 110, 0.35);
   color: var(--accent);
 }
+
 .btn-show-more svg {
   transition: transform 0.3s;
 }
+
 .btn-show-more:hover svg {
   transform: translateY(3px);
 }
 
-/* ===================== PHILOSOPHY SLIDER ===================== */
+/* ========================================================
+   SECTION: PHILOSOPHY SLIDER & ROADMAP
+   ======================================================== */
 #philosophy {
   background: var(--bg-secondary);
   padding: 0;
   overflow: hidden;
 }
+
 .slider-wrap {
   position: relative;
   min-height: 580px;
 }
+
 .slide {
   position: absolute;
   inset: 0;
@@ -1062,11 +1133,13 @@ section {
   align-items: center;
   text-align: center;
 }
+
 .slide.active {
   opacity: 1;
   pointer-events: all;
   position: relative;
 }
+
 .slide-section-label {
   font-family: var(--font-label);
   font-size: 0.55rem;
@@ -1080,6 +1153,7 @@ section {
   gap: 14px;
   opacity: 0.8;
 }
+
 .slide-section-label::before,
 .slide-section-label::after {
   content: "";
@@ -1088,6 +1162,7 @@ section {
   background: var(--accent);
   opacity: 0.5;
 }
+
 .slide-caption {
   font-family: var(--font-display);
   font-size: 0.88rem;
@@ -1096,13 +1171,15 @@ section {
   margin-bottom: var(--space-xl);
   opacity: 0.6;
 }
+
 .slide-1-content {
   max-width: 740px;
   margin: 0 auto;
 }
+
 .slide-quote {
   font-family: var(--font-heading);
-  font-size: 23px;
+  font-size: 25px;
   font-weight: 400;
   font-style: italic;
   line-height: 1.45;
@@ -1116,6 +1193,7 @@ section {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
 .slide-quote::before {
   content: "\201C";
   position: absolute;
@@ -1127,6 +1205,7 @@ section {
   line-height: 1;
   font-family: var(--font-heading);
 }
+
 .slide-body {
   font-family: var(--font-body);
   font-size: 0.93rem;
@@ -1135,7 +1214,7 @@ section {
   max-width: 500px;
   margin: 0 auto;
 }
-/* deco lines in slider */
+
 .slide-deco {
   display: flex;
   align-items: center;
@@ -1143,6 +1222,7 @@ section {
   justify-content: center;
   margin: var(--space-lg) 0;
 }
+
 .slide-deco::before,
 .slide-deco::after {
   content: "";
@@ -1150,12 +1230,15 @@ section {
   height: 1px;
   background: var(--border);
 }
+
 .slide-deco-mark {
   font-family: var(--font-heading);
   font-size: 0.9rem;
   color: var(--accent);
   opacity: 0.3;
 }
+
+/* --- SYSTEM ROADMAP TIMELINE --- */
 .roadmap-title {
   font-family: var(--font-heading);
   font-size: 1.7rem;
@@ -1165,6 +1248,7 @@ section {
   margin-bottom: var(--space-xl);
   text-align: center;
 }
+
 .roadmap {
   display: flex;
   align-items: flex-start;
@@ -1172,6 +1256,7 @@ section {
   max-width: 840px;
   margin: 0 auto;
 }
+
 .roadmap-node {
   flex: 1;
   position: relative;
@@ -1180,6 +1265,7 @@ section {
   align-items: center;
   text-align: center;
 }
+
 .roadmap-node:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -1193,6 +1279,7 @@ section {
     rgba(201, 169, 110, 0.15)
   );
 }
+
 .roadmap-dot {
   width: 18px;
   height: 18px;
@@ -1205,10 +1292,12 @@ section {
   transition: background 0.3s;
   cursor: none;
 }
+
 .roadmap-dot.active-dot {
   background: var(--accent);
   box-shadow: 0 0 16px rgba(201, 169, 110, 0.35);
 }
+
 .roadmap-phase {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -1218,6 +1307,7 @@ section {
   margin-bottom: 7px;
   opacity: 0.65;
 }
+
 .roadmap-label {
   font-family: var(--font-heading);
   font-size: 0.95rem;
@@ -1225,65 +1315,15 @@ section {
   color: var(--text);
   margin-bottom: 7px;
 }
-.roadmap-node {
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.roadmap-node:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    var(--accent),
-    rgba(201, 169, 110, 0.15)
-  );
-}
-.roadmap-dot {
-  width: 18px;
-  height: 18px;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  background: var(--bg-secondary);
-  position: relative;
-  z-index: 1;
-  margin-bottom: 18px;
-  transition: background 0.3s;
-  cursor: none;
-}
-.roadmap-dot.active-dot {
-  background: var(--accent);
-  box-shadow: 0 0 16px rgba(201, 169, 110, 0.35);
-}
-.roadmap-phase {
-  font-family: var(--font-label);
-  font-size: 0.52rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 7px;
-  opacity: 0.65;
-}
-.roadmap-label {
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
-  font-style: italic;
-  color: var(--text);
-  margin-bottom: 7px;
-}
+
 .roadmap-desc {
   font-size: 0.74rem;
   color: var(--text-muted);
   line-height: 1.65;
   padding: 0 8px;
 }
+
+/* --- SLIDER NAVIGATION DOTS --- */
 .slider-controls {
   position: absolute;
   bottom: 32px;
@@ -1295,6 +1335,7 @@ section {
   gap: 14px;
   z-index: 10;
 }
+
 .slider-dot {
   width: 5px;
   height: 5px;
@@ -1304,6 +1345,7 @@ section {
   transition: all 0.3s;
   opacity: 0.5;
 }
+
 .slider-dot.active {
   background: var(--accent);
   width: 22px;
@@ -1311,16 +1353,20 @@ section {
   opacity: 1;
 }
 
-/* ===================== FAQ ===================== */
+/* ========================================================
+   SECTION: FAQ ACCORDION
+   ======================================================== */
 #faq-section {
   background: var(--bg);
   padding: var(--space-2xl) 68px;
 }
+
 .faq-inner {
   max-width: 720px;
   margin: 0 auto;
   text-align: center;
 }
+
 .faq-title {
   font-family: var(--font-heading);
   font-size: clamp(2.2rem, 3.5vw, 3.2rem);
@@ -1330,6 +1376,7 @@ section {
   margin-bottom: var(--space-sm);
   line-height: 1.1;
 }
+
 .faq-subtitle {
   font-family: var(--font-body);
   font-size: 0.75rem;
@@ -1339,17 +1386,21 @@ section {
   margin-bottom: var(--space-xl);
   opacity: 0.45;
 }
+
 .faq-list {
   text-align: left;
   margin-top: var(--space-lg);
 }
+
 .faq-item {
   border-top: 1px solid var(--border);
   overflow: hidden;
 }
+
 .faq-item:last-child {
   border-bottom: 1px solid var(--border);
 }
+
 .faq-question {
   width: 100%;
   background: none;
@@ -1369,12 +1420,15 @@ section {
   transition: color 0.3s;
   line-height: 1.35;
 }
+
 .faq-question:hover {
   color: var(--accent);
 }
+
 .faq-item.open .faq-question {
   color: var(--accent);
 }
+
 .faq-arrow {
   flex-shrink: 0;
   width: 16px;
@@ -1387,10 +1441,12 @@ section {
     transform 0.4s ease,
     color 0.3s;
 }
+
 .faq-item.open .faq-arrow {
   transform: rotate(180deg);
   color: var(--accent);
 }
+
 .faq-answer {
   max-height: 0;
   overflow: hidden;
@@ -1398,10 +1454,12 @@ section {
     max-height 0.5s ease,
     padding 0.3s ease;
 }
+
 .faq-item.open .faq-answer {
   max-height: 280px;
   padding-bottom: 22px;
 }
+
 .faq-answer p {
   font-family: var(--font-body);
   font-size: 0.85rem;
@@ -1410,12 +1468,15 @@ section {
   font-weight: 300;
   padding-left: 0;
 }
+
 .faq-answer p em {
   color: var(--accent);
   font-style: italic;
 }
 
-/* ===================== CONTACT ===================== */
+/* ========================================================
+   SECTION: CONTACT
+   ======================================================== */
 #contact {
   background: var(--bg-secondary);
   text-align: center;
@@ -1423,6 +1484,7 @@ section {
   position: relative;
   overflow: hidden;
 }
+
 .contact-ring-1,
 .contact-ring-2 {
   position: absolute;
@@ -1433,15 +1495,18 @@ section {
   border: 1px solid rgba(201, 169, 110, 0.04);
   pointer-events: none;
 }
+
 .contact-ring-1 {
   width: 580px;
   height: 580px;
 }
+
 .contact-ring-2 {
   width: 360px;
   height: 360px;
   border-color: rgba(201, 169, 110, 0.06);
 }
+
 .contact-eyebrow {
   font-family: var(--font-label);
   font-size: 0.56rem;
@@ -1453,6 +1518,7 @@ section {
   z-index: 1;
   opacity: 0.8;
 }
+
 .contact-heading {
   font-family: var(--font-heading);
   font-size: clamp(2.8rem, 5.5vw, 4.8rem);
@@ -1463,10 +1529,12 @@ section {
   position: relative;
   z-index: 1;
 }
+
 .contact-heading em {
   font-style: italic;
   color: var(--accent);
 }
+
 .contact-deco {
   display: flex;
   align-items: center;
@@ -1476,17 +1544,20 @@ section {
   position: relative;
   z-index: 1;
 }
+
 .contact-deco-line {
   flex: 0 0 140px;
   height: 1px;
   background: var(--border);
 }
+
 .contact-deco-mark {
   font-size: 0.7rem;
   color: var(--accent);
   opacity: 0.4;
   flex-shrink: 0;
 }
+
 .contact-para {
   font-family: var(--font-body);
   font-size: 0.95rem;
@@ -1498,15 +1569,14 @@ section {
   z-index: 1;
   font-weight: 300;
 }
+
 .contact-btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   padding: 16px 42px;
   background: var(--accent);
-  color: var(
-    --bg
-  ) !important; /* Memaksa tulisan tombol kontak tetap hitam pekat */
+  color: var(--bg) !important;
   font-family: var(--font-body);
   font-size: 0.7rem;
   letter-spacing: 0.2em;
@@ -1517,11 +1587,13 @@ section {
   position: relative;
   z-index: 1;
 }
+
 .contact-btn:hover {
   background: #d4b07a;
   gap: 18px;
-  color: var(--bg) !important; /* Tetap hitam pekat pas di-hover */
+  color: var(--bg) !important;
 }
+
 .contact-note {
   font-family: var(--font-display);
   font-size: 0.78rem;
@@ -1533,7 +1605,9 @@ section {
   z-index: 1;
 }
 
-/* ===================== FOOTER ===================== */
+/* ========================================================
+   SECTION: FOOTER BRANDING
+   ======================================================== */
 footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
@@ -1560,52 +1634,6 @@ footer {
   z-index: 0;
 }
 
-/* ========================================================
-   📱 KONFIGURASI RESPONSIVE (UBAH BAGIAN INI)
-   ======================================================== */
-
-/* 1. Tablet & HP (Bawah 1024px) */
-@media (max-width: 1024px) {
-  footer {
-    padding: var(--space-xl) 32px 0; /* Padding kiri-kanan dikurangi biar lega */
-  }
-
-  .footer-top {
-    grid-template-columns: 1fr; /* Jadi satu kolom atas-bawah */
-    gap: var(--space-lg);
-  }
-
-  .footer-name-bg {
-    bottom: -30px; /* Posisi teks "tenggelam" disesuaikan */
-    font-size: 9rem; /* Ukuran statis biar pas satu baris "Irfan" aja kalau mau */
-    line-height: 1;
-  }
-}
-
-/* 2. HP Sempit (Bawah 600px) */
-@media (max-width: 600px) {
-  .footer-name-bg {
-    font-size: 13rem; /* Ukuran statis biar pas satu baris "Irfan" aja kalau mau */
-    line-height: 1;
-    bottom: -50px;
-  }
-  .footer-name-bg span {
-    display: none;
-  }
-  .footer-right {
-    grid-template-columns: 1fr; /* Nav & Connect jadi satu kolom */
-    gap: var(--space-lg);
-  }
-
-  .footer-left {
-    text-align: center;
-  }
-
-  .footer-about {
-    margin-left: auto;
-    margin-right: auto; /* Biar deskripsi center di HP */
-  }
-}
 .footer-top {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -1614,9 +1642,7 @@ footer {
   position: relative;
   z-index: 1;
 }
-/* LEFT */
-.footer-left {
-}
+
 .footer-name {
   font-family: var(--font-heading);
   font-size: 3rem;
@@ -1625,6 +1651,7 @@ footer {
   color: var(--text);
   margin-bottom: 6px;
 }
+
 .footer-tagline {
   font-family: var(--font-label);
   font-size: 0.58rem;
@@ -1632,7 +1659,7 @@ footer {
   text-transform: uppercase;
   color: var(--accent);
   opacity: 0.6;
-  margin-bottom: 10px; /* ← di sini aja */
+  margin-bottom: 10px;
 }
 
 .footer-quote {
@@ -1642,7 +1669,7 @@ footer {
   color: var(--text-muted);
   line-height: 1.65;
   opacity: 0.6;
-  margin-bottom: 10px; /* ← di sini aja */
+  margin-bottom: 10px;
 }
 
 .footer-quote-attr {
@@ -1652,7 +1679,7 @@ footer {
   color: var(--accent);
   opacity: 0.5;
   text-transform: uppercase;
-  margin-bottom: 10px; /* ← ubah juga dari var(--space-lg) */
+  margin-bottom: 10px;
 }
 
 .footer-about {
@@ -1666,14 +1693,12 @@ footer {
   margin-bottom: 50px;
 }
 
-/* RIGHT */
 .footer-right {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-xl);
 }
-.footer-nav-col {
-}
+
 .footer-col-title {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -1683,11 +1708,13 @@ footer {
   margin-bottom: var(--space-md);
   opacity: 0.6;
 }
+
 .footer-nav-links {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .footer-nav-links a {
   font-family: var(--font-body);
   font-size: 0.8rem;
@@ -1697,15 +1724,18 @@ footer {
   letter-spacing: 0.02em;
   opacity: 0.7;
 }
+
 .footer-nav-links a:hover {
   color: var(--text);
   opacity: 1;
 }
+
 .footer-social-links {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .footer-social-links a {
   font-family: var(--font-body);
   font-size: 0.8rem;
@@ -1717,10 +1747,12 @@ footer {
   gap: 8px;
   opacity: 0.7;
 }
+
 .footer-social-links a:hover {
   color: var(--accent);
   opacity: 1;
 }
+
 .social-icon {
   width: 20px;
   height: 20px;
@@ -1733,9 +1765,11 @@ footer {
   flex-shrink: 0;
   transition: border-color 0.3s;
 }
+
 .footer-social-links a:hover .social-icon {
   border-color: rgba(201, 169, 110, 0.4);
 }
+
 .footer-bottom {
   border-top: 1px solid var(--border);
   padding: var(--space-md) 0 var(--space-xl);
@@ -1747,6 +1781,7 @@ footer {
   position: relative;
   z-index: 1;
 }
+
 .footer-copy {
   font-family: var(--font-body);
   font-size: 0.65rem;
@@ -1754,11 +1789,13 @@ footer {
   letter-spacing: 0.05em;
   opacity: 0.45;
 }
+
 .footer-links {
   display: flex;
   gap: 22px;
   list-style: none;
 }
+
 .footer-links a {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -1769,14 +1806,15 @@ footer {
   transition: color 0.3s;
   opacity: 0.45;
 }
+
 .footer-links a:hover {
   color: var(--accent);
   opacity: 1;
 }
 
-/* ===================== ANIMATIONS ===================== */
-
-/* Base blur-fade — for text blocks, paragraphs */
+/* ========================================================
+   CORE GSAP / TRANSITION ANIMATIONS
+   ======================================================== */
 .fade-in {
   opacity: 0;
   filter: blur(6px);
@@ -1786,13 +1824,13 @@ footer {
     filter 0.75s ease,
     transform 0.75s ease;
 }
+
 .fade-in.visible {
   opacity: 1;
   filter: blur(0);
   transform: translateY(0);
 }
 
-/* Word blur — each word gets this class via JS */
 .word-unit {
   display: inline-block;
   opacity: 0;
@@ -1804,13 +1842,13 @@ footer {
     transform 0.55s ease;
   white-space: pre;
 }
+
 .word-unit.visible {
   opacity: 1;
   filter: blur(0);
   transform: translateY(0);
 }
 
-/* Card slide-up */
 .card-anim {
   opacity: 0;
   transform: translateY(28px);
@@ -1818,12 +1856,12 @@ footer {
     opacity 0.65s ease,
     transform 0.65s ease;
 }
+
 .card-anim.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Work cards — slide-up + scale */
 .work-anim {
   opacity: 0;
   transform: translateY(24px) scale(0.97);
@@ -1831,12 +1869,12 @@ footer {
     opacity 0.65s ease,
     transform 0.65s ease;
 }
+
 .work-anim.visible {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* About info cards — slide from left */
 .slide-left {
   opacity: 0;
   transform: translateX(-18px);
@@ -1844,12 +1882,12 @@ footer {
     opacity 0.6s ease,
     transform 0.6s ease;
 }
+
 .slide-left.visible {
   opacity: 1;
   transform: translateX(0);
 }
 
-/* Hero typing cursor */
 .typing-cursor {
   display: inline-block;
   width: 2px;
@@ -1859,6 +1897,7 @@ footer {
   vertical-align: middle;
   animation: blink 0.8s step-end infinite;
 }
+
 @keyframes blink {
   0%,
   100% {
@@ -1881,6 +1920,7 @@ footer {
     transform: translateY(0);
   }
 }
+
 @keyframes heroIn {
   from {
     opacity: 0;
@@ -1893,6 +1933,7 @@ footer {
     transform: translateY(0);
   }
 }
+
 @keyframes scrollPulse {
   0%,
   100% {
@@ -1903,86 +1944,170 @@ footer {
   }
 }
 
-/* RESPONSIVE */
+/* ========================================================
+   MEDIA QUERIES (RESPONSIVE SYSTEM)
+   ======================================================== */
+@media (max-width: 1024px) {
+  footer {
+    padding: var(--space-xl) 32px 0;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .footer-name-bg {
+    bottom: -30px;
+    font-size: 9rem;
+    line-height: 1;
+  }
+}
+
 @media (max-width: 900px) {
   section {
     padding: var(--space-2xl) 28px;
   }
+
   nav {
     padding: 22px 28px;
   }
+
   .nav-links {
     display: none;
   }
+
   .hero-content {
     padding: 0 28px;
   }
+
   .hero-scroll {
     left: 28px;
   }
+
   .about-grid {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
   }
+
   .about-photo-wrap {
     max-width: 100%;
     aspect-ratio: 1/1;
   }
+
   .about-info-grid {
     grid-template-columns: 1fr;
   }
+
   .skill-grid {
     grid-template-columns: 1fr;
   }
+
   .works-grid {
     grid-template-columns: 1fr;
   }
+
   .roadmap {
     flex-direction: column;
     gap: 28px;
   }
+
   .roadmap-node::after {
     display: none;
   }
+
   .roadmap-dot {
     margin-bottom: 14px;
   }
+
   .footer-top {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
   }
+
   .footer-right {
     grid-template-columns: 1fr 1fr;
   }
+
   footer {
     padding: var(--space-xl) 28px 0;
   }
+
   #faq-section {
     padding: var(--space-2xl) 28px;
   }
+
   #contact {
     padding: var(--space-2xl) 28px;
   }
+
   .slider-wrap {
     min-height: auto;
   }
+
   .slide {
     position: relative !important;
     inset: auto !important;
-    display: none; /* ← TAMBAH INI */
+    display: none;
     padding: var(--space-xl) 28px var(--space-2xl);
   }
 
   .slide.active {
-    display: block; /* ← TAMBAH INI */
+    display: block;
   }
+
   .section-divider {
     padding: 0 28px;
   }
+
   .has-corners::before,
   .has-corners::after,
   .corner-bottom::before,
   .corner-bottom::after {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-container .sentence-unit {
+    text-align: center !important;
+    text-align-last: center !important;
+  }
+
+  .about-text h2 {
+    display: block !important;
+    text-align: center !important;
+  }
+
+  .about-text h2 .word-unit {
+    display: inline !important;
+    white-space: normal !important;
+    letter-spacing: normal !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-name-bg {
+    font-size: 13rem;
+    line-height: 1;
+    bottom: -50px;
+  }
+
+  .footer-name-bg span {
+    display: none;
+  }
+
+  .footer-right {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .footer-left {
+    text-align: center;
+  }
+
+  .footer-about {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
