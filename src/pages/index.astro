@@ -159,8 +159,7 @@ const base = import.meta.env.BASE_URL;
         </a>
       </div>
     </div>
-
-    <style>
+<style>
       .hero-btn-wrap {
         margin-top: 32px;
       }
@@ -241,6 +240,30 @@ const base = import.meta.env.BASE_URL;
 
       .secondary-stroke-btn:hover svg {
         transform: translateX(4px) !important;
+      }
+
+      @media (max-width: 480px) {
+        .hero-btn-wrap {
+          gap: 10px !important;
+          padding: 0 16px;
+        }
+
+        .primary-bounce-btn,
+        .secondary-stroke-btn {
+          padding: 10px 16px !important;
+          font-size: 0.52rem !important;
+          letter-spacing: 0.12em !important;
+          flex: 1;
+          justify-content: center;
+          white-space: nowrap !important;
+          height: 38px !important;
+        }
+
+        .primary-bounce-btn svg,
+        .secondary-stroke-btn svg {
+          width: 10px !important;
+          height: 10px !important;
+        }
       }
     </style>
   </section>
