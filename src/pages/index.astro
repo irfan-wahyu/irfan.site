@@ -341,7 +341,7 @@ const base = import.meta.env.BASE_URL;
     </div>
 
     <div class="works-grid" id="worksGrid">
-      {sorted.map((project, idx) => (
+   {sorted.map((project, idx) => (
         <a 
           href={`${base}works/${project.id}/`} 
           class={`work-card work-anim${idx >= 3 ? ' hidden' : ''}`} 
@@ -360,8 +360,8 @@ const base = import.meta.env.BASE_URL;
 
           <div class="work-card-dimmer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 13, 17, 0.4); z-index: 2; pointer-events: none; transition: opacity 0.3s ease;"></div>
 
-          <div class="work-initial-center-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 3; pointer-events: none; transition: transform 0.4s ease, opacity 0.4s ease;">
-            <div class="work-title">{project.data.title}</div>
+          <div class="work-initial-center-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 3; pointer-events: none; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;">
+            <div class="work-title center-title-target">{project.data.title}</div>
           </div>
 
           <div 
@@ -392,6 +392,18 @@ const base = import.meta.env.BASE_URL;
                     : project.data.description}
                 </p>
               )}
+            </div>
+
+            <div class="work-tags" style="margin: 0 !important; display: flex !important; align-items: center !important;">
+              <div class="work-tag" style="display: flex !important; align-items: center !important; gap: 0.5rem !important; margin: 0 !important;">
+                View Project
+                <svg width="11" height="9" viewBox="0 0 12 10" fill="none" style="display: inline-block; vertical-align: middle;">
+                  <path d="M1 5h10M6 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </a>
             </div>
 
             <div class="work-tags" style="margin: 0 !important; display: flex !important; align-items: center !important;">

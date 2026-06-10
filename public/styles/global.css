@@ -381,6 +381,13 @@ section {
   color: var(--text);
   text-shadow: 0 2px 40px rgba(12, 14, 19, 0.8);
 }
+@media (max-width: 480px) {
+  .hero-heading {
+    font-size: 2.2rem !important;
+    line-height: 1.15 !important;
+    margin-bottom: var(--space-md) !important;
+  }
+}
 
 .hero-heading em {
   font-style: italic;
@@ -453,7 +460,12 @@ section {
 #about {
   background: var(--bg-secondary);
 }
-
+@media (max-width: 768px) {
+  .about-text .heading-anim {
+    font-size: 3.2rem !important;
+    line-height: 1.25 !important;
+  }
+}
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1.6fr;
@@ -980,6 +992,11 @@ section {
 
 .work-card:hover .work-overlay {
   opacity: 1;
+}
+
+.work-card:hover .work-initial-center-content {
+  opacity: 0 !important;
+  transform: translateY(-15px) !important;
 }
 
 .work-title {
