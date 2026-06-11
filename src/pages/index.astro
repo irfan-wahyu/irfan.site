@@ -16,19 +16,74 @@ const base = import.meta.env.BASE_URL;
 
   <style is:global>
     @media (max-width: 768px) {
-      .about-text .heading-anim {
+      .about-photo-wrap {
+        width: 300px !important;
+        height: 300px !important;
+        aspect-ratio: 1/1 !important;
+        margin: 0 auto !important;
+      }
+      .about-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 20px !important;
+      }
+      .about-text {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+      }
+      .about-text h2.heading-anim {
         text-align: center !important;
-        display: block !important; 
+        margin-bottom: 25px !important;
         width: 100% !important;
       }
-      .about-text .heading-anim .word-unit {
-        display: inline !important;
-        white-space: normal !important;
+      .about-text h2.heading-anim .word-unit {
+        font-size: 1.2rem !important; 
+        color: #ffffff !important;
+        letter-spacing: 0.1em !important;
+        text-transform: uppercase !important;
+      }
+      .about-text h2.heading-anim em .word-unit {
+        font-family: var(--font-heading) !important;
+        font-size: 2.2rem !important; 
+        font-style: italic !important;
+        color: #c9a96e !important; 
+        text-transform: none !important;
         letter-spacing: normal !important;
+        line-height: 1.1 !important;
       }
       .about-body {
-        text-align: center !important;
+        font-size: 1.0rem !important; 
+        line-height: 1.6 !important;
+        text-align: justify !important;
+        padding: 0 10px !important;
+        color: #787470 !important;
+        text-transform: none !important;
+        letter-spacing: normal !important;
       }
+      .about-info-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        padding: 0 10px !important;
+        width: 100% !important;
+      }
+      .works-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+      .work-card {
+        height: 280px !important;
+        aspect-ratio: auto !important;
+      }
+      .work-overlay p {
+        display: none !important;
+      }
+    }
+
+    .work-card-dimmer {
+      background: rgba(11, 13, 17, 0.5) !important;
     }
 
     .about-container p.about-body.heading-anim.about-text-fade {
@@ -49,6 +104,25 @@ const base = import.meta.env.BASE_URL;
       transform: translateY(0) !important;
     }
 
+    :root {
+      --work-title-size: 1.1rem;
+      --work-subtitle-size: 0.5rem;
+      --work-desc-size: 0.5rem;
+      --work-tag-size: 0.6rem;
+    }
+
+    .work-overlay .work-title {
+      font-size: var(--work-title-size) !important;
+    }
+    .work-overlay .work-title + div {
+      font-size: var(--work-subtitle-size) !important;
+    }
+    .work-overlay p {
+      font-size: var(--work-desc-size) !important;
+    }
+    .work-overlay .work-tag {
+      font-size: var(--work-tag-size) !important;
+    }
     .word-unit {
       display: inline-block;
       opacity: 0;
@@ -109,8 +183,13 @@ const base = import.meta.env.BASE_URL;
       filter: blur(0) !important;
       transform: translateY(0) !important;
     }
+
+    .work-overlay p {
+      margin-top: 10px !important;
+    }
   </style>
 
+  <!-- Section: Skill Practice Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <div class="modal-header">
@@ -126,6 +205,7 @@ const base = import.meta.env.BASE_URL;
     </div>
   </div>
 
+  <!-- Section: Navigation Header -->
   <nav>
     <a href="#" class="nav-logo">I · W</a>
     <ul class="nav-links">
@@ -136,6 +216,7 @@ const base = import.meta.env.BASE_URL;
     </ul>
   </nav>
 
+  <!-- Section: Hero Splash Header -->
   <section id="hero" class="has-corners">
     <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
     <canvas id="ascii-canvas"></canvas>
@@ -151,123 +232,37 @@ const base = import.meta.env.BASE_URL;
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </a>
 
-        <a href="/work" class="hero-btn secondary-stroke-btn" style="pointer-events:all">
+        <a href="/irfan.site/works" class="hero-btn secondary-stroke-btn" style="pointer-events:all">
           See My Work
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </a>
       </div>
     </div>
     <style>
-      .hero-btn-wrap {
-        margin-top: 32px;
-      }
-
-      .hero-btn-animate-intro {
-        opacity: 0;
-        filter: blur(10px);
-        transform: translateY(15px);
-        animation: heroBtnIntro 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 2s forwards;
-      }
-
-      @keyframes heroBtnIntro {
-        to {
-          opacity: 1;
-          filter: blur(0);
-          transform: translateY(0);
-        }
-      }
-
-      .primary-bounce-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-      }
-      
-      .primary-bounce-btn svg {
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-      }
-
-      .primary-bounce-btn:hover {
-        transform: scale(1.05) !important;
-      }
-
-      .primary-bounce-btn:hover svg {
-        transform: translateX(4px) !important;
-      }
-
-      .secondary-stroke-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-        background: transparent !important;
-        border: 1px solid #d4b373 !important;
-        color: #d4b373 !important;
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease !important;
-      }
-
-      .secondary-stroke-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 130%;
-        width: 130%;
-        height: 100%;
-        background: linear-gradient(to left, #d4b373, #f5e6ca, transparent) !important;
-        opacity: 0.35;
-        z-index: -1;
-        transition: left 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-      }
-
-      .secondary-stroke-btn svg {
-        stroke: #d4b373 !important;
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-      }
-
-      .secondary-stroke-btn:hover {
-        transform: scale(1.05) !important;
-        border-color: #f5e6ca !important;
-      }
-
-      .secondary-stroke-btn:hover::before {
-        left: -30%;
-      }
-
-      .secondary-stroke-btn:hover svg {
-        transform: translateX(4px) !important;
-      }
-
+      .hero-btn-wrap { margin-top: 32px; }
+      .hero-btn-animate-intro { opacity: 0; filter: blur(10px); transform: translateY(15px); animation: heroBtnIntro 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 2s forwards; }
+      @keyframes heroBtnIntro { to { opacity: 1; filter: blur(0); transform: translateY(0); } }
+      .primary-bounce-btn { display: inline-flex; align-items: center; gap: 8px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important; }
+      .primary-bounce-btn svg { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important; }
+      .primary-bounce-btn:hover { transform: scale(1.05) !important; }
+      .primary-bounce-btn:hover svg { transform: translateX(4px) !important; }
+      .secondary-stroke-btn { display: inline-flex; align-items: center; gap: 8px; position: relative; overflow: hidden; z-index: 1; background: transparent !important; border: 1px solid #d4b373 !important; color: #d4b373 !important; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease !important; }
+      .secondary-stroke-btn::before { content: ''; position: absolute; top: 0; left: 130%; width: 130%; height: 100%; background: linear-gradient(to left, #d4b373, #f5e6ca, transparent) !important; opacity: 0.35; z-index: -1; transition: left 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+      .secondary-stroke-btn svg { stroke: #d4b373 !important; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important; }
+      .secondary-stroke-btn:hover { transform: scale(1.05) !important; border-color: #f5e6ca !important; }
+      .secondary-stroke-btn:hover::before { left: -30%; }
+      .secondary-stroke-btn:hover svg { transform: translateX(4px) !important; }
       @media (max-width: 480px) {
-        .hero-btn-wrap {
-          gap: 10px !important;
-          padding: 0 16px;
-        }
-
-        .primary-bounce-btn,
-        .secondary-stroke-btn {
-          padding: 10px 16px !important;
-          font-size: 0.52rem !important;
-          letter-spacing: 0.12em !important;
-          flex: 1;
-          justify-content: center;
-          white-space: nowrap !important;
-          height: 38px !important;
-        }
-
-        .primary-bounce-btn svg,
-        .secondary-stroke-btn svg {
-          width: 10px !important;
-          height: 10px !important;
-        }
+        .hero-btn-wrap { gap: 10px !important; padding: 0 16px; }
+        .primary-bounce-btn, .secondary-stroke-btn { padding: 10px 16px !important; font-size: 0.52rem !important; letter-spacing: 0.12em !important; flex: 1; justify-content: center; white-space: nowrap !important; height: 38px !important; }
+        .primary-bounce-btn svg, .secondary-stroke-btn svg { width: 10px !important; height: 10px !important; }
       }
     </style>
   </section>
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
+  <!-- Section: About Content -->
   <section id="about" class="has-corners">
     <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
     <div class="about-grid">
@@ -277,7 +272,9 @@ const base = import.meta.env.BASE_URL;
       <div class="about-text">
         <h2 class="heading-anim">You're here<br><em>I'm Irfan Wahyu</em></h2>
         <div class="about-container">
-          <p class="about-body heading-anim about-text-fade">Currently finding ground in Yogyakarta. Still learning, still exploring, across systems, technology, and the visual world. That curiosity led me to Educational Technology at UNY, a field sitting at the intersection of philosophy, digital technology, and education. It's not the most obvious path, but it's the one that felt most honest. I'm still figuring out who I am and what I'm building toward, and this space reflects that process. Some things here are finished. Most are still forming.</p>
+          <p class="about-body about-text-fade">
+            Currently finding ground in Yogyakarta. Still learning, still exploring, across systems, technology, and the visual world. That curiosity led me to Educational Technology at UNY, a field sitting at the intersection of philosophy, digital technology, and education. It's not the most obvious path, but it's the one that felt most honest. I'm still figuring out who I am and what I'm building toward, and this space reflects that process. Some things here are finished. Most are still forming.
+          </p>
         </div>
         
         <div class="about-info-grid">
@@ -325,6 +322,7 @@ const base = import.meta.env.BASE_URL;
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
+  <!-- Section: Selected Portfolio Works -->
   <section id="works" class="has-corners">
     <div class="works-header fade-in">
       <h2 class="works-title heading-anim">Selected <em>Works</em></h2>
@@ -354,7 +352,7 @@ const base = import.meta.env.BASE_URL;
             />
           )}
 
-          <div class="work-card-dimmer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 13, 17, 0.4); z-index: 2; pointer-events: none; transition: opacity 0.3s ease;"></div>
+          <div class="work-card-dimmer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; transition: opacity 0.3s ease;"></div>
 
           <div class="work-initial-center-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 3; pointer-events: none; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;">
             <div class="work-title center-title-target">{project.data.title}</div>
@@ -364,7 +362,7 @@ const base = import.meta.env.BASE_URL;
             class="work-overlay" 
             style="z-index: 5 !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; padding: 1.5rem !important; display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: flex-end !important; box-sizing: border-box !important;"
           >
-            <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; align-items: flex-start !important; max-width: 60% !important; text-align: left !important; margin: 0 !important;">
+            <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; align-items: flex-start !important; max-width: 90% !important; text-align: left !important; margin: 0 !important;">
               <div class="work-title" style="margin: 0 !important;">{project.data.title}</div>
               {project.data.subtitle && (
                 <div 
@@ -383,16 +381,14 @@ const base = import.meta.env.BASE_URL;
               </div>
               {project.data.description && (
                 <p style="color: #ffffff; font-size: 0.8rem; opacity: 0.7; margin-top: 6px !important; margin-bottom: 0 !important; max-width: 100% !important;">
-                  {project.data.description.split(' ').length > 12 
-                    ? project.data.description.split(' ').slice(0, 12).join(' ') + '...' 
-                    : project.data.description}
+                  {project.data.description}
                 </p>
               )}
             </div>
 
             <div class="work-tags" style="margin: 0 !important; display: flex !important; align-items: center !important;">
               <div class="work-tag" style="display: flex !important; align-items: center !important; gap: 0.5rem !important; margin: 0 !important;">
-                View Project
+                View
                 <svg width="11" height="9" viewBox="0 0 12 10" fill="none" style="display: inline-block; vertical-align: middle;">
                   <path d="M1 5h10M6 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
                 </svg>
@@ -413,6 +409,7 @@ const base = import.meta.env.BASE_URL;
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
+  <!-- Section: Philosophy & Roadmap -->
   <section id="philosophy" class="has-corners corner-bottom">
     <div class="slider-wrap">
       <div class="slide active" id="slide-1">
@@ -442,40 +439,40 @@ const base = import.meta.env.BASE_URL;
         </div>
       </div>
 
-    <div class="slide" id="slide-2">
-      <div class="slide-section-label">Roadmap</div>
-      <h3 class="roadmap-title heading-anim">Where I'm Heading</h3>
-      
-      <div class="roadmap">
-        <div class="roadmap-node" data-delay="0">
-          <div class="roadmap-dot active-dot"></div>
-          <div class="roadmap-phase">Phase 01 — Now</div>
-          <div class="roadmap-label">Foundation</div>
-          <div class="roadmap-desc">First year of university. Getting used to the rhythm, figuring out what actually matters, and building the basics academically and personally.</div>
-        </div>
+      <div class="slide" id="slide-2">
+        <div class="slide-section-label">Roadmap</div>
+        <h3 class="roadmap-title heading-anim">Where I'm Heading</h3>
         
-        <div class="roadmap-node" data-delay="150">
-          <div class="roadmap-dot"></div>
-          <div class="roadmap-phase">Phase 02 — Soon</div>
-          <div class="roadmap-label">Expansion</div>
-          <div class="roadmap-desc">Going deeper into the things I'm genuinely curious about systems, code, visual craft. Less structured, more exploratory. Seeing where each thread leads.</div>
-        </div>
-        
-        <div class="roadmap-node" data-delay="300">
-          <div class="roadmap-dot"></div>
-          <div class="roadmap-phase">Phase 03 — Later</div>
-          <div class="roadmap-label">Building</div>
-          <div class="roadmap-desc">Taking what I've learned and actually making things with it. Real projects, real problems, real stakes. The gap between knowing and doing, closed.</div>
-        </div>
-        
-        <div class="roadmap-node" data-delay="450">
-          <div class="roadmap-dot"></div>
-          <div class="roadmap-phase">Phase 04 — Eventually</div>
-          <div class="roadmap-label">Impact</div>
-          <div class="roadmap-desc">Using everything built to help others think more clearly, learn more honestly, and find their own direction without someone else handing it to them.</div>
+        <div class="roadmap">
+          <div class="roadmap-node" data-delay="0">
+            <div class="roadmap-dot active-dot"></div>
+            <div class="roadmap-phase">Phase 01 — Now</div>
+            <div class="roadmap-label">Foundation</div>
+            <div class="roadmap-desc">First year of university. Getting used to the rhythm, figuring out what actually matters, and building the basics academically and personally.</div>
+          </div>
+          
+          <div class="roadmap-node" data-delay="150">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-phase">Phase 02 — Soon</div>
+            <div class="roadmap-label">Expansion</div>
+            <div class="roadmap-desc">Going deeper into the things I'm genuinely curious about systems, code, visual craft. Less structured, more exploratory. Seeing where each thread leads.</div>
+          </div>
+          
+          <div class="roadmap-node" data-delay="300">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-phase">Phase 03 — Later</div>
+            <div class="roadmap-label">Building</div>
+            <div class="roadmap-desc">Taking what I've learned and actually making things with it. Real projects, real problems, real stakes. The gap between knowing and doing, closed.</div>
+          </div>
+          
+          <div class="roadmap-node" data-delay="450">
+            <div class="roadmap-dot"></div>
+            <div class="roadmap-phase">Phase 04 — Eventually</div>
+            <div class="roadmap-label">Impact</div>
+            <div class="roadmap-desc">Using everything built to help others think more clearly, learn more honestly, and find their own direction without someone else handing it to them.</div>
+          </div>
         </div>
       </div>
-    </div>
 
       <div class="slider-controls">
         <div class="slider-dot active" data-slide="0"></div>
@@ -486,6 +483,7 @@ const base = import.meta.env.BASE_URL;
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
+  <!-- Section: FAQ Accordion -->
   <section id="faq-section" class="has-corners corner-bottom">
     <div class="faq-inner">
       <div class="slide-section-label fade-in" style="margin-bottom:var(--space-lg)">Questions</div>
@@ -493,36 +491,37 @@ const base = import.meta.env.BASE_URL;
       <p class="faq-subtitle heading-anim about-text-fade"></p>
       
       <div class="faq-list">
-  <div class="faq-item fade-in">
-    <button class="faq-question">Apa yang ada di situs ini?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-    <div class="faq-answer"><p>Proyek, eksplorasi, dan hal-hal yang masih sedang dicari. Sebagian sudah selesai, sebagian masih dalam proses. isi website ini lebih ke catatan dari hal-hal yang selama ini jadi perhatianku.</p></div>
-  </div>
-  
-  <div class="faq-item fade-in">
-    <button class="faq-question">Kenapa Memilih Prodi Teknologi Pendidikan?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-    <div class="faq-answer"><p>Karena berada di persimpangan hal-hal yang memang aku minati antara Teknologi, Filsafat, Riset, Membuat Visual Grafis, Belajar cara orang belajar, dan bagaimana informasi disusun, sekaligus dikarenakan ambisi pribadi.</p></div>
-  </div>
-  
-  <div class="faq-item fade-in">
-    <button class="faq-question">Apakah Semua Proyek Di Web ini Sudah Selesai?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-    <div class="faq-answer"><p>Tidak. Ada yang sudah, ada yang masih jalan, ada yang baru sampai tahap cukup untuk didokumentasikan. Sebuah proyek tidak harus selesai dulu untuk layak ditunjukkan.</p></div>
-  </div>
-  
-  <div class="faq-item fade-in">
-    <button class="faq-question">Sebenarnya waktu habis buat apa?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-    <div class="faq-answer"><p>Kebanyakan hal visual dan motion. Tapi juga sistem — bagaimana sesuatu terstruktur di balik permukaan, bagaimana ruang digital dibangun, dan sesekali kenapa semua itu penting secara filosofis. Benang-benangnya tidak selalu terhubung rapi, tapi semuanya datang dari rasa ingin tahu yang sama.</p></div>
-  </div>
-  
-  <div class="faq-item fade-in">
-    <button class="faq-question">Ini semua mau dibawa ke mana?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-    <div class="faq-answer"><p>Jujur, masih dicari. Versi panjangnya melibatkan membangun sesuatu yang membantu orang berpikir lebih jernih dan belajar lebih jujur. Versi pendeknya, ingin membuat sesuatu yang benar-benar berarti, dan waktu ini dipakai untuk mencari tahu seperti apa bentuknya.</p></div>
-  </div>
-</div>
+        <div class="faq-item fade-in">
+          <button class="faq-question">Apa yang ada di situs ini?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+          <div class="faq-answer"><p>Proyek, eksplorasi, dan hal-hal yang masih sedang dicari. Sebagian sudah selesai, sebagian masih dalam proses. isi website ini lebih ke catatan dari hal-hal yang selama ini jadi perhatianku.</p></div>
+        </div>
+        
+        <div class="faq-item fade-in">
+          <button class="faq-question">Kenapa Memilih Prodi Teknologi Pendidikan?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+          <div class="faq-answer"><p>Karena berada di persimpangan hal-hal yang memang aku minati antara Teknologi, Filsafat, Riset, Membuat Visual Grafis, Belajar cara orang belajar, dan bagaimana informasi disusun, sekaligus dikarenakan ambisi pribadi.</p></div>
+        </div>
+        
+        <div class="faq-item fade-in">
+          <button class="faq-question">Apakah Semua Proyek Di Web ini Sudah Selesai?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+          <div class="faq-answer"><p>Tidak. Ada yang sudah, ada yang masih jalan, ada yang baru sampai tahap cukup untuk didokumentasikan. Sebuah proyek tidak harus selesai dulu untuk layak ditunjukkan.</p></div>
+        </div>
+        
+        <div class="faq-item fade-in">
+          <button class="faq-question">Sebenarnya waktu habis buat apa?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+          <div class="faq-answer"><p>Kebanyakan hal visual dan motion. Tapi juga sistem — bagaimana sesuatu terstruktur di balik permukaan, bagaimana ruang digital dibangun, dan sesekali kenapa semua itu penting secara filosofis. Benang-benangnya tidak selalu terhubung rapi, tapi semuanya datang dari rasa ingin tahu yang sama.</p></div>
+        </div>
+        
+        <div class="faq-item fade-in">
+          <button class="faq-question">Ini semua mau dibawa ke mana?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+          <div class="faq-answer"><p>Jujur, masih dicari. Versi panjangnya melibatkan membangun sesuatu yang membantu orang berpikir lebih jernih dan belajar lebih jujur. Versi pendeknya, ingin membuat sesuatu yang benar-benar berarti, dan waktu ini dipakai untuk mencari tahu seperti apa bentuknya.</p></div>
+        </div>
+      </div>
     </div>
   </section>
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
+  <!-- Section: Footer Contact Links -->
   <section id="contact" class="has-corners corner-bottom">
     <div class="contact-ring-1"></div><div class="contact-ring-2"></div>
     <div class="contact-eyebrow fade-in">Let's Connect</div>
@@ -541,27 +540,7 @@ const base = import.meta.env.BASE_URL;
     </a>
   </section>
 
-  <style>
-    .custom-bounce-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease !important;
-    }
-
-    .custom-bounce-btn svg {
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    }
-
-    .custom-bounce-btn:hover {
-      transform: scale(1.06);
-    }
-
-    .custom-bounce-btn:hover svg {
-      transform: translateX(5px);
-    }
-  </style>
-
+  <!-- Section: Client Side Scripts Engine -->
   <script>
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');

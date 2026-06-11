@@ -1647,6 +1647,52 @@ section {
 }
 
 /* ========================================================
+         FIX UKURAN & TAMBAH ANIMASI BUTTON (HERO & CONTACT)
+         ======================================================== */
+.primary-bounce-btn,
+.secondary-stroke-btn,
+#contact .custom-bounce-btn {
+  padding: 10px 20px !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.12em !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  position: relative !important;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important; /* Efek transisi bounce halus */
+}
+
+/* Sesuaiin ukuran icon panah */
+.primary-bounce-btn svg,
+.secondary-stroke-btn svg,
+#contact .custom-bounce-btn svg {
+  width: 10px !important;
+  height: 10px !important;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important; /* Animasi buat panahnya */
+}
+
+/* Efek Hover / Active: Sedikit membesar & dapet efek Soft Glow Emas */
+.primary-bounce-btn:hover,
+#contact .custom-bounce-btn:hover,
+.primary-bounce-btn:active,
+#contact .custom-bounce-btn:active {
+  transform: scale(1.04) !important;
+  box-shadow: 0 0 14px rgba(201, 169, 110, 0.4) !important; /* Efek Glow Emas */
+}
+
+/* Animasi Panah Geser ke Kanan pas di-hover / di-tap */
+.primary-bounce-btn:hover svg,
+.secondary-stroke-btn:hover svg,
+#contact .custom-bounce-btn:hover svg,
+.primary-bounce-btn:active svg,
+.secondary-stroke-btn:active svg,
+#contact .custom-bounce-btn:active svg {
+  transform: translateX(4px) !important; /* Panahnya geser maju */
+}
+
+/* ========================================================
    SECTION: FOOTER BRANDING
    ======================================================== */
 footer {
