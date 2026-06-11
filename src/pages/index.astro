@@ -35,23 +35,18 @@ const base = import.meta.env.BASE_URL;
       width: 100% !important;
       max-width: 100% !important;
       display: block !important;
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(12px);
+      transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                  filter 1.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                  transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .about-container .sentence-unit,
-    .about-container p.about-body .sentence-unit {
-      width: 100% !important;
-      max-width: 100% !important;
-      display: block !important;
-      text-align: justify !important; 
-      text-align-last: left !important; 
-    }
-
-    @media (max-width: 768px) {
-      .about-container .sentence-unit,
-      .about-container p.about-body .sentence-unit {
-        text-align: center !important;
-        text-align-last: center !important;
-      }
+    .about-container p.about-body.heading-anim.about-text-fade.visible {
+      opacity: 1 !important;
+      filter: blur(0) !important;
+      transform: translateY(0) !important;
     }
 
     .word-unit {
@@ -62,15 +57,6 @@ const base = import.meta.env.BASE_URL;
       transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
                   filter 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
                   transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-    
-    .sentence-unit {
-      opacity: 0;
-      filter: blur(8px);
-      transform: translateY(12px);
-      transition: opacity 0.9s cubic-bezier(0.25, 1, 0.5, 1), 
-                  filter 0.9s cubic-bezier(0.25, 1, 0.5, 1), 
-                  transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     .about-info-card {
@@ -108,9 +94,23 @@ const base = import.meta.env.BASE_URL;
       opacity: 1;
       transform: translateY(0);
     }
+
+    .slide-1-content .slide-body.heading-anim.about-text-fade {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(12px);
+      transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                  filter 1.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                  transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .slide-1-content .slide-body.heading-anim.about-text-fade.visible {
+      opacity: 1 !important;
+      filter: blur(0) !important;
+      transform: translateY(0) !important;
+    }
   </style>
 
-  {/* --- MODAL DIALOG ARCHIVE --- */}
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <div class="modal-header">
@@ -126,7 +126,6 @@ const base = import.meta.env.BASE_URL;
     </div>
   </div>
 
-  {/* --- BRAND NAVIGATION --- */}
   <nav>
     <a href="#" class="nav-logo">I · W</a>
     <ul class="nav-links">
@@ -137,7 +136,6 @@ const base = import.meta.env.BASE_URL;
     </ul>
   </nav>
 
-  {/* --- SECTION: HERO DISPLAY --- */}
   <section id="hero" class="has-corners">
     <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
     <canvas id="ascii-canvas"></canvas>
@@ -159,7 +157,7 @@ const base = import.meta.env.BASE_URL;
         </a>
       </div>
     </div>
-<style>
+    <style>
       .hero-btn-wrap {
         margin-top: 32px;
       }
@@ -270,7 +268,6 @@ const base = import.meta.env.BASE_URL;
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
-  {/* --- SECTION: ABOUT ME --- */}
   <section id="about" class="has-corners">
     <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
     <div class="about-grid">
@@ -280,7 +277,7 @@ const base = import.meta.env.BASE_URL;
       <div class="about-text">
         <h2 class="heading-anim">You're here<br><em>I'm Irfan Wahyu</em></h2>
         <div class="about-container">
-          <p class="about-body heading-anim about-text-fade">Currently finding ground in Yogyakarta. Still learning & still exploring across systems technology and the visual world. That curiosity led me to Educational Technology at UNY, a field sitting at the intersection of Philosophical Science, Digital Technology and Education.It's not the most obvious path but i think it's the one that felt most honest i choice. I'm still figuring out who I am and what I'm building toward, this space reflects that process Some things here are finished Most are still forming.</p>
+          <p class="about-body heading-anim about-text-fade">Currently finding ground in Yogyakarta. Still learning, still exploring, across systems, technology, and the visual world. That curiosity led me to Educational Technology at UNY, a field sitting at the intersection of philosophy, digital technology, and education. It's not the most obvious path, but it's the one that felt most honest. I'm still figuring out who I am and what I'm building toward, and this space reflects that process. Some things here are finished. Most are still forming.</p>
         </div>
         
         <div class="about-info-grid">
@@ -290,7 +287,7 @@ const base = import.meta.env.BASE_URL;
           </div>
           <div class="about-info-card" data-delay="120">
             <div class="about-info-icon"><Bookmark size={18} /></div>
-            <div><div class="about-info-label">Minat</div><div class="about-info-value">Membaca, Digital Tech, Sistem</div></div>
+            <div><div class="about-info-label">Minat</div><div class="about-info-value">Membaca, Komputer, Sistem, Analisis, Dialektika</div></div>
           </div>
           <div class="about-info-card" data-delay="240">
             <div class="about-info-icon"><University size={18} /></div>
@@ -328,7 +325,6 @@ const base = import.meta.env.BASE_URL;
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
-  {/* --- SECTION: WORKS GALLERY --- */}
   <section id="works" class="has-corners">
     <div class="works-header fade-in">
       <h2 class="works-title heading-anim">Selected <em>Works</em></h2>
@@ -341,7 +337,7 @@ const base = import.meta.env.BASE_URL;
     </div>
 
     <div class="works-grid" id="worksGrid">
-   {sorted.map((project, idx) => (
+       {sorted.map((project, idx) => (
         <a 
           href={`${base}works/${project.id}/`} 
           class={`work-card work-anim${idx >= 3 ? ' hidden' : ''}`} 
@@ -404,18 +400,6 @@ const base = import.meta.env.BASE_URL;
             </div>
           </div>
         </a>
-            </div>
-
-            <div class="work-tags" style="margin: 0 !important; display: flex !important; align-items: center !important;">
-              <div class="work-tag" style="display: flex !important; align-items: center !important; gap: 0.5rem !important; margin: 0 !important;">
-                View Project
-                <svg width="11" height="9" viewBox="0 0 12 10" fill="none" style="display: inline-block; vertical-align: middle;">
-                  <path d="M1 5h10M6 1l5 4-5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </a>
       ))}
     </div>
     
@@ -429,14 +413,13 @@ const base = import.meta.env.BASE_URL;
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
-  {/* --- SECTION: PHILOSOPHY & ROADMAP --- */}
   <section id="philosophy" class="has-corners corner-bottom">
     <div class="slider-wrap">
       <div class="slide active" id="slide-1">
         <div class="slide-section-label">Philosophy</div>
         <div class="slide-1-content" style="width: 100% !important; max-width: 100% !important; padding: 0 !important;">
           <div class="slide-quote heading-anim slide-quote" style="text-align: center !important; margin-bottom: 0px !important; padding-bottom: 0px !important;">
-            "Die jugendliche Seele blicke auf das Leben zurück mit der Frage: was hast du bisher wirklich geliebt, was hat deine Seele gezogen was hat sie beherrscht und gleichzeitig beglückt? Stelle diese Reihe verehrter Gegenstände vor dir auf, und vielleicht zeigen sie dir ein Grundgesetz du deines eigentlichen Selbst: werde der du bist!"
+            "Let your youthful soul look back on life with the question: what have you truly loved? What has drawn your soul upward? Arrange these things before you, and perhaps they will reveal the fundamental law of your true self: become who you are."
           </div>
           
           <div class="slide-quote heading-anim slide-quote" style="text-align: center !important; margin-top: 1.5rem !important; padding-top: 0px !important;">
@@ -454,45 +437,45 @@ const base = import.meta.env.BASE_URL;
           <div class="slide-deco"><div class="slide-deco-mark">✦</div></div>
           
           <p class="slide-body heading-anim about-text-fade" style="width: 100% !important; max-width: 700px !important; margin-left: auto !important; margin-right: auto !important; padding: 0 !important; text-align: center !important; line-height: 1.7;">
-            For me, this archive is a deliberate space to gather the things I focus on. Combining the logic of computing systems and the expression of visual forms is my independent way to deconstruct how structures work. In a world full of pre-made directions and exploring these layers honestly is my personal process to build a solid foundation and slowly become who I am.
+            This space is where I gather the things that actually matter to me, no particular order, no fixed destination. Exploring the overlap between systems, visual craft, and ideas is how I make sense of things. In a world that hands you directions before you even ask, doing this honestly feels like the only real way to figure out who I'm becoming.
           </p>
         </div>
       </div>
 
-      <div class="slide" id="slide-2">
-        <div class="slide-section-label">Roadmap</div>
-        <h3 class="roadmap-title heading-anim">Where I'm Heading</h3>
+    <div class="slide" id="slide-2">
+      <div class="slide-section-label">Roadmap</div>
+      <h3 class="roadmap-title heading-anim">Where I'm Heading</h3>
+      
+      <div class="roadmap">
+        <div class="roadmap-node" data-delay="0">
+          <div class="roadmap-dot active-dot"></div>
+          <div class="roadmap-phase">Phase 01 — Now</div>
+          <div class="roadmap-label">Foundation</div>
+          <div class="roadmap-desc">First year of university. Getting used to the rhythm, figuring out what actually matters, and building the basics academically and personally.</div>
+        </div>
         
-        <div class="roadmap">
-          <div class="roadmap-node" data-delay="0">
-            <div class="roadmap-dot active-dot"></div>
-            <div class="roadmap-phase">Phase 01 — First Year</div>
-            <div class="roadmap-label">Foundation</div>
-            <div class="roadmap-desc">Establishing the core academic pillars while aligning personal digital interests and creative baselines.</div>
-          </div>
-          
-          <div class="roadmap-node" data-delay="150">
-            <div class="roadmap-dot"></div>
-            <div class="roadmap-phase">Phase 02 — Soon</div>
-            <div class="roadmap-label">Exploration</div>
-            <div class="roadmap-desc">Expanding into independent system environments, exploring command logic, and testing visual boundaries.</div>
-          </div>
-          
-          <div class="roadmap-node" data-delay="300">
-            <div class="roadmap-dot"></div>
-            <div class="roadmap-phase">Phase 03 — Soon</div>
-            <div class="roadmap-label">Synthesis</div>
-            <div class="roadmap-desc">Synthesizing technical logic and design principles to construct structured, interactive digital spaces.</div>
-          </div>
-          
-          <div class="roadmap-node" data-delay="450">
-            <div class="roadmap-dot"></div>
-            <div class="roadmap-phase">Phase 04 — Soon</div>
-            <div class="roadmap-label">Impact</div>
-            <div class="roadmap-desc">Utilizing accumulated knowledge and digital mediums to empower others, helping them navigate clarity, gain understanding, and discover their own purpose in life.</div>
-          </div>
+        <div class="roadmap-node" data-delay="150">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-phase">Phase 02 — Soon</div>
+          <div class="roadmap-label">Expansion</div>
+          <div class="roadmap-desc">Going deeper into the things I'm genuinely curious about systems, code, visual craft. Less structured, more exploratory. Seeing where each thread leads.</div>
+        </div>
+        
+        <div class="roadmap-node" data-delay="300">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-phase">Phase 03 — Later</div>
+          <div class="roadmap-label">Building</div>
+          <div class="roadmap-desc">Taking what I've learned and actually making things with it. Real projects, real problems, real stakes. The gap between knowing and doing, closed.</div>
+        </div>
+        
+        <div class="roadmap-node" data-delay="450">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-phase">Phase 04 — Eventually</div>
+          <div class="roadmap-label">Impact</div>
+          <div class="roadmap-desc">Using everything built to help others think more clearly, learn more honestly, and find their own direction without someone else handing it to them.</div>
         </div>
       </div>
+    </div>
 
       <div class="slider-controls">
         <div class="slider-dot active" data-slide="0"></div>
@@ -503,7 +486,6 @@ const base = import.meta.env.BASE_URL;
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
-  {/* --- SECTION: FAQ ACCORDION --- */}
   <section id="faq-section" class="has-corners corner-bottom">
     <div class="faq-inner">
       <div class="slide-section-label fade-in" style="margin-bottom:var(--space-lg)">Questions</div>
@@ -511,37 +493,36 @@ const base = import.meta.env.BASE_URL;
       <p class="faq-subtitle heading-anim about-text-fade"></p>
       
       <div class="faq-list">
-        <div class="faq-item fade-in">
-          <button class="faq-question">Apa yang bisa ditemukan di website ini?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-          <div class="faq-answer"><p>Website ini berisi kumpulan proyek, dokumentasi pembelajaran, serta berbagai eksplorasi yang berkaitan dengan teknologi, media digital, dan hal-hal yang sedang dipelajari. Selain menjadi tempat menyimpan hasil karya, website ini juga berfungsi sebagai ruang untuk mencatat proses perkembangan dan perjalanan belajar yang terus berlangsung.</p></div>
-        </div>
-        
-        <div class="faq-item fade-in">
-          <button class="faq-question">Kenapa memilih Teknologi Pendidikan?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-          <div class="faq-answer"><p>Ketertarikan pada hubungan antara teknologi, media, dan proses belajar menjadi alasan utama memilih bidang ini. Teknologi Pendidikan memberikan ruang untuk mempelajari bagaimana informasi dapat disampaikan dengan lebih efektif, sekaligus memahami bagaimana teknologi dapat dimanfaatkan untuk membantu proses pembelajaran.</p></div>
-        </div>
-        
-        <div class="faq-item fade-in">
-          <button class="faq-question">Apakah semua proyek yang ditampilkan sudah selesai?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-          <div class="faq-answer"><p>Tidak semuanya. Beberapa proyek telah selesai dikembangkan, sementara sebagian lainnya masih berada dalam tahap eksplorasi, pengembangan, atau penyempurnaan. Website ini tidak hanya menampilkan hasil akhir, tetapi juga menjadi tempat untuk mendokumentasikan proses yang sedang berjalan.</p></div>
-        </div>
-        
-        <div class="faq-item fade-in">
-          <button class="faq-question">Bidang apa yang paling sering dieksplorasi?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-          <div class="faq-answer"><p>Sebagian besar eksplorasi berada di sekitar teknologi digital, media pembelajaran, desain visual, dan berbagai topik yang berkaitan dengan pengembangan media. Ketertarikan tersebut sering kali bertemu pada satu titik yang sama, yaitu bagaimana teknologi dapat digunakan untuk menyampaikan informasi dengan lebih baik.</p></div>
-        </div>
-        
-        <div class="faq-item fade-in">
-          <button class="faq-question">Apa output dari memilih jurusan ini?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
-          <div class="faq-answer"><p>Pilihan terhadap Teknologi Pendidikan berangkat dari visi untuk memahami hubungan antara manusia, teknologi, dan proses belajar. Dalam jangka panjang, bidang ini diharapkan dapat menjadi fondasi untuk menciptakan sesuatu yang memiliki nilai dan manfaat nyata, baik dalam bentuk media, sistem, maupun solusi yang dapat membantu orang lain memperoleh akses terhadap informasi dan pembelajaran dengan lebih baik.</p></div>
-        </div>
-      </div>
+  <div class="faq-item fade-in">
+    <button class="faq-question">Apa yang ada di situs ini?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+    <div class="faq-answer"><p>Proyek, eksplorasi, dan hal-hal yang masih sedang dicari. Sebagian sudah selesai, sebagian masih dalam proses. isi website ini lebih ke catatan dari hal-hal yang selama ini jadi perhatianku.</p></div>
+  </div>
+  
+  <div class="faq-item fade-in">
+    <button class="faq-question">Kenapa Memilih Prodi Teknologi Pendidikan?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+    <div class="faq-answer"><p>Karena berada di persimpangan hal-hal yang memang aku minati antara Teknologi, Filsafat, Riset, Membuat Visual Grafis, Belajar cara orang belajar, dan bagaimana informasi disusun, sekaligus dikarenakan ambisi pribadi.</p></div>
+  </div>
+  
+  <div class="faq-item fade-in">
+    <button class="faq-question">Apakah Semua Proyek Di Web ini Sudah Selesai?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+    <div class="faq-answer"><p>Tidak. Ada yang sudah, ada yang masih jalan, ada yang baru sampai tahap cukup untuk didokumentasikan. Sebuah proyek tidak harus selesai dulu untuk layak ditunjukkan.</p></div>
+  </div>
+  
+  <div class="faq-item fade-in">
+    <button class="faq-question">Sebenarnya waktu habis buat apa?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+    <div class="faq-answer"><p>Kebanyakan hal visual dan motion. Tapi juga sistem — bagaimana sesuatu terstruktur di balik permukaan, bagaimana ruang digital dibangun, dan sesekali kenapa semua itu penting secara filosofis. Benang-benangnya tidak selalu terhubung rapi, tapi semuanya datang dari rasa ingin tahu yang sama.</p></div>
+  </div>
+  
+  <div class="faq-item fade-in">
+    <button class="faq-question">Ini semua mau dibawa ke mana?<span class="faq-arrow"><svg width="13" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></button>
+    <div class="faq-answer"><p>Jujur, masih dicari. Versi panjangnya melibatkan membangun sesuatu yang membantu orang berpikir lebih jernih dan belajar lebih jujur. Versi pendeknya, ingin membuat sesuatu yang benar-benar berarti, dan waktu ini dipakai untuk mencari tahu seperti apa bentuknya.</p></div>
+  </div>
+</div>
     </div>
   </section>
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
-  {/* --- SECTION: CONNECT / CONTACT --- */}
   <section id="contact" class="has-corners corner-bottom">
     <div class="contact-ring-1"></div><div class="contact-ring-2"></div>
     <div class="contact-eyebrow fade-in">Let's Connect</div>
@@ -581,9 +562,7 @@ const base = import.meta.env.BASE_URL;
     }
   </style>
 
-  {/* --- CORE ENGINE INTERACTION SCRIPT --- */}
   <script>
-    // ===== CORE: MOUSE CURSOR =====
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
@@ -598,9 +577,33 @@ const base = import.meta.env.BASE_URL;
         ring.style.top = ry + 'px';
         requestAnimationFrame(animC);
       })();
+
+      const viewProjectBtns = document.querySelectorAll('.work-overlay .work-tag');
+      viewProjectBtns.forEach(btn => {
+        const svgIcon = btn.querySelector('svg');
+        btn.style.transition = 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
+        if (svgIcon) svgIcon.style.transition = 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
+
+        btn.addEventListener('mouseenter', () => {
+          btn.style.backgroundColor = '#c9a96e';
+          btn.style.color = '#0b0d11';
+          btn.style.borderColor = '#c9a96e';
+          btn.style.paddingLeft = '14px';
+          btn.style.paddingRight = '14px';
+          if (svgIcon) svgIcon.style.transform = 'translateX(4px)';
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          btn.style.backgroundColor = '';
+          btn.style.color = '';
+          btn.style.borderColor = '';
+          btn.style.paddingLeft = '';
+          btn.style.paddingRight = '';
+          if (svgIcon) svgIcon.style.transform = '';
+        });
+      });
     }
 
-    // ===== INTERACTIVE ENGINE: HERO BACKGROUND (ASCII) =====
     (function() {
       const cv = document.getElementById('ascii-canvas');
       if (!cv) return;
@@ -696,7 +699,6 @@ const base = import.meta.env.BASE_URL;
       resizeCanvas();
     })();
 
-    // ===== INTERACTIVE ENGINE: PHOTO CANVAS PARTICLE =====
     (function() {
       const canvas = document.getElementById('particle-canvas');
       if (!canvas) return;
@@ -776,7 +778,6 @@ const base = import.meta.env.BASE_URL;
       resize(); draw();
     })();
 
-    // ===== UI COMPONENT: SKILL DETAILS MODAL =====
     const overlay = document.getElementById('modalOverlay');
     document.getElementById('modalClose')?.addEventListener('click', () => overlay?.classList.remove('open'));
     overlay?.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open') });
@@ -797,7 +798,6 @@ const base = import.meta.env.BASE_URL;
       });
     });
 
-    // ===== UI COMPONENT: GALLERY LOAD MORE =====
     (function() {
       const grid = document.getElementById('worksGrid');
       const btn = document.getElementById('btnShowMore');
@@ -812,7 +812,6 @@ const base = import.meta.env.BASE_URL;
       });
     })();
 
-    // ===== UI COMPONENT: PHILOSOPHY SLIDER =====
     (function() {
       const slides = document.querySelectorAll('.slide');
       const dots = document.querySelectorAll('.slider-dot');
@@ -827,7 +826,6 @@ const base = import.meta.env.BASE_URL;
       startAuto();
     })();
 
-    // ===== UI COMPONENT: FAQ ACCORDION =====
     document.querySelectorAll('.faq-question').forEach(btn => {
       btn.addEventListener('click', () => {
         const item = btn.closest('.faq-item');
@@ -838,7 +836,6 @@ const base = import.meta.env.BASE_URL;
       });
     });
 
-    // ===== PERFORMANCE: ENGINE TYPING EFFECT =====
     (function() {
       const el = document.querySelector('.hero-heading');
       if (!el) return;
@@ -858,22 +855,6 @@ const base = import.meta.env.BASE_URL;
       }
       setTimeout(type, 800);
     })();
-
-    // ===== PARSER: TEXT PACKAGING WRAPPERS =====
-    function wrapSentences(el: any, lineDelay: number) {
-      const raw = el.textContent.trim();
-      const chunks = raw.match(/[^,\.]+[,\.]?\s*/g) || [raw];
-      const groups: any = [];
-      for (let i = 0; i < chunks.length; i += 2) {
-        const g = chunks.slice(i, i+2).join('').trim();
-        if (g) groups.push(g);
-      }
-      let html = '';
-      groups.forEach((g: any, i: number) => {
-        html += `<span class="sentence-unit" style="display:block; transition-delay: ${i * lineDelay}ms;">${g}</span>`;
-      });
-      el.innerHTML = html;
-    }
 
     function wrapHeadingWords(el: any, wordDelay: number) {
       function walk(node: any) {
@@ -898,13 +879,9 @@ const base = import.meta.env.BASE_URL;
       });
     }
 
-    // ===== INTERSECTION ENGINE: SCROLL OBSERVER =====
     (function() {
       document.querySelectorAll('.heading-anim').forEach(el => {
-        if (el.classList.contains('slide-quote') || el.classList.contains('about-text-fade')) { 
-          wrapSentences(el, 220); 
-        } 
-        else { 
+        if (!el.classList.contains('slide-quote') && !el.classList.contains('about-text-fade')) { 
           wrapHeadingWords(el, 100); 
         }
       });
@@ -914,8 +891,13 @@ const base = import.meta.env.BASE_URL;
           if (!e.isIntersecting) return;
           const el = e.target;
           
+          if (el.classList.contains('about-text-fade')) {
+            el.classList.add('visible');
+            obs.unobserve(el); return;
+          }
+
           if (el.classList.contains('heading-anim')) {
-            el.querySelectorAll('.word-unit,.sentence-unit').forEach((w: any) => {
+            el.querySelectorAll('.word-unit').forEach((w: any) => {
               w.style.opacity = '1'; w.style.filter = 'blur(0)'; w.style.transform = 'translateY(0)';
             });
             obs.unobserve(el); return;

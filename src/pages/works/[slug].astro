@@ -25,7 +25,6 @@ const base = import.meta.env.BASE_URL;
   <style is:global>
     @import '../../../public/styles/work-detail.css';
     
-    /* --- ARTICLE RENDERED CONTENT SYSTEM --- */
     .article h2 {
       font-family: var(--font-heading);
       font-size: clamp(1.6rem, 2.5vw, 2.2rem);
@@ -103,7 +102,6 @@ const base = import.meta.env.BASE_URL;
       line-height: 1.7;
     }
 
-    /* --- DYNAMIC MASONRY INLINE GRID --- */
     .masonry-gallery-grid {
       display: grid !important;
       gap: 16px !important;
@@ -124,9 +122,61 @@ const base = import.meta.env.BASE_URL;
         gap: 12px !important;
       }
     }
+
+    .sidebar-toc {
+      max-height: 380px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 20px var(--space-md) var(--space-md) var(--space-md) !important;
+    }
+
+    .toc-list {
+      flex: 1 !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      padding-right: 4px !important;
+    }
+
+    .toc-item a {
+      font-size: 0.95rem !important;
+      padding: 6px 12px !important;
+    }
+
+    .toc-item.toc-h3 a {
+      font-size: 0.88rem !important;
+    }
+
+    .toc-list::-webkit-scrollbar {
+      width: 4px !important;
+    }
+    .toc-list::-webkit-scrollbar-track {
+      background: transparent !important;
+    }
+    .toc-list::-webkit-scrollbar-thumb {
+      background: var(--accent) !important;
+      border-radius: 2px !important;
+    }
+
+    .sidebar-back {
+      color: var(--accent) !important;
+      font-weight: 500 !important;
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    }
+
+    .sidebar-back:hover {
+      color: #e4e0d8 !important;
+      transform: translateX(-4px) !important;
+    }
+
+    .sidebar-back svg {
+      transition: transform 0.3s ease !important;
+    }
+
+    .sidebar-back:hover svg {
+      transform: translateX(-2px) !important;
+    }
   </style>
 
-  {/* --- INTERACTIVE LIGHTBOX EXTENSION --- */}
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close" id="lbClose">✕</button>
     <button class="lightbox-nav lightbox-prev" id="lbPrev">
@@ -144,7 +194,6 @@ const base = import.meta.env.BASE_URL;
 
   <Nav variant="detail" />
 
-  {/* --- SECTION: PROJECT HERO HEADER --- */}
   <section id="project-hero" class="has-corners" style="position: relative; overflow: hidden;">
     <span class="c-tl"></span><span class="c-tr"></span>
     <div class="hero-bg-fill"></div>
@@ -166,7 +215,6 @@ const base = import.meta.env.BASE_URL;
       <h1 class="project-title" style="margin-bottom: 0 !important; line-height: 1.15;" set:html={title.replace('—', '<br>—')} />
       {subtitle && <p class="project-subtitle" style="margin-top: 0 !important; margin-bottom: 4px !important; opacity: 0.8;">{subtitle}</p>}
 
-      {/* --- ACTIVE WORK ENGINE ASSET ACTION --- */}
       {raw_asset_url && (
         <a 
           href={raw_asset_url}
@@ -186,12 +234,9 @@ const base = import.meta.env.BASE_URL;
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
 
-  {/* --- SECTION: MAIN CMS CONTENT LAYOUT --- */}
   <div id="project-body">
-
-    {/* --- LAYOUT SIDEBAR CONTEXT --- */}
     <aside class="sidebar">
-      <a href={`${base}works`} class="sidebar-back fade-in" data-delay="160">
+      <a href="/irfan.site/works" class="sidebar-back fade-in" data-delay="160">
         <svg width="12" height="10" viewBox="0 0 14 10" fill="none">
           <path d="M13 5H1M6 1L1 5l5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
@@ -239,11 +284,9 @@ const base = import.meta.env.BASE_URL;
       </div>
     </aside>
 
-    {/* --- LAYOUT CORE ARTICLE OUTPUT --- */}
     <article class="article">
       <Content />
     </article>
-
   </div>
 
   <div class="section-divider"><div class="section-divider-diamond"></div></div>
@@ -273,16 +316,51 @@ const base = import.meta.env.BASE_URL;
     }
   </style>
 
-  {/* --- CORE ENGINE INTERACTION SCRIPT --- */}
   <script>
+    function forceLongImageStyles() {
+      const article = document.querySelector('.article');
+      if (!article) return;
+      
+      const imgs = article.querySelectorAll('img');
+      imgs.forEach((img) => {
+        const titleText = img.getAttribute('title') || '';
+        const altText = img.getAttribute('alt') || '';
+        
+        if (titleText.includes('long') || altText.includes('long')) {
+          img.style.setProperty('width', '100%', 'important');
+          img.style.setProperty('min-width', '100%', 'important');
+          img.style.setProperty('max-width', '100%', 'important');
+          img.style.setProperty('height', 'auto', 'important');
+          img.style.setProperty('max-height', 'none', 'important');
+          img.style.setProperty('object-fit', 'fill', 'important');
+          img.style.setProperty('margin', '0 auto', 'important');
+          img.style.setProperty('border-radius', '4px', 'important');
+
+          const parent = img.parentElement;
+          if (parent) {
+            parent.style.setProperty('display', 'block', 'important');
+            parent.style.setProperty('width', '100%', 'important');
+            parent.style.setProperty('max-width', '720px', 'important');
+            parent.style.setProperty('height', 'auto', 'important');
+            parent.style.setProperty('max-height', '650px', 'important');
+            parent.style.setProperty('overflow-y', 'auto', 'important');
+            parent.style.setProperty('overflow-x', 'hidden', 'important');
+            parent.style.setProperty('background', '#111419', 'important');
+            parent.style.setProperty('border', '1px solid rgba(228, 224, 216, 0.07)', 'important');
+            parent.style.setProperty('padding', '12px', 'important');
+            parent.style.setProperty('margin', '32px auto', 'important');
+          }
+        }
+      });
+    }
+
     function initGallerySystems() {
       const article = document.querySelector('.article');
       if (!article) return;
 
-      // ===== LANGKAH 1: BANGUN GRID MASONRY SECARA DINAMIS =====
       const children = Array.from(article.children);
       let tempGroup = [];
-      let currentColumns = 2; // Default kolom kalau tidak disetel
+      let currentColumns = 2;
 
       children.forEach((el, index) => {
         const img = el.tagName === 'P' && el.children.length === 1 && el.children[0].tagName === 'IMG' 
@@ -290,12 +368,10 @@ const base = import.meta.env.BASE_URL;
           : (el.tagName === 'IMG' ? el : null);
 
         if (img) {
-          // Deteksi token penentu kolom (:2, :3, :4) di title teks gambar pertama
           const titleText = img.getAttribute('title') || '';
           const match = titleText.match(/:([2-4])/);
           if (match && tempGroup.length === 0) {
             currentColumns = parseInt(match[1]);
-            // Bersihkan token dari title asli agar tidak merusak caption teks visual
             img.setAttribute('title', titleText.replace(/:[2-4]/, '').trim());
           }
           
@@ -303,7 +379,7 @@ const base = import.meta.env.BASE_URL;
         } else {
           if (tempGroup.length >= 2) buildGrid(tempGroup, currentColumns);
           tempGroup = [];
-          currentColumns = 2; // Reset ke default
+          currentColumns = 2;
         }
 
         if (index === children.length - 1 && tempGroup.length >= 2) {
@@ -314,7 +390,6 @@ const base = import.meta.env.BASE_URL;
       function buildGrid(group, columns) {
         const gridDiv = document.createElement('div');
         gridDiv.className = 'masonry-gallery-grid';
-        // Suntik jumlah kolom dinamis langsung ke inline style
         gridDiv.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
 
         const firstTarget = group[0].pElement || group[0].imgElement;
@@ -328,7 +403,13 @@ const base = import.meta.env.BASE_URL;
         });
       }
 
-      // ===== LANGKAH 2: SETEL INTERACTIVE IMAGE LIGHTBOX SYSTEM =====
+      forceLongImageStyles();
+
+      const observer = new MutationObserver(() => {
+        forceLongImageStyles();
+      });
+      observer.observe(article, { childList: true, subtree: true });
+
       const lb = document.getElementById('lightbox');
       const lbImg = document.getElementById('lbImg') as HTMLImageElement;
       const lbCaption = document.getElementById('lbCaption');
@@ -359,6 +440,9 @@ const base = import.meta.env.BASE_URL;
         
         lb.classList.add('open');
         
+        const imgWrap = document.querySelector('.lightbox-img-wrap');
+        if (imgWrap) imgWrap.scrollTop = 0;
+        
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             lbImg.style.transform = '';
@@ -374,6 +458,7 @@ const base = import.meta.env.BASE_URL;
         lbImg.style.filter = 'blur(8px)';
         setTimeout(() => {
           lb.classList.remove('open');
+          lbImg.src = ''; 
         }, 350);
       }
 
@@ -394,7 +479,6 @@ const base = import.meta.env.BASE_URL;
       }
     }
 
-    // ===== UI COMPONENT: DYNAMIC AUTOMATIC TOC GENERATOR =====
     function initToc() {
       const article = document.querySelector('.article');
       const tocList = document.getElementById('tocList');
@@ -430,7 +514,6 @@ const base = import.meta.env.BASE_URL;
       headings.forEach(h => io.observe(h));
     }
 
-    // ===== PERFORMANCE: ENGINE SCROLL FADE OBSERVER =====
     function initScrollFade() {
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {

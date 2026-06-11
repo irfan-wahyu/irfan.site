@@ -341,8 +341,8 @@ nav {
   max-height: calc(100vh - 120px);
 }
 
-/* --- SIDEBAR: META DETAILS --- */
-.sidebar-stats {
+.sidebar-stats,
+.sidebar-toc {
   border: 1px solid rgba(201, 169, 110, 0.18);
   border-radius: 12px;
   padding: 20px var(--space-md) 52px var(--space-md);
@@ -352,13 +352,13 @@ nav {
   height: fit-content;
 }
 
-.sidebar-stats::before {
+.sidebar-stats::before,
+.sidebar-toc::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   height: 2px;
   background: linear-gradient(
     to right,
@@ -421,33 +421,6 @@ nav {
   border-radius: 2px;
 }
 
-/* --- SIDEBAR: TABLE OF CONTENTS --- */
-.sidebar-toc {
-  border: 1px solid rgba(201, 169, 110, 0.18);
-  border-radius: 12px;
-  padding: 20px var(--space-md) 52px var(--space-md);
-  background: var(--bg-secondary);
-  position: relative;
-  overflow: hidden;
-  height: fit-content;
-}
-
-.sidebar-toc::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.4;
-}
-
 .toc-label {
   font-family: var(--font-label);
   font-size: 0.52rem;
@@ -481,17 +454,14 @@ nav {
 .toc-list::-webkit-scrollbar {
   width: 4px;
 }
-
 .toc-list::-webkit-scrollbar-track {
   background: rgba(228, 224, 216, 0.02);
   border-radius: 4px;
 }
-
 .toc-list::-webkit-scrollbar-thumb {
   background: rgba(201, 169, 110, 0.3);
   border-radius: 4px;
 }
-
 .toc-list::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
@@ -851,6 +821,7 @@ nav {
   align-items: center;
   justify-content: center;
   padding: 40px;
+  overflow: hidden !important;
 }
 
 .lightbox.open {
@@ -860,10 +831,28 @@ nav {
 
 .lightbox-img-wrap {
   position: relative;
-  max-width: 90vw;
-  max-height: 85vh;
+  width: 100% !important;
+  max-width: 600px !important;
+  height: 100% !important;
+  max-height: 80vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  display: block !important;
+  margin: auto !important;
+  padding-right: 4px;
   transform: scale(0.96);
   transition: transform 0.4s ease;
+}
+
+.lightbox-img-wrap::-webkit-scrollbar {
+  width: 4px;
+}
+.lightbox-img-wrap::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+.lightbox-img-wrap::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 2px;
 }
 
 .lightbox.open .lightbox-img-wrap {
@@ -871,10 +860,13 @@ nav {
 }
 
 .lightbox-img-wrap img {
-  max-width: 90vw;
-  max-height: 85vh;
-  object-fit: contain;
-  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: fill !important;
+  display: block !important;
+  margin: 0 auto !important;
   border: 1px solid var(--border);
   transform: scale(0.85);
   filter: blur(8px);
@@ -907,6 +899,7 @@ nav {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  z-index: 99 !important;
 }
 
 .lightbox-close:hover {
@@ -925,6 +918,7 @@ nav {
   opacity: 0.6;
   letter-spacing: 0.06em;
   text-align: center;
+  z-index: 99 !important;
 }
 
 .lightbox-counter {
@@ -937,6 +931,7 @@ nav {
   color: var(--text-muted);
   letter-spacing: 0.12em;
   opacity: 0.5;
+  z-index: 99 !important;
 }
 
 .lightbox-nav {
@@ -954,6 +949,7 @@ nav {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  z-index: 99 !important;
 }
 
 .lightbox-nav:hover {
@@ -981,6 +977,63 @@ nav {
 .lightbox.open .lightbox-counter,
 .lightbox.open .lightbox-caption {
   opacity: 1;
+}
+
+/* ========================================================
+   INTEGRASI CMS: DETEKSI OTOMATIS GAMBAR PORTRAIT PANJANG
+   ======================================================== */
+.article p:has(img[title*="long"]),
+.article p:has(img[alt*="long"]),
+.article div:has(> img[title*="long"]),
+.article div:has(> img[alt*="long"]) {
+  display: table !important;
+  width: 100% !important;
+  max-width: 720px !important;
+  height: auto !important;
+  max-height: 650px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border) !important;
+  padding: 12px !important;
+  margin: 32px auto !important;
+}
+
+.article p:has(img[title*="long"]) img,
+.article p:has(img[alt*="long"]) img,
+.article div:has(> img[title*="long"]) img,
+.article div:has(> img[alt*="long"]) img,
+.article img[title*="long"],
+.article img[alt*="long"] {
+  display: block !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: fill !important;
+  margin: 0 auto !important;
+  border-radius: 4px !important;
+}
+
+.article p:has(img[title*="long"])::-webkit-scrollbar,
+.article p:has(img[alt*="long"])::-webkit-scrollbar,
+.article div:has(> img[title*="long"])::-webkit-scrollbar,
+.article div:has(> img[alt*="long"])::-webkit-scrollbar {
+  width: 4px;
+}
+.article p:has(img[title*="long"])::-webkit-scrollbar-track,
+.article p:has(img[alt*="long"])::-webkit-scrollbar-track,
+.article div:has(> img[title*="long"])::-webkit-scrollbar-track,
+.article div:has(> img[alt*="long"])::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+.article p:has(img[title*="long"])::-webkit-scrollbar-thumb,
+.article p:has(img[alt*="long"])::-webkit-scrollbar-thumb,
+.article div:has(> img[title*="long"])::-webkit-scrollbar-thumb,
+.article div:has(> img[alt*="long"])::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 2px;
 }
 
 /* ========================================================
@@ -1216,12 +1269,10 @@ footer {
   footer {
     padding: var(--space-xl) 32px 0;
   }
-
   .footer-top {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
   }
-
   .footer-name-bg {
     bottom: -30px;
     font-size: 9rem;
@@ -1233,24 +1284,19 @@ footer {
   nav {
     padding: 22px 24px;
   }
-
   #project-hero .hero-content {
     padding: 0 24px var(--space-xl);
   }
-
   #project-body {
     grid-template-columns: 1fr;
     padding: var(--space-xl) 24px;
   }
-
   .sidebar {
     position: static;
   }
-
   .sidebar-toc {
     display: none;
   }
-
   footer {
     padding: var(--space-xl) 24px 0;
   }
@@ -1262,20 +1308,16 @@ footer {
     line-height: 1;
     bottom: -50px;
   }
-
   .footer-name-bg span {
     display: none;
   }
-
   .footer-right {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
   }
-
   .footer-left {
     text-align: center;
   }
-
   .footer-about {
     margin-left: auto;
     margin-right: auto;

@@ -974,6 +974,10 @@ section {
   will-change: auto;
 }
 
+.work-overlay p {
+  margin-top: 40px !important;
+}
+
 .work-overlay {
   position: absolute;
   inset: 0;
@@ -990,8 +994,28 @@ section {
   padding: 24px;
 }
 
+.work-card .work-card-dimmer {
+  background: #0c0e13 !important;
+  opacity: 0.65 !important;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.work-card:hover .work-card-dimmer {
+  opacity: 0.45 !important;
+}
+
+.work-card .work-initial-center-content {
+  transition:
+    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.4s ease !important;
+}
+
 .work-card:hover .work-overlay {
   opacity: 1;
+}
+
+.work-overlay .work-tag {
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
 }
 
 .work-title {

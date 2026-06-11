@@ -76,10 +76,12 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
               />
             )}
 
-            <div class="work-card-dimmer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 13, 17, 0.4); z-index: 2; pointer-events: none; transition: opacity 0.3s ease;"></div>
+            {/* BACKGROUND SEBELUM HOVER: Diubah ke 0.65 agar kestabilan kontras teks judul di tengah aman dari awal */}
+            <div class="work-card-dimmer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 13, 17, 0.65); z-index: 2; pointer-events: none; transition: background 0.3s ease, opacity 0.3s ease;"></div>
 
-            <div class="work-initial-center-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 3; pointer-events: none; transition: transform 0.4s ease, opacity 0.4s ease;">
-              <div class="work-title" style="font-family: var(--font-heading); font-size: 1.2rem; font-style: italic; color: var(--text); font-weight: 400;">{project.data.title}</div>
+            {/* TRANSISI TEKS TENGAH: Ditambahkan transition-property lengkap agar efek fade dan transform naiknya smooth */}
+            <div class="work-initial-center-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 3; pointer-events: none; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;">
+              <div class="work-title center-title-target" style="font-family: var(--font-heading); font-size: 1.2rem; font-style: italic; color: var(--text); font-weight: 400;">{project.data.title}</div>
             </div>
 
             <div 
@@ -167,7 +169,7 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        const alphabet = "X01Ø§¶#@+=_-*^%!&[$]αβγδεζηθικλμνξοπρστυφχψω∆∇∂∑∏√∞∫≈≠≤≥+=¬∧∨⊕⊗⇄⇆⇇⇉⇈⇊↱↲↳↵🛠⚙⛓⚿⛭⛮⎔⎕⏃⏄⏆⏇⏈⏉⏊⏋⏌⎾⎿⏁⏂⍚⍛⍜⍝⍞⍟⍠⍡⍢⍣⍤⍥⍦⍧⍨⍩⍪⍫⍬⍭⍮⍯⍰⍱⍲⍳⍴⍵⍶⍷⍸⍹⍺⎈⎉⎊⎋⎌⎍⎎⎏⎐⎑⎒⎓⎔⎕/******/+=_-*^%!&[$]01ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝX01Ø§¶#@+=_-*^%!&[$]⇄⇆⇇⇉⇈⇊↱↲↳↵";
+        const alphabet = "X01Ø§¶#@+=_-*^%!&[$]αβγδεζηθικλμνξοπρστυφχψω∆∇∂∑∏√∞∫≈≠≤≥+=¬∧∨⊕⊗⇄⇆⇇⇉⇈⇊↱↲↳↵X01Ø§¶#@+=_-*^%!&[$]01ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ";
         const fontSize = 13;
         const columns = canvas.width / fontSize;
         const rainDrops = Array(Math.floor(columns)).fill(1);
@@ -220,6 +222,7 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
           setTimeout(() => c.classList.add('visible'), i * 80);
         });
         updateCount();
+        updateButtonListeners(); // Re-assign listener ke tombol baru yang di-reveal
       });
 
       document.querySelectorAll('.filter-tag').forEach(tag => {
@@ -243,8 +246,42 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
             });
           }
           updateCount();
+          updateButtonListeners(); // Amankan listener tombol boks sehabis di-filter
         });
       });
+
+function updateButtonListeners() {
+  const viewProjectBtns = grid.querySelectorAll('.work-overlay .work-tag');
+  
+  viewProjectBtns.forEach(btn => {
+    const svgIcon = btn.querySelector('svg');
+    
+    btn.style.transition = 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
+    btn.style.border = '1px solid rgba(201, 169, 110, 0.28)';
+    btn.style.color = '#c9a96e'; // Warna teks emas kuning default
+    btn.style.backgroundColor = 'transparent';
+    
+    if (svgIcon) svgIcon.style.transition = 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
+
+    btn.addEventListener('mouseenter', () => {
+      btn.style.backgroundColor = '#c9a96e';
+      btn.style.color = '#0b0d11';
+      btn.style.borderColor = '#c9a96e';
+      btn.style.paddingLeft = '14px';
+      btn.style.paddingRight = '14px';
+      if (svgIcon) svgIcon.style.transform = 'translateX(4px)';
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      btn.style.backgroundColor = 'transparent';
+      btn.style.color = '#c9a96e';
+      btn.style.borderColor = 'rgba(201, 169, 110, 0.28)';
+      btn.style.paddingLeft = '';
+      btn.style.paddingRight = '';
+      if (svgIcon) svgIcon.style.transform = '';
+    });
+  });
+}
 
       // ===== PERFORMANCE: ENGINE SCROLL OBSERVER =====
       const io = new IntersectionObserver(entries => {
@@ -254,10 +291,13 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags || []))];
           setTimeout(() => el.classList.add('visible'), parseInt(el.dataset.delay || '0'));
           io.unobserve(el);
         });
-      }, { threshold: .06, rootMargin: '0px 0px -20px 0px' });
+      }, { threshold: .06, rootMargin: '0px 0px -40px 0px' });
 
       document.querySelectorAll('.card-anim:not(.hidden)').forEach(el => io.observe(el));
+      
+      // Jalankan inisialisasi awal seluruh boks data
       updateCount();
+      updateButtonListeners();
     }
 
     if (document.readyState === 'loading') {

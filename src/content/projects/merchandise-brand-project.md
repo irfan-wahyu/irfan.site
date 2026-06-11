@@ -3,6 +3,7 @@ title: Merchandise Brand Project
 subtitle: Simulasi membangun brand merchandise fiktif berbasis ilustrasi digital
   sebagai tugas akhir semester
 thumbnail: /irfan.site/images/mockup_logo2x.png
+raw_asset_url: https://drive.google.com/drive/folders/1qDfIvbZJLY0_lUDd22nCxWYvKnZzRW1_?usp=sharing
 year: 2024
 duration: 1 Month
 status: Completed
@@ -66,3 +67,63 @@ Kalau mengerjakan proyek serupa lagi, hal pertama yang akan saya bangun lebih du
 ![](/irfan.site/images/word-mark-dan-typeface2x.png)
 
 ![](/irfan.site/images/contoh-penerapan2x.png)
+
+![](/irfan.site/images/fleksibilitas-logo2x.png)
+
+![](/irfan.site/images/filosofi-logo2x.png)
+
+![](/irfan.site/images/bentuk-logo2x.png)
+
+![](/irfan.site/images/feed-game.jpg)
+
+![](/irfan.site/images/game-53x.jpg)
+
+![](/irfan.site/images/game-43x.jpg)
+
+![](/irfan.site/images/game-33x.jpg)
+
+![](/irfan.site/images/game-63x.jpg)
+
+![](/irfan.site/images/game-23x.jpg)
+
+![](/irfan.site/images/game3x.jpg)
+
+![](/irfan.site/images/feed-stiker.jpg)
+
+![](/irfan.site/images/totebag2x.jpg)
+
+![](/irfan.site/images/feed-promosi.jpg)
+
+![](/irfan.site/images/feed-jual-stiker.jpg)
+
+![](/irfan.site/images/ajakan2x.jpg)
+
+![](/irfan.site/images/cerita2x.jpg)
+
+![](/irfan.site/images/promosi3x.jpg)
+
+![](/irfan.site/images/view3x.jpg)
+
+![](/irfan.site/images/baju-view3x.jpg)
+
+![](/irfan.site/images/baju-size3x.jpg)
+
+![](/irfan.site/images/judul2x.jpg)
+
+![](/irfan.site/images/apa-itu-acylic2x.jpg)
+
+![](/irfan.site/images/pengertian2x.jpg)
+
+![](/irfan.site/images/kelebihan-1.jpg)
+
+![](/irfan.site/images/kelebihan-2.jpg)
+
+![](/irfan.site/images/feed-ganci.jpg)
+
+![](/irfan.site/images/qr-code-brilliant.jpg)
+
+![](/irfan.site/images/poster-beli-baju.jpg)
+
+![](/irfan.site/images/how-to-order.jpg)
+
+![](/irfan.site/images/digital-imaging-poster-totebag.jpg)
