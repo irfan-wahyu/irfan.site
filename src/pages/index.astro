@@ -11,6 +11,7 @@ const allProjects = await getCollection('projects');
 const sorted = allProjects.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
 const base = import.meta.env.BASE_URL;
 ---
+
 <Layout title="Irfan Wahyu — Systemic Thinker. Visual Maker.">
   <Nav variant="home" />
 
