@@ -520,7 +520,99 @@
       .admin-header { flex-direction: column; align-items: flex-start; }
     }
 
-    /* EasyMDE dark theme */
+    /* Upload choice modal */
+    .upload-modal {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(12,14,19,0.85);
+      backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .upload-modal.open { display: flex; }
+    .upload-modal-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      padding: 32px;
+      max-width: 360px; width: 100%;
+      position: relative;
+    }
+    .upload-modal-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem; font-style: italic; font-weight: 300;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .upload-modal-sub {
+      font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px;
+    }
+    .upload-options {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .upload-opt {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-label);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .upload-opt:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .upload-opt-icon {
+      width: 28px; height: 28px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .upload-close {
+      position: absolute; top: 12px; right: 16px;
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 0.9rem;
+    }
+    .upload-close:hover { color: var(--text); }
+    .form-upload-btn {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .form-upload-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .upload-long-label {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 16px; padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem; color: var(--text-muted);
+      cursor: pointer; user-select: none;
+    }
+    .upload-long-label input[type="checkbox"] {
+      appearance: none; width: 16px; height: 16px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .upload-long-label input[type="checkbox"]:checked {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+    .upload-long-label input[type="checkbox"]:checked::after {
+      content: '✓'; color: var(--bg); font-size: 0.6rem;
+    }
     .EasyMDEContainer { display: block !important; }
     .editor-toolbar {
       background: var(--bg);
@@ -667,9 +759,14 @@
           <textarea id="fSubtitle" class="form-control" placeholder="Brief subtitle or tagline"></textarea>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="position:relative">
           <label>Thumbnail URL</label>
-          <input type="text" id="fThumbnail" class="form-control" placeholder="/irfan.site/images/screenshot.png or https://..." />
+          <div style="display:flex;gap:8px">
+            <input type="text" id="fThumbnail" class="form-control" placeholder="/irfan.site/images/screenshot.png or https://..." style="flex:1" />
+            <button type="button" id="thumbnailUploadBtn" class="form-upload-btn" title="Upload file to GitHub">
+              <span>📁</span>
+            </button>
+          </div>
         </div>
 
         <div class="form-group">
@@ -949,6 +1046,44 @@
       input.click();
     }
 
+    // ===== UPLOAD CHOICE MODAL =====
+    let uploadCallback = null;
+    function showUploadModal(title, sub, onUrl, onFile, showLong) {
+      document.getElementById('uploadModalTitle').textContent = title;
+      document.getElementById('uploadModalSub').textContent = sub;
+      document.getElementById('uploadLongLabel').style.display = showLong ? 'flex' : 'none';
+      if (!showLong) document.getElementById('uploadLongCheck').checked = false;
+      document.getElementById('uploadModal').classList.add('open');
+      uploadCallback = { onUrl, onFile };
+    }
+    function getUploadLong() {
+      return document.getElementById('uploadLongCheck').checked;
+    }
+    document.getElementById('uploadOptUrl').addEventListener('click', () => {
+      document.getElementById('uploadModal').classList.remove('open');
+      if (uploadCallback && uploadCallback.onUrl) uploadCallback.onUrl(getUploadLong());
+      document.getElementById('uploadLongCheck').checked = false;
+      uploadCallback = null;
+    });
+    document.getElementById('uploadOptFile').addEventListener('click', () => {
+      document.getElementById('uploadModal').classList.remove('open');
+      if (uploadCallback && uploadCallback.onFile) uploadCallback.onFile(getUploadLong());
+      document.getElementById('uploadLongCheck').checked = false;
+      uploadCallback = null;
+    });
+    document.getElementById('uploadModalClose').addEventListener('click', () => {
+      document.getElementById('uploadModal').classList.remove('open');
+      document.getElementById('uploadLongCheck').checked = false;
+      uploadCallback = null;
+    });
+    document.getElementById('uploadModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+        document.getElementById('uploadModal').classList.remove('open');
+        document.getElementById('uploadLongCheck').checked = false;
+        uploadCallback = null;
+      }
+    });
+
     // ===== EASYMDE (Rich Markdown Editor) =====
     let editor;
     function initEditor() {
@@ -966,15 +1101,24 @@
           {
             name: 'image-upload',
             action: function(ed) {
-              const method = confirm('OK = URL, Cancel = upload file');
-              if (method) {
-                const url = prompt('Image URL:');
-                if (url) ed.codemirror.replaceSelection(`![image](${url})`);
-              } else {
-                pickFile('image/*', (url, file) => {
-                  ed.codemirror.replaceSelection(`![${file.name}](${url})`);
-                });
-              }
+              showUploadModal(
+                'Add Image',
+                'Choose how to add an image',
+                (isLong) => {
+                  const url = prompt('Image URL:');
+                  if (url) {
+                    const alt = isLong ? 'long' : 'image';
+                    ed.codemirror.replaceSelection(`![${alt}](${url})`);
+                  }
+                },
+                (isLong) => {
+                  pickFile('image/*', (url, file) => {
+                    const alt = isLong ? 'long' : file.name;
+                    ed.codemirror.replaceSelection(`![${alt}](${url})`);
+                  });
+                },
+                true
+              );
             },
             className: 'fa fa-picture-o',
             title: 'Image (URL or Upload)',
@@ -982,21 +1126,25 @@
           {
             name: 'embed-video',
             action: function(ed) {
-              const method = confirm('OK = URL, Cancel = upload file');
-              if (method) {
-                const url = prompt('Video URL (YouTube/Vimeo/direct):');
-                if (!url) return;
-                let embed = url;
-                const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
-                if (yt) embed = `https://www.youtube.com/embed/${yt[1]}`;
-                const vm = url.match(/vimeo\.com\/(\d+)/);
-                if (vm) embed = `https://player.vimeo.com/video/${vm[1]}`;
-                ed.codemirror.replaceSelection(`<iframe src="${embed}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>\n`);
-              } else {
-                pickFile('video/*', (url, file) => {
-                  ed.codemirror.replaceSelection(`<video src="${url}" controls style="max-width:100%"><p>${file.name}</p></video>\n`);
-                });
-              }
+              showUploadModal(
+                'Add Video',
+                'URL (YouTube/Vimeo) or upload a video file',
+                () => {
+                  const url = prompt('Video URL (YouTube/Vimeo/direct):');
+                  if (!url) return;
+                  let embed = url;
+                  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+                  if (yt) embed = `https://www.youtube.com/embed/${yt[1]}`;
+                  const vm = url.match(/vimeo\.com\/(\d+)/);
+                  if (vm) embed = `https://player.vimeo.com/video/${vm[1]}`;
+                  ed.codemirror.replaceSelection(`<iframe src="${embed}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>\n`);
+                },
+                () => {
+                  pickFile('video/*', (url, file) => {
+                    ed.codemirror.replaceSelection(`<video src="${url}" controls style="max-width:100%"><p>${file.name}</p></video>\n`);
+                  });
+                }
+              );
             },
             className: 'fa fa-video-camera',
             title: 'Video (URL or Upload)',
@@ -1004,15 +1152,19 @@
           {
             name: 'embed-pdf',
             action: function(ed) {
-              const method = confirm('OK = PDF URL, Cancel = upload file');
-              if (method) {
-                const url = prompt('PDF URL:');
-                if (url) ed.codemirror.replaceSelection(`<iframe src="${url}" width="100%" height="600" style="border:1px solid #787470"></iframe>\n`);
-              } else {
-                pickFile('application/pdf,.pdf', (url) => {
-                  ed.codemirror.replaceSelection(`<iframe src="${url}" width="100%" height="600" style="border:1px solid #787470"></iframe>\n`);
-                });
-              }
+              showUploadModal(
+                'Add PDF',
+                'URL or upload a PDF file for preview',
+                () => {
+                  const url = prompt('PDF URL:');
+                  if (url) ed.codemirror.replaceSelection(`<iframe src="${url}" width="100%" height="600" style="border:1px solid #787470"></iframe>\n`);
+                },
+                () => {
+                  pickFile('application/pdf,.pdf', (url) => {
+                    ed.codemirror.replaceSelection(`<iframe src="${url}" width="100%" height="600" style="border:1px solid #787470"></iframe>\n`);
+                  });
+                }
+              );
             },
             className: 'fa fa-file-pdf-o',
             title: 'PDF (URL or Upload)',
@@ -1020,11 +1172,41 @@
           {
             name: 'embed-web',
             action: function(ed) {
-              const url = prompt('Website URL to embed (preview):');
+              const url = prompt('Website URL to embed:');
               if (url) ed.codemirror.replaceSelection(`<iframe src="${url}" width="100%" height="500" style="border:1px solid #787470"></iframe>\n`);
             },
             className: 'fa fa-globe',
             title: 'Embed Website Preview',
+          },
+          {
+            name: 'toggle-long',
+            action: function(ed) {
+              const cm = ed.codemirror;
+              const sel = cm.getSelection();
+              if (sel) {
+                const imgMatch = sel.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+                if (imgMatch) {
+                  const alt = imgMatch[1];
+                  const url = imgMatch[2];
+                  const newAlt = alt === 'long' ? 'image' : 'long';
+                  cm.replaceSelection(`![${newAlt}](${url})`);
+                  return;
+                }
+              }
+              const line = cm.getLine(cm.getCursor().line);
+              const imgMatch = line.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+              if (imgMatch) {
+                const alt = imgMatch[1];
+                const url = imgMatch[2];
+                const newAlt = alt === 'long' ? 'image' : 'long';
+                cm.setLine(cm.getCursor().line, line.replace(/!\[[^\]]*\]\([^)]+\)/, `![${newAlt}](${url})`));
+              } else {
+                const url = prompt('Image URL to mark as long:');
+                if (url) cm.replaceSelection(`![long](${url})`);
+              }
+            },
+            className: 'fa fa-arrows-v',
+            title: 'Toggle Long Image (scrollable)',
           },
           '|',
           'preview', 'side-by-side', 'fullscreen',
@@ -1396,6 +1578,14 @@
       }
     });
 
+    // Thumbnail upload button
+    $('thumbnailUploadBtn').addEventListener('click', () => {
+      pickFile('image/*', (url) => {
+        $('fThumbnail').value = url;
+        showToast('Thumbnail URL set');
+      });
+    });
+
     // ===== INIT =====
     // Init EasyMDE after DOM ready
     setTimeout(initEditor, 100);
@@ -1406,5 +1596,30 @@
       login(token);
     }
   </script>
+
+  <!-- Upload choice modal -->
+  <div class="upload-modal" id="uploadModal">
+    <div class="upload-modal-box">
+      <span class="corner c-tl"></span><span class="corner c-tr"></span>
+      <span class="corner c-bl"></span><span class="corner c-br"></span>
+      <button class="upload-close" id="uploadModalClose">✕</button>
+      <div class="upload-modal-title" id="uploadModalTitle">Add Media</div>
+      <div class="upload-modal-sub" id="uploadModalSub">Choose how to add your file</div>
+      <div class="upload-options">
+        <div class="upload-opt" id="uploadOptUrl">
+          <span class="upload-opt-icon">🔗</span>
+          From URL
+        </div>
+        <div class="upload-opt" id="uploadOptFile">
+          <span class="upload-opt-icon">📁</span>
+          Upload File
+        </div>
+      </div>
+      <label class="upload-long-label" id="uploadLongLabel">
+        <input type="checkbox" id="uploadLongCheck" />
+        <span>↕ Long image — full height with scroll</span>
+      </label>
+    </div>
+  </div>
 </body>
 </html>
