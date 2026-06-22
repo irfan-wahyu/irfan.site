@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Irfan Wahyu</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.github.com; img-src 'self' data:; base-uri 'self'; form-action 'none';" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Alegreya+SC:wght@400;500&family=Inter:wght@300;400;500&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
@@ -884,7 +885,7 @@
     // ===== LOGIN / LOGOUT =====
     function login(tokenVal) {
       token = tokenVal;
-      localStorage.setItem('rw_token', tokenVal);
+      sessionStorage.setItem('rw_token', tokenVal);
       $('loginScreen').classList.add('hidden');
       $('dashboard').classList.remove('hidden');
       loadProjects();
@@ -892,7 +893,7 @@
 
     function logout() {
       token = '';
-      localStorage.removeItem('rw_token');
+      sessionStorage.removeItem('rw_token');
       $('loginScreen').classList.remove('hidden');
       $('dashboard').classList.add('hidden');
       $('formContainer').classList.add('hidden');
@@ -955,7 +956,8 @@
         }
         renderProjectList();
       } catch(e) {
-        $('projectList').innerHTML = `<div class="empty-state"><p>Error loading projects: ${escHtml(e.message)}</p></div>`;
+        console.error('Project load error:', e.message);
+        $('projectList').innerHTML = '<div class="empty-state"><p>Error loading projects.</p></div>';
         showToast('Failed to load projects', true);
       }
     }
@@ -985,7 +987,7 @@
               <div class="project-info">
                 <div class="project-name">${escHtml(p.data.title || p.slug)} ${featured ? '<span class="project-featured-badge">Featured</span>' : ''}</div>
                 <div class="project-meta">
-                  <span>${year}</span>
+                  <span>${escHtml(String(year))}</span>
                   <span>${escHtml(status)}</span>
                   ${subtitle ? '<span>' + escHtml(subtitle.substring(0, 40)) + '</span>' : ''}
                 </div>
@@ -1151,7 +1153,8 @@
     });
 
     $('saveBtn').addEventListener('click', async () => {
-      const slug = $('fSlug').value.trim();
+      let slug = slugify($('fSlug').value.trim());
+      $('fSlug').value = slug;
       const title = $('fTitle').value.trim();
       if (!slug) { showToast('Slug is required', true); return; }
       if (!title) { showToast('Title is required', true); return; }
@@ -1216,7 +1219,7 @@
 
     // ===== INIT =====
     // Auto-login
-    const saved = localStorage.getItem('rw_token');
+    const saved = sessionStorage.getItem('rw_token');
     if (saved) {
       token = saved;
       login(token);
