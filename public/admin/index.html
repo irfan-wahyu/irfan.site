@@ -850,6 +850,31 @@
     <div id="projectList"><div class="loading"><div class="loading-spinner"></div>Loading projects...</div></div>
   </div>
 
+  <!-- Upload choice modal -->
+  <div class="upload-modal" id="uploadModal">
+    <div class="upload-modal-box">
+      <span class="corner c-tl"></span><span class="corner c-tr"></span>
+      <span class="corner c-bl"></span><span class="corner c-br"></span>
+      <button class="upload-close" id="uploadModalClose">✕</button>
+      <div class="upload-modal-title" id="uploadModalTitle">Add Media</div>
+      <div class="upload-modal-sub" id="uploadModalSub">Choose how to add your file</div>
+      <div class="upload-options">
+        <div class="upload-opt" id="uploadOptUrl">
+          <span class="upload-opt-icon">🔗</span>
+          From URL
+        </div>
+        <div class="upload-opt" id="uploadOptFile">
+          <span class="upload-opt-icon">📁</span>
+          Upload File
+        </div>
+      </div>
+      <label class="upload-long-label" id="uploadLongLabel">
+        <input type="checkbox" id="uploadLongCheck" />
+        <span>↕ Long image — full height with scroll</span>
+      </label>
+    </div>
+  </div>
+
   <script>
     const GITHUB_API = 'https://api.github.com';
     const OWNER = 'irfan-wahyu';
@@ -1597,29 +1622,5 @@
     }
   </script>
 
-  <!-- Upload choice modal -->
-  <div class="upload-modal" id="uploadModal">
-    <div class="upload-modal-box">
-      <span class="corner c-tl"></span><span class="corner c-tr"></span>
-      <span class="corner c-bl"></span><span class="corner c-br"></span>
-      <button class="upload-close" id="uploadModalClose">✕</button>
-      <div class="upload-modal-title" id="uploadModalTitle">Add Media</div>
-      <div class="upload-modal-sub" id="uploadModalSub">Choose how to add your file</div>
-      <div class="upload-options">
-        <div class="upload-opt" id="uploadOptUrl">
-          <span class="upload-opt-icon">🔗</span>
-          From URL
-        </div>
-        <div class="upload-opt" id="uploadOptFile">
-          <span class="upload-opt-icon">📁</span>
-          Upload File
-        </div>
-      </div>
-      <label class="upload-long-label" id="uploadLongLabel">
-        <input type="checkbox" id="uploadLongCheck" />
-        <span>↕ Long image — full height with scroll</span>
-      </label>
-    </div>
-  </div>
 </body>
 </html>
