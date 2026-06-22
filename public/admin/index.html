@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Irfan Wahyu</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.github.com; img-src 'self' data:; base-uri 'self'; form-action 'none';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.github.com; img-src 'self' data:; base-uri 'self'; form-action 'none';" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Alegreya+SC:wght@400;500&family=Inter:wght@300;400;500&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
@@ -992,41 +992,16 @@
                   ${subtitle ? '<span>' + escHtml(subtitle.substring(0, 40)) + '</span>' : ''}
                 </div>
               </div>
-              <div class="project-arrow">▼</div>
-            </div>
-            <div class="project-body">
-              <div class="project-body-inner">
-                <div class="field-row">
-                  <span class="field-label">Slug</span>
-                  <span class="field-value">${escHtml(p.slug)}.md</span>
-                </div>
-                ${subtitle ? `<div class="field-row"><span class="field-label">Subtitle</span><span class="field-value">${escHtml(subtitle.substring(0, 80))}</span></div>` : ''}
-                ${desc ? `<div class="field-row"><span class="field-label">Description</span><span class="field-value">${escHtml(desc.substring(0, 80))}</span></div>` : ''}
-                ${tools.length ? `<div class="field-row"><span class="field-label">Tools</span><span class="field-value tags-list">${tools.map(t => '<span class="tag">' + escHtml(t) + '</span>').join('')}</span></div>` : ''}
-                ${tags.length ? `<div class="field-row"><span class="field-label">Tags</span><span class="field-value tags-list">${tags.map(t => '<span class="tag">' + escHtml(t) + '</span>').join('')}</span></div>` : ''}
-                <div class="field-row">
-                  <span class="field-label">Body</span>
-                  <span class="field-value">${escHtml(bodyPreview)}</span>
-                </div>
-                <div style="display:flex;gap:8px;margin-top:8px">
-                  <button class="btn btn-sm edit-btn" data-slug="${escHtml(p.slug)}">Edit</button>
-                  <button class="btn btn-sm btn-danger delete-btn" data-slug="${escHtml(p.slug)}">Delete</button>
-                </div>
+              <div style="display:flex;gap:6px;flex-shrink:0">
+                <button class="btn btn-sm delete-btn" data-slug="${escHtml(p.slug)}" style="border-color:#b04a4a;color:#b04a4a">Delete</button>
+                <button class="btn btn-sm edit-btn" data-slug="${escHtml(p.slug)}">Edit</button>
               </div>
             </div>
           </div>`;
       }
       $('projectList').innerHTML = html;
 
-      // Accordion behavior
-      document.querySelectorAll('.project-header').forEach(h => {
-        h.addEventListener('click', () => {
-          const item = h.closest('.project-item');
-          if (item) item.classList.toggle('open');
-        });
-      });
-
-      // Edit buttons
+      // Edit buttons — click opens form directly
       document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
