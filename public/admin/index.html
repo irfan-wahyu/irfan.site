@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Irfan Wahyu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Alegreya+SC:wght@400;500&family=Inter:wght@300;400;500&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0e13;
+      --bg-secondary: #111419;
+      --text: #e4e0d8;
+      --text-muted: #787470;
+      --accent: #c9a96e;
+      --accent-dim: rgba(201, 169, 110, 0.1);
+      --border: rgba(228, 224, 216, 0.1);
+      --font-heading: "Alegreya", serif;
+      --font-body: "Inter", sans-serif;
+      --font-label: "Alegreya SC", serif;
+      --font-mono: "DM Mono", monospace;
+      --radius: 0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+
+    input, textarea, select, button { font-family: inherit; }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .corner { position: absolute; width: 18px; height: 18px; pointer-events: none; }
+    .c-tl { top: 16px; left: 16px; border-top: 1px solid rgba(201,169,110,0.25); border-left: 1px solid rgba(201,169,110,0.25); }
+    .c-tr { top: 16px; right: 16px; border-top: 1px solid rgba(201,169,110,0.25); border-right: 1px solid rgba(201,169,110,0.25); }
+    .c-bl { bottom: 16px; left: 16px; border-bottom: 1px solid rgba(201,169,110,0.25); border-left: 1px solid rgba(201,169,110,0.25); }
+    .c-br { bottom: 16px; right: 16px; border-bottom: 1px solid rgba(201,169,110,0.25); border-right: 1px solid rgba(201,169,110,0.25); }
+
+    .divider {
+      display: flex; align-items: center; gap: 14px; opacity: 0.18; margin: 32px 0;
+    }
+    .divider::before, .divider::after {
+      content: ""; flex: 1; height: 1px; background: var(--accent);
+    }
+    .divider-diamond {
+      width: 5px; height: 5px; border: 1px solid var(--accent); transform: rotate(45deg); flex-shrink: 0;
+    }
+
+    .page-title {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .page-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .eyebrow {
+      font-family: var(--font-label);
+      font-size: 0.52rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .eyebrow::after {
+      content: ""; flex: 0 0 30px; height: 1px; background: var(--accent); opacity: 0.5;
+    }
+
+    /* ACCORDION / CARD STYLE FOR EACH PROJECT IN THE LIST */
+    .project-item {
+      border: 1px solid var(--border);
+      margin-bottom: 1px;
+      background: var(--bg-secondary);
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .project-item:hover { border-color: rgba(201,169,110,0.25); }
+
+    .project-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      cursor: pointer;
+      gap: 12px;
+    }
+    .project-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .project-name {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .project-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex; gap: 12px; flex-wrap: wrap;
+      font-family: var(--font-mono);
+    }
+    .project-featured-badge {
+      font-family: var(--font-label);
+      font-size: 0.48rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 1px 6px;
+      opacity: 0.6;
+    }
+    .project-actions {
+      display: flex; gap: 6px; flex-shrink: 0;
+    }
+    .project-actions button {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      font-size: 0.65rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-label);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .project-actions button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .project-actions .btn-delete:hover {
+      border-color: #b04a4a;
+      color: #b04a4a;
+    }
+    .project-arrow {
+      color: var(--accent);
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .project-item.open .project-arrow {
+      transform: rotate(180deg);
+    }
+
+    .project-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 20px;
+      border-top: 0 solid var(--border);
+    }
+    .project-item.open .project-body {
+      max-height: 600px;
+      padding: 16px 20px;
+      border-top-width: 1px;
+    }
+    .project-body-inner {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .field-row {
+      display: flex; gap: 8px; align-items: baseline;
+    }
+    .field-label {
+      font-family: var(--font-label);
+      font-size: 0.52rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.6;
+      flex: 0 0 90px;
+    }
+    .field-value {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .field-value.tags-list {
+      display: flex; flex-wrap: wrap; gap: 4px;
+    }
+    .field-value .tag {
+      font-family: var(--font-label);
+      font-size: 0.48rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+    }
+
+    /* === FORM === */
+    .form-wrap {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      padding: 32px;
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .form-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-family: var(--font-label);
+      font-size: 0.52rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+    .form-group label .required {
+      color: #b04a4a;
+      margin-left: 4px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-family: var(--font-body);
+      font-weight: 300;
+      transition: border-color 0.2s;
+      border-radius: 0;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    textarea.form-control {
+      min-height: 80px;
+      resize: vertical;
+    }
+    textarea.form-control.body-editor {
+      min-height: 300px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.7;
+    }
+    select.form-control {
+      cursor: pointer;
+    }
+    .form-control::placeholder {
+      color: var(--text-muted);
+      opacity: 0.4;
+    }
+
+    .checkbox-wrap {
+      display: flex; align-items: center; gap: 10px; padding: 4px 0;
+    }
+    .checkbox-wrap input[type="checkbox"] {
+      width: 18px; height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .checkbox-wrap label {
+      margin: 0; cursor: pointer;
+    }
+
+    .tag-input-wrap {
+      display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+    }
+    .tag-input-wrap input {
+      flex: 1; min-width: 120px;
+    }
+    .tag-pills {
+      display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px;
+    }
+    .tag-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: var(--font-label);
+      font-size: 0.48rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 2px 8px;
+      background: var(--accent-dim);
+    }
+    .tag-pill .remove {
+      cursor: pointer; opacity: 0.5; margin-left: 2px; font-size: 0.6rem;
+    }
+    .tag-pill .remove:hover { opacity: 1; }
+
+    .btn-row {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 24px;
+      font-family: var(--font-label);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+      border: none;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg) !important;
+      border-color: var(--accent);
+      font-weight: 500;
+    }
+    .btn-primary:hover {
+      background: #d4b07a;
+    }
+    .btn-danger {
+      border-color: #b04a4a;
+      color: #b04a4a;
+    }
+    .btn-danger:hover {
+      background: #b04a4a;
+      color: var(--bg) !important;
+    }
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.48rem;
+    }
+
+    .hidden { display: none; }
+
+    /* === LOGIN === */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-box {
+      max-width: 420px;
+      width: 100%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+      position: relative;
+    }
+    .login-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .login-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .login-error {
+      color: #b04a4a;
+      font-size: 0.75rem;
+      margin-top: 8px;
+    }
+    .login-hint {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+      opacity: 0.6;
+      line-height: 1.6;
+    }
+    .login-hint a {
+      color: var(--accent);
+    }
+
+    /* === HEADER BAR === */
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .admin-logo {
+      font-family: var(--font-label);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      opacity: 0.7;
+    }
+    .admin-logo span {
+      color: var(--accent);
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .status-dot.online {
+      background: #4caf50;
+      box-shadow: 0 0 8px rgba(76,175,80,0.5);
+    }
+    .status-text {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* === LOADING === */
+    .loading {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-muted);
+    }
+    .loading-spinner {
+      width: 20px; height: 20px;
+      border: 1px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* === EMPTY STATE === */
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      border: 1px dashed var(--border);
+    }
+    .empty-state p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+
+    /* === NOTIFICATION === */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 14px 20px;
+      font-size: 0.8rem;
+      color: var(--text);
+      z-index: 9999;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25,1,0.5,1);
+      max-width: 360px;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast.error {
+      border-left-color: #b04a4a;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 32px 16px; }
+      .form-wrap { padding: 20px 16px; }
+      .project-header { padding: 12px 16px; }
+      .login-box { padding: 28px 20px; }
+      .admin-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <!-- === LOGIN SCREEN === -->
+  <div id="loginScreen">
+    <div class="login-box">
+      <span class="corner c-tl"></span><span class="corner c-tr"></span>
+      <span class="corner c-bl"></span><span class="corner c-br"></span>
+      <div class="login-title">Admin Panel</div>
+      <div class="login-desc">irfanwahyu.site — Content Manager</div>
+      <div class="divider" style="margin: 16px 0 24px"><div class="divider-diamond"></div></div>
+
+      <div class="form-group">
+        <label>GitHub Token</label>
+        <input type="password" id="tokenInput" class="form-control" placeholder="github_pat_xxxxx..." />
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center">Login</button>
+      </div>
+      <div id="loginError" class="login-error hidden"></div>
+      <div class="login-hint">
+        Masukkan GitHub Personal Access Token dengan scope <strong>repo</strong> untuk mengelola konten.
+        <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">Buat token →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- === DASHBOARD === -->
+  <div id="dashboard" class="container hidden">
+    <span class="corner c-tl"></span><span class="corner c-tr"></span>
+    <span class="corner c-bl"></span><span class="corner c-br"></span>
+
+    <div class="admin-header">
+      <div class="admin-header-left">
+        <div class="admin-logo">I · W <span>Admin</span></div>
+        <div class="status-bar">
+          <span class="status-dot online"></span>
+          <span class="status-text">GitHub connected</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-sm" id="refreshBtn">↻ Refresh</button>
+        <button class="btn btn-sm btn-danger" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+
+    <div class="page-title">Projects</div>
+    <div class="page-sub">Manage your portfolio projects</div>
+
+    <div class="divider"><div class="divider-diamond"></div></div>
+
+    <div class="btn-row" style="margin-bottom:24px">
+      <button class="btn btn-primary" id="newBtn">+ New Project</button>
+    </div>
+
+    <!-- EDIT FORM -->
+    <div id="formContainer" class="hidden">
+      <div class="form-wrap">
+        <span class="corner c-tl"></span><span class="corner c-tr"></span>
+        <span class="corner c-bl"></span><span class="corner c-br"></span>
+        <div class="form-title" id="formTitle">Edit Project</div>
+
+        <div class="form-group">
+          <label>Slug <span class="required">*</span></label>
+          <input type="text" id="fSlug" class="form-control" placeholder="my-project-slug" />
+        </div>
+
+        <div class="form-group">
+          <label>Title <span class="required">*</span></label>
+          <input type="text" id="fTitle" class="form-control" placeholder="Project title" />
+        </div>
+
+        <div class="form-group">
+          <label>Subtitle</label>
+          <textarea id="fSubtitle" class="form-control" placeholder="Brief subtitle or tagline"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Thumbnail URL</label>
+          <input type="text" id="fThumbnail" class="form-control" placeholder="/irfan.site/images/screenshot.png or https://..." />
+        </div>
+
+        <div class="form-group">
+          <label>Raw Asset URL</label>
+          <input type="text" id="fRawAssetUrl" class="form-control" placeholder="https://drive.google.com/..." />
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="fDescription" class="form-control" placeholder="Short description for card preview"></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="form-group">
+            <label>Year</label>
+            <input type="number" id="fYear" class="form-control" value="2026" />
+          </div>
+          <div class="form-group">
+            <label>Order</label>
+            <input type="number" id="fOrder" class="form-control" value="99" />
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="form-group">
+            <label>Duration</label>
+            <input type="text" id="fDuration" class="form-control" placeholder="3 Month" />
+          </div>
+          <div class="form-group">
+            <label>Medium</label>
+            <input type="text" id="fMedium" class="form-control" placeholder="Website" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select id="fStatus" class="form-control">
+            <option value="Completed">Completed</option>
+            <option value="In Progress">In Progress</option>
+            <option value="On Hold">On Hold</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tools</label>
+          <div class="tag-pills" id="toolsPills"></div>
+          <div class="tag-input-wrap">
+            <input type="text" id="toolsInput" class="form-control" placeholder="Add tool + Enter" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tags</label>
+          <div class="tag-pills" id="tagsPills"></div>
+          <div class="tag-input-wrap">
+            <input type="text" id="tagsInput" class="form-control" placeholder="Add tag + Enter" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox-wrap">
+            <input type="checkbox" id="fFeatured" />
+            <label for="fFeatured">Featured Project</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Body (Markdown)</label>
+          <textarea id="fBody" class="form-control body-editor" placeholder="## Overview&#10;&#10;Write your project description..."></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="saveBtn">Save</button>
+          <button class="btn" id="cancelBtn">Cancel</button>
+          <button class="btn btn-danger" id="deleteBtn" style="margin-left:auto">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT LIST -->
+    <div id="projectList"><div class="loading"><div class="loading-spinner"></div>Loading projects...</div></div>
+  </div>
+
+  <script>
+    const GITHUB_API = 'https://api.github.com';
+    const OWNER = 'irfan-wahyu';
+    const REPO = 'irfan.site';
+    const BRANCH = 'main';
+    const PROJECTS_PATH = 'src/content/projects';
+
+    let token = '';
+    let projects = [];
+    let editingSlug = null;
+    let toolsList = [];
+    let tagsList = [];
+
+    const $ = id => document.getElementById(id);
+
+    function escHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s || '';
+      return div.innerHTML;
+    }
+
+    // ===== TOAST =====
+    let toastTimer;
+    function showToast(msg, isError) {
+      const t = $('toast');
+      t.textContent = msg;
+      t.className = 'toast' + (isError ? ' error' : '');
+      clearTimeout(toastTimer);
+      requestAnimationFrame(() => {
+        t.classList.add('show');
+        toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+      });
+    }
+
+    // ===== FRONTMATTER PARSER =====
+    function parseFrontmatter(markdown) {
+      const match = markdown.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+      if (!match) return { data: {}, body: markdown.trim() };
+      const yaml = match[1];
+      let body = (match[2] || '').trim();
+      const data = {};
+      let currentKey = null;
+      let currentArray = [];
+      const lines = yaml.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const kvMatch = line.match(/^(\w+):\s*(.*)$/);
+        if (kvMatch) {
+          if (currentKey && currentArray.length > 0) {
+            data[currentKey] = currentArray;
+            currentArray = [];
+          }
+          currentKey = kvMatch[1];
+          let val = kvMatch[2].trim();
+          if (val === '' || val === '|') {
+            currentArray = [];
+          } else if (val === 'true') data[currentKey] = true;
+          else if (val === 'false') data[currentKey] = false;
+          else if (/^\d+$/.test(val)) data[currentKey] = parseInt(val);
+          else if (val.startsWith('"') && val.endsWith('"')) data[currentKey] = val.slice(1, -1);
+          else data[currentKey] = val;
+        } else {
+          const arrMatch = line.match(/^\s+-\s*(.*)$/);
+          if (arrMatch && currentKey) {
+            currentArray.push(arrMatch[1].trim());
+          } else if (currentKey && currentArray.length > 0) {
+            data[currentKey] = currentArray;
+            currentArray = [];
+            currentKey = null;
+          }
+        }
+      }
+      if (currentKey && currentArray.length > 0) {
+        data[currentKey] = currentArray;
+      }
+      // remove description from data if it came from yaml (schema has it but actual files don't)
+      return { data, body };
+    }
+
+    function buildFrontmatter(data, body) {
+      let yaml = '---\n';
+      const order = ['title', 'subtitle', 'thumbnail', 'raw_asset_url', 'description', 'year', 'duration', 'status', 'medium', 'tools', 'tags', 'featured', 'order'];
+      for (const key of order) {
+        if (!(key in data)) continue;
+        const val = data[key];
+        if (val === undefined || val === null || val === '') continue;
+        if (key === 'description' && !val) continue;
+        if (Array.isArray(val)) {
+          if (val.length === 0) continue;
+          yaml += `${key}:\n`;
+          for (const item of val) {
+            yaml += `  - ${item}\n`;
+          }
+        } else if (typeof val === 'boolean') {
+          yaml += `${key}: ${val}\n`;
+        } else if (typeof val === 'number') {
+          yaml += `${key}: ${val}\n`;
+        } else if (typeof val === 'string' && val.includes('\n')) {
+          yaml += `${key}: |\n`;
+          for (const line of val.split('\n')) {
+            yaml += `  ${line}\n`;
+          }
+        } else {
+          // quote strings that have special chars
+          if (/[:\[\]#{}|>]/.test(val)) {
+            yaml += `${key}: "${val}"\n`;
+          } else {
+            yaml += `${key}: ${val}\n`;
+          }
+        }
+      }
+      // Add any extra keys not in order
+      for (const key of Object.keys(data)) {
+        if (order.includes(key)) continue;
+        const val = data[key];
+        if (val === undefined || val === null) continue;
+        if (Array.isArray(val)) {
+          if (val.length === 0) continue;
+          yaml += `${key}:\n`;
+          for (const item of val) {
+            yaml += `  - ${item}\n`;
+          }
+        } else if (typeof val === 'boolean') {
+          yaml += `${key}: ${val}\n`;
+        } else if (typeof val === 'number') {
+          yaml += `${key}: ${val}\n`;
+        } else {
+          yaml += `${key}: ${val}\n`;
+        }
+      }
+      yaml += '---\n\n';
+      return yaml + (body || '');
+    }
+
+    function slugify(text) {
+      if (!text) return '';
+      return text.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .substring(0, 80);
+    }
+
+    // ===== GITHUB API =====
+    async function ghFetch(url, options) {
+      const res = await fetch(url, {
+        ...options,
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          ...(options?.body ? { 'Content-Type': 'application/json' } : {}),
+          ...(options?.headers || {})
+        }
+      });
+      if (!res.ok) {
+        let msg = `GitHub API error: ${res.status}`;
+        try {
+          const err = await res.json();
+          msg = err.message || msg;
+        } catch(e) {}
+        throw new Error(msg);
+      }
+      return res;
+    }
+
+    async function getFileContent(path) {
+      const res = await ghFetch(`${GITHUB_API}/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`);
+      const data = await res.json();
+      const content = atob(data.content.replace(/\n/g, ''));
+      return { content, sha: data.sha };
+    }
+
+    async function commitFile(path, content, message, sha) {
+      const body = {
+        message,
+        content: btoa(unescape(encodeURIComponent(content))),
+        branch: BRANCH
+      };
+      if (sha) body.sha = sha;
+      const res = await ghFetch(`${GITHUB_API}/repos/${OWNER}/${REPO}/contents/${path}`, {
+        method: 'PUT',
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      return data.content.sha;
+    }
+
+    async function deleteFile(path, sha, message) {
+      await ghFetch(`${GITHUB_API}/repos/${OWNER}/${REPO}/contents/${path}`, {
+        method: 'DELETE',
+        body: JSON.stringify({ message, sha, branch: BRANCH })
+      });
+    }
+
+    // ===== LOGIN / LOGOUT =====
+    function login(tokenVal) {
+      token = tokenVal;
+      localStorage.setItem('rw_token', tokenVal);
+      $('loginScreen').classList.add('hidden');
+      $('dashboard').classList.remove('hidden');
+      loadProjects();
+    }
+
+    function logout() {
+      token = '';
+      localStorage.removeItem('rw_token');
+      $('loginScreen').classList.remove('hidden');
+      $('dashboard').classList.add('hidden');
+      $('formContainer').classList.add('hidden');
+      $('tokenInput').value = '';
+    }
+
+    $('loginBtn').addEventListener('click', async () => {
+      const t = $('tokenInput').value.trim();
+      if (!t) { $('loginError').textContent = 'Token required.'; $('loginError').classList.remove('hidden'); return; }
+      $('loginError').classList.add('hidden');
+      // Test token
+      try {
+        const res = await fetch(`${GITHUB_API}/repos/${OWNER}/${REPO}`, {
+          headers: { 'Authorization': `token ${t}`, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          $('loginError').textContent = err.message || 'Invalid token';
+          $('loginError').classList.remove('hidden');
+          return;
+        }
+        login(t);
+        showToast('Connected to GitHub');
+      } catch(e) {
+        $('loginError').textContent = 'Connection failed: ' + e.message;
+        $('loginError').classList.remove('hidden');
+      }
+    });
+
+    $('tokenInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') $('loginBtn').click();
+    });
+
+    $('logoutBtn').addEventListener('click', logout);
+
+    // ===== LOAD PROJECTS =====
+    async function loadProjects() {
+      $('projectList').innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading projects...</div>';
+      try {
+        const res = await ghFetch(`${GITHUB_API}/repos/${OWNER}/${REPO}/contents/${PROJECTS_PATH}?ref=${BRANCH}`);
+        const items = await res.json();
+        if (!Array.isArray(items)) {
+          $('projectList').innerHTML = '<div class="empty-state"><p>No projects directory found.</p></div>';
+          return;
+        }
+        const mdFiles = items.filter(i => i.name.endsWith('.md') && i.type === 'file');
+        if (mdFiles.length === 0) {
+          $('projectList').innerHTML = '<div class="empty-state"><p>No projects yet.</p></div>';
+          return;
+        }
+        projects = [];
+        for (const file of mdFiles) {
+          try {
+            const { content } = await getFileContent(`${PROJECTS_PATH}/${file.name}`);
+            const { data, body } = parseFrontmatter(content);
+            projects.push({ filename: file.name, slug: file.name.replace('.md', ''), sha: file.sha, data, body, fileSha: file.sha });
+          } catch(e) {
+            console.warn('Failed to parse', file.name, e);
+          }
+        }
+        renderProjectList();
+      } catch(e) {
+        $('projectList').innerHTML = `<div class="empty-state"><p>Error loading projects: ${escHtml(e.message)}</p></div>`;
+        showToast('Failed to load projects', true);
+      }
+    }
+
+    $('refreshBtn').addEventListener('click', loadProjects);
+
+    // ===== RENDER PROJECT LIST =====
+    function renderProjectList() {
+      if (projects.length === 0) {
+        $('projectList').innerHTML = '<div class="empty-state"><p>No projects found.</p></div>';
+        return;
+      }
+      projects.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+      let html = '';
+      for (const p of projects) {
+        const featured = p.data.featured;
+        const year = p.data.year || '-';
+        const status = p.data.status || '-';
+        const tools = p.data.tools || [];
+        const tags = p.data.tags || [];
+        const subtitle = p.data.subtitle || '';
+        const desc = p.data.description || '';
+        const bodyPreview = p.body ? p.body.substring(0, 60) + (p.body.length > 60 ? '...' : '') : '(empty)';
+        html += `
+          <div class="project-item">
+            <div class="project-header" data-slug="${escHtml(p.slug)}">
+              <div class="project-info">
+                <div class="project-name">${escHtml(p.data.title || p.slug)} ${featured ? '<span class="project-featured-badge">Featured</span>' : ''}</div>
+                <div class="project-meta">
+                  <span>${year}</span>
+                  <span>${escHtml(status)}</span>
+                  ${subtitle ? '<span>' + escHtml(subtitle.substring(0, 40)) + '</span>' : ''}
+                </div>
+              </div>
+              <div class="project-arrow">▼</div>
+            </div>
+            <div class="project-body">
+              <div class="project-body-inner">
+                <div class="field-row">
+                  <span class="field-label">Slug</span>
+                  <span class="field-value">${escHtml(p.slug)}.md</span>
+                </div>
+                ${subtitle ? `<div class="field-row"><span class="field-label">Subtitle</span><span class="field-value">${escHtml(subtitle.substring(0, 80))}</span></div>` : ''}
+                ${desc ? `<div class="field-row"><span class="field-label">Description</span><span class="field-value">${escHtml(desc.substring(0, 80))}</span></div>` : ''}
+                ${tools.length ? `<div class="field-row"><span class="field-label">Tools</span><span class="field-value tags-list">${tools.map(t => '<span class="tag">' + escHtml(t) + '</span>').join('')}</span></div>` : ''}
+                ${tags.length ? `<div class="field-row"><span class="field-label">Tags</span><span class="field-value tags-list">${tags.map(t => '<span class="tag">' + escHtml(t) + '</span>').join('')}</span></div>` : ''}
+                <div class="field-row">
+                  <span class="field-label">Body</span>
+                  <span class="field-value">${escHtml(bodyPreview)}</span>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <button class="btn btn-sm edit-btn" data-slug="${escHtml(p.slug)}">Edit</button>
+                  <button class="btn btn-sm btn-danger delete-btn" data-slug="${escHtml(p.slug)}">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }
+      $('projectList').innerHTML = html;
+
+      // Accordion behavior
+      document.querySelectorAll('.project-header').forEach(h => {
+        h.addEventListener('click', () => {
+          const item = h.closest('.project-item');
+          if (item) item.classList.toggle('open');
+        });
+      });
+
+      // Edit buttons
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const slug = btn.dataset.slug;
+          const proj = projects.find(p => p.slug === slug);
+          if (proj) openEditForm(proj);
+        });
+      });
+
+      // Delete buttons
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async e => {
+          e.stopPropagation();
+          const slug = btn.dataset.slug;
+          if (!confirm(`Delete "${slug}"? This cannot be undone.`)) return;
+          try {
+            const proj = projects.find(p => p.slug === slug);
+            if (!proj) return;
+            await deleteFile(`${PROJECTS_PATH}/${slug}.md`, proj.fileSha, `Delete project: ${slug}`);
+            showToast(`Deleted "${slug}"`);
+            projects = projects.filter(p => p.slug !== slug);
+            renderProjectList();
+          } catch(e) {
+            showToast('Delete failed: ' + e.message, true);
+          }
+        });
+      });
+    }
+
+    // ===== TAG INPUT HELPERS =====
+    function setupTagInput(inputId, pillsId, list) {
+      const input = $(inputId);
+      const pills = $(pillsId);
+      function render() {
+        pills.innerHTML = list.map(t => `<span class="tag-pill">${escHtml(t)}<span class="remove" data-tag="${escHtml(t)}">✕</span></span>`).join('');
+        pills.querySelectorAll('.remove').forEach(r => {
+          r.addEventListener('click', () => {
+            const tag = r.dataset.tag;
+            const idx = list.indexOf(tag);
+            if (idx > -1) list.splice(idx, 1);
+            render();
+          });
+        });
+      }
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const val = input.value.trim();
+          if (val && !list.includes(val)) {
+            list.push(val);
+            input.value = '';
+            render();
+          }
+        }
+      });
+      return render;
+    }
+
+    // ===== EDIT FORM =====
+    function openEditForm(proj) {
+      editingSlug = proj.slug;
+      $('formTitle').textContent = proj.data.title ? `Edit: ${proj.data.title}` : 'New Project';
+      $('fSlug').value = proj.slug || '';
+      $('fTitle').value = proj.data.title || '';
+      $('fSubtitle').value = proj.data.subtitle || '';
+      $('fThumbnail').value = proj.data.thumbnail || '';
+      $('fRawAssetUrl').value = proj.data.raw_asset_url || '';
+      $('fDescription').value = proj.data.description || '';
+      $('fYear').value = proj.data.year || 2026;
+      $('fOrder').value = proj.data.order || 99;
+      $('fDuration').value = proj.data.duration || '';
+      $('fMedium').value = proj.data.medium || '';
+      $('fStatus').value = proj.data.status || 'Completed';
+      $('fFeatured').checked = !!proj.data.featured;
+      $('fBody').value = proj.body || '';
+
+      toolsList = [...(proj.data.tools || [])];
+      tagsList = [...(proj.data.tags || [])];
+      setupTagInput('toolsInput', 'toolsPills', toolsList)();
+      setupTagInput('tagsInput', 'tagsPills', tagsList)();
+
+      // Show/hide delete button
+      $('deleteBtn').classList.toggle('hidden', !proj.slug);
+      $('formContainer').classList.remove('hidden');
+      $('formContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetForm() {
+      editingSlug = null;
+      $('fSlug').value = '';
+      $('fTitle').value = '';
+      $('fSubtitle').value = '';
+      $('fThumbnail').value = '';
+      $('fRawAssetUrl').value = '';
+      $('fDescription').value = '';
+      $('fYear').value = 2026;
+      $('fOrder').value = 99;
+      $('fDuration').value = '';
+      $('fMedium').value = '';
+      $('fStatus').value = 'Completed';
+      $('fFeatured').checked = false;
+      $('fBody').value = '';
+      toolsList = [];
+      tagsList = [];
+      setupTagInput('toolsInput', 'toolsPills', toolsList)();
+      setupTagInput('tagsInput', 'tagsPills', tagsList)();
+      $('deleteBtn').classList.add('hidden');
+      $('formTitle').textContent = 'New Project';
+      $('formContainer').classList.add('hidden');
+    }
+
+    $('newBtn').addEventListener('click', () => {
+      resetForm();
+      const slug = 'new-project-' + Date.now().toString(36);
+      openEditForm({ slug, data: {}, body: '' });
+      // Auto-generate slug from title
+      $('fTitle').addEventListener('input', function autoSlug() {
+        $('fSlug').value = slugify($('fTitle').value);
+      });
+    });
+
+    $('cancelBtn').addEventListener('click', () => {
+      $('formContainer').classList.add('hidden');
+    });
+
+    $('saveBtn').addEventListener('click', async () => {
+      const slug = $('fSlug').value.trim();
+      const title = $('fTitle').value.trim();
+      if (!slug) { showToast('Slug is required', true); return; }
+      if (!title) { showToast('Title is required', true); return; }
+
+      const data = {};
+      data.title = title;
+      if ($('fSubtitle').value.trim()) data.subtitle = $('fSubtitle').value.trim();
+      if ($('fThumbnail').value.trim()) data.thumbnail = $('fThumbnail').value.trim();
+      if ($('fRawAssetUrl').value.trim()) data.raw_asset_url = $('fRawAssetUrl').value.trim();
+      if ($('fDescription').value.trim()) data.description = $('fDescription').value.trim();
+      data.year = parseInt($('fYear').value) || 2026;
+      data.duration = $('fDuration').value.trim() || '1 Minggu';
+      data.status = $('fStatus').value;
+      if ($('fMedium').value.trim()) data.medium = $('fMedium').value.trim();
+      if (toolsList.length) data.tools = toolsList;
+      if (tagsList.length) data.tags = tagsList;
+      data.featured = $('fFeatured').checked;
+      data.order = parseInt($('fOrder').value) || 99;
+
+      const body = $('fBody').value.trim();
+      const content = buildFrontmatter(data, body);
+
+      try {
+        const fileName = `${slug}.md`;
+        const path = `${PROJECTS_PATH}/${fileName}`;
+        let sha = null;
+        if (editingSlug) {
+          // Find existing file sha
+          const existing = projects.find(p => p.slug === editingSlug);
+          if (existing && existing.slug === slug) {
+            sha = existing.fileSha;
+          } else if (existing) {
+            // Slug changed - delete old file
+            await deleteFile(`${PROJECTS_PATH}/${existing.slug}.md`, existing.fileSha, `Rename project: ${existing.slug} → ${slug}`);
+          }
+        }
+        const newSha = await commitFile(path, content, `Update project: ${slug}`, sha);
+        showToast(`Saved "${title}"`);
+        // Reload
+        await loadProjects();
+        resetForm();
+      } catch(e) {
+        showToast('Save failed: ' + e.message, true);
+      }
+    });
+
+    $('deleteBtn').addEventListener('click', async () => {
+      if (!editingSlug) return;
+      if (!confirm(`Delete "${editingSlug}"? This cannot be undone.`)) return;
+      try {
+        const proj = projects.find(p => p.slug === editingSlug);
+        if (proj) {
+          await deleteFile(`${PROJECTS_PATH}/${editingSlug}.md`, proj.fileSha, `Delete project: ${editingSlug}`);
+        }
+        showToast('Deleted');
+        await loadProjects();
+        resetForm();
+      } catch(e) {
+        showToast('Delete failed: ' + e.message, true);
+      }
+    });
+
+    // ===== INIT =====
+    // Auto-login
+    const saved = localStorage.getItem('rw_token');
+    if (saved) {
+      token = saved;
+      login(token);
+    }
+  </script>
+</body>
+</html>
