@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Irfan Wahyu</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.github.com; img-src 'self' data:; base-uri 'self'; form-action 'none';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com; connect-src https://api.github.com; img-src 'self' https: data:; base-uri 'self'; form-action 'none';" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Alegreya+SC:wght@400;500&family=Inter:wght@300;400;500&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -281,12 +282,6 @@
       min-height: 80px;
       resize: vertical;
     }
-    textarea.form-control.body-editor {
-      min-height: 300px;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      line-height: 1.7;
-    }
     select.form-control {
       cursor: pointer;
     }
@@ -523,9 +518,78 @@
       .login-box { padding: 28px 20px; }
       .admin-header { flex-direction: column; align-items: flex-start; }
     }
+
+    /* EasyMDE dark theme */
+    .EasyMDEContainer { display: block !important; }
+    .editor-toolbar {
+      background: var(--bg);
+      border: 1px solid var(--border) !important;
+      border-bottom: none !important;
+      border-radius: 0 !important;
+    }
+    .editor-toolbar button {
+      color: var(--text-muted) !important;
+      border-radius: 0 !important;
+    }
+    .editor-toolbar button:hover {
+      background: var(--accent-dim) !important;
+      color: var(--accent) !important;
+      border-color: var(--accent) !important;
+    }
+    .editor-toolbar button.active {
+      background: var(--accent-dim) !important;
+      color: var(--accent) !important;
+    }
+    .CodeMirror {
+      background: var(--bg) !important;
+      color: var(--text) !important;
+      font-family: var(--font-mono) !important;
+      font-size: 0.82rem !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 0 !important;
+      line-height: 1.7 !important;
+    }
+    .CodeMirror-cursor {
+      border-color: var(--accent) !important;
+    }
+    .CodeMirror-selected { background: var(--accent-dim) !important; }
+    .CodeMirror-focused .CodeMirror-selected { background: rgba(201,169,110,0.2) !important; }
+    .editor-preview {
+      background: var(--bg) !important;
+      color: var(--text) !important;
+    }
+    .editor-preview h1, .editor-preview h2, .editor-preview h3,
+    .editor-preview h4, .editor-preview h5, .editor-preview h6 {
+      color: var(--text) !important;
+      font-family: var(--font-heading) !important;
+    }
+    .editor-preview a { color: var(--accent) !important; }
+    .editor-preview blockquote {
+      border-left: 2px solid var(--accent) !important;
+      color: var(--text-muted) !important;
+    }
+    .editor-preview code {
+      background: var(--bg-secondary) !important;
+      color: var(--accent) !important;
+    }
+    .editor-preview img { max-width: 100%; }
+    .CodeMirror-gutters {
+      background: var(--bg-secondary) !important;
+      border-color: var(--border) !important;
+    }
+    .editor-statusbar {
+      background: var(--bg) !important;
+      border: 1px solid var(--border) !important;
+      border-top: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.7rem !important;
+      padding: 4px 10px !important;
+    }
+    .editor-statusbar span { color: var(--text-muted) !important; }
   </style>
 </head>
 <body>
+  <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
   <div id="toast" class="toast"></div>
 
   <!-- === LOGIN SCREEN === -->
@@ -673,7 +737,7 @@
 
         <div class="form-group">
           <label>Body (Markdown)</label>
-          <textarea id="fBody" class="form-control body-editor" placeholder="## Overview&#10;&#10;Write your project description..."></textarea>
+          <textarea id="fBody"></textarea>
         </div>
 
         <div class="btn-row">
@@ -829,6 +893,54 @@
         .replace(/[\s_]+/g, '-')
         .replace(/^-+|-+$/g, '')
         .substring(0, 80);
+    }
+
+    // ===== EASYMDE (Rich Markdown Editor) =====
+    let editor;
+    function initEditor() {
+      if (editor) editor.toTextArea();
+      editor = new EasyMDE({
+        element: document.getElementById('fBody'),
+        spellChecker: false,
+        forceSync: true,
+        autosave: { enabled: false },
+        toolbar: [
+          'bold', 'italic', 'heading', '|',
+          'code', 'quote', '|',
+          'unordered-list', 'ordered-list', '|',
+          'link', 'image', 'table', '|',
+          'preview', 'side-by-side', 'fullscreen',
+          {
+            name: 'embed-video',
+            action: function customDrawer(editor) {
+              const url = prompt('YouTube / Vimeo URL or embed URL:');
+              if (url) {
+                let embed = url;
+                const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+                if (yt) embed = `https://www.youtube.com/embed/${yt[1]}`;
+                const vm = url.match(/vimeo\.com\/(\d+)/);
+                if (vm) embed = `https://player.vimeo.com/video/${vm[1]}`;
+                editor.codemirror.replaceSelection(`<iframe src="${embed}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>\n`);
+              }
+            },
+            className: 'fa fa-video-camera',
+            title: 'Embed Video/Iframe',
+          },
+        ],
+        renderingConfig: {
+          codeSyntaxHighlighting: true,
+        },
+        promptURLs: true,
+        uploadImage: true,
+        imageUploadFunction: function(file, onSuccess, onError) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            onSuccess(e.target.result);
+          };
+          reader.onerror = onError;
+          reader.readAsDataURL(file);
+        },
+      });
     }
 
     // ===== GITHUB API =====
@@ -1076,7 +1188,7 @@
       $('fMedium').value = proj.data.medium || '';
       $('fStatus').value = proj.data.status || 'Completed';
       $('fFeatured').checked = !!proj.data.featured;
-      $('fBody').value = proj.body || '';
+      editor.value(proj.body || '');
 
       toolsList = [...(proj.data.tools || [])];
       tagsList = [...(proj.data.tags || [])];
@@ -1103,7 +1215,7 @@
       $('fMedium').value = '';
       $('fStatus').value = 'Completed';
       $('fFeatured').checked = false;
-      $('fBody').value = '';
+      editor.value('');
       toolsList = [];
       tagsList = [];
       setupTagInput('toolsInput', 'toolsPills', toolsList)();
@@ -1149,7 +1261,7 @@
       data.featured = $('fFeatured').checked;
       data.order = parseInt($('fOrder').value) || 99;
 
-      const body = $('fBody').value.trim();
+      const body = editor.value().trim();
       const content = buildFrontmatter(data, body);
 
       try {
@@ -1193,6 +1305,8 @@
     });
 
     // ===== INIT =====
+    // Init EasyMDE after DOM ready
+    setTimeout(initEditor, 100);
     // Auto-login
     const saved = sessionStorage.getItem('rw_token');
     if (saved) {
