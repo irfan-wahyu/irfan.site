@@ -206,17 +206,6 @@ const base = import.meta.env.BASE_URL;
     </div>
   </div>
 
-  <!-- Section: Navigation Header -->
-  <nav>
-    <a href="#" class="nav-logo">I · W</a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#works">Works</a></li>
-      <li><a href="#philosophy">Philosophy</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
   <!-- Section: Hero Splash Header -->
   <section id="hero" class="has-corners">
     <span class="c-tl"></span><span class="c-tr"></span><span class="c-bl"></span><span class="c-br"></span>
@@ -233,7 +222,7 @@ const base = import.meta.env.BASE_URL;
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </a>
 
-        <a href="/irfan.site/works" class="hero-btn secondary-stroke-btn" style="pointer-events:all">
+        <a href="${base}works" class="hero-btn secondary-stroke-btn" style="pointer-events:all">
           See My Work
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </a>
@@ -543,47 +532,6 @@ const base = import.meta.env.BASE_URL;
 
   <!-- Section: Client Side Scripts Engine -->
   <script>
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    if (cursor && ring) {
-      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY });
-      (function animC() {
-        cursor.style.left = mx + 'px';
-        cursor.style.top = my + 'px';
-        rx += (mx - rx) * .1;
-        ry += (my - ry) * .1;
-        ring.style.left = rx + 'px';
-        ring.style.top = ry + 'px';
-        requestAnimationFrame(animC);
-      })();
-
-      const viewProjectBtns = document.querySelectorAll('.work-overlay .work-tag');
-      viewProjectBtns.forEach(btn => {
-        const svgIcon = btn.querySelector('svg');
-        btn.style.transition = 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
-        if (svgIcon) svgIcon.style.transition = 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
-
-        btn.addEventListener('mouseenter', () => {
-          btn.style.backgroundColor = '#c9a96e';
-          btn.style.color = '#0b0d11';
-          btn.style.borderColor = '#c9a96e';
-          btn.style.paddingLeft = '14px';
-          btn.style.paddingRight = '14px';
-          if (svgIcon) svgIcon.style.transform = 'translateX(4px)';
-        });
-
-        btn.addEventListener('mouseleave', () => {
-          btn.style.backgroundColor = '';
-          btn.style.color = '';
-          btn.style.borderColor = '';
-          btn.style.paddingLeft = '';
-          btn.style.paddingRight = '';
-          if (svgIcon) svgIcon.style.transform = '';
-        });
-      });
-    }
-
     (function() {
       const cv = document.getElementById('ascii-canvas');
       if (!cv) return;
