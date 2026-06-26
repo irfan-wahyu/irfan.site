@@ -626,8 +626,10 @@
       color: var(--text-muted) !important;
       border-radius: 0 !important;
     }
-    .editor-toolbar button.fa {
+    .editor-toolbar button.fa,
+    .editor-toolbar button.fa::before {
       color: var(--accent) !important;
+      font-family: FontAwesome !important;
     }
     .editor-toolbar button:hover {
       background: var(--accent-dim) !important;
@@ -1189,6 +1191,10 @@
     let editor;
     function initEditor() {
       if (editor) editor.toTextArea();
+      // Temporarily show form to let EasyMDE measure properly
+      const fc = $('formContainer');
+      const wasHidden = fc.classList.contains('hidden');
+      if (wasHidden) fc.classList.remove('hidden');
       editor = new EasyMDE({
         element: document.getElementById('fBody'),
         spellChecker: false,
@@ -1316,6 +1322,7 @@
         promptURLs: true,
         uploadImage: false,
       });
+      if (wasHidden) fc.classList.add('hidden');
     }
 
     // ===== GITHUB API =====
@@ -1429,6 +1436,7 @@
       sessionStorage.setItem('rw_token', tokenVal);
       $('loginScreen').classList.add('hidden');
       $('dashboard').classList.remove('hidden');
+      initEditor();
       loadProjects();
       generateCsrfToken();
       resetSessionTimer();
@@ -1663,6 +1671,7 @@
       $('deleteBtn').classList.toggle('hidden', !proj.slug);
       $('formContainer').classList.remove('hidden');
       $('formContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => { if (editor && editor.codemirror) editor.codemirror.refresh(); }, 50);
     }
 
     function resetForm() {
@@ -1798,7 +1807,6 @@
     });
 
     // ===== INIT =====
-    setTimeout(initEditor, 100);
     generateCsrfToken();
 
     const savedToken = sessionStorage.getItem('rw_token');
