@@ -212,7 +212,7 @@ const base = import.meta.env.BASE_URL;
     <div class="hero-bg" style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 20%, var(--bg) 100%); z-index: 1; pointer-events: none;"></div>
 
     <div class="hero-content" style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: flex-start; gap: 8px !important; padding-top: var(--space-xl) !important; padding-bottom: var(--space-md) !important;">
-      <h1 class="project-title" style="margin-bottom: 0 !important; line-height: 1.15;" set:html={title.replace('—', '<br>—')} />
+      <h1 class="project-title" style="margin-bottom: 0 !important; line-height: 1.15;">{title}
       {subtitle && <p class="project-subtitle" style="margin-top: 0 !important; margin-bottom: 4px !important; opacity: 0.8;">{subtitle}</p>}
 
       {raw_asset_url && (

@@ -6,7 +6,9 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     subtitle: z.string().optional(),
-    raw_asset_url: z.string().url().optional(),
+    raw_asset_url: z.string().url().optional().refine(val => !val || val.startsWith('http'), {
+      message: 'raw_asset_url must start with http:// or https://',
+    }),
     description: z.string().optional(),
     year: z.number(),
     duration: z.string().optional(),
