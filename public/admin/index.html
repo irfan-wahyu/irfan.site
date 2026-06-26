@@ -626,6 +626,9 @@
       color: var(--text-muted) !important;
       border-radius: 0 !important;
     }
+    .editor-toolbar button.fa {
+      color: var(--accent) !important;
+    }
     .editor-toolbar button:hover {
       background: var(--accent-dim) !important;
       color: var(--accent) !important;
@@ -1543,6 +1546,7 @@
               <div class="project-info">
                 <div class="project-name">${escHtml(p.data.title || p.slug)} ${featured ? '<span class="project-featured-badge">Featured</span>' : ''}</div>
                 <div class="project-meta">
+                  <span class="project-arrow">▼</span>
                   <span>${escHtml(String(year))}</span>
                   <span>${escHtml(status)}</span>
                   ${subtitle ? '<span>' + escHtml(subtitle.substring(0, 40)) + '</span>' : ''}
@@ -1553,9 +1557,25 @@
                 <button class="btn btn-sm edit-btn" data-slug="${escHtml(p.slug)}">Edit</button>
               </div>
             </div>
+            <div class="project-body">
+              <div class="project-body-inner">
+                <div class="field-row"><span class="field-label">Description</span><span class="field-value">${escHtml(desc.substring(0, 120))}</span></div>
+                <div class="field-row"><span class="field-label">Tools</span><span class="field-value">${escHtml(tools.join(', ')) || '-'}</span></div>
+                <div class="field-row"><span class="field-label">Tags</span><span class="field-value">${escHtml(tags.join(', ')) || '-'}</span></div>
+                <div class="field-row"><span class="field-label">Body</span><span class="field-value mono">${escHtml(bodyPreview)}</span></div>
+              </div>
+            </div>
           </div>`;
       }
       $('projectList').innerHTML = html;
+
+      // Toggle accordion on header click
+      document.querySelectorAll('.project-header').forEach(h => {
+        h.addEventListener('click', e => {
+          if (e.target.closest('button')) return;
+          h.parentElement.classList.toggle('open');
+        });
+      });
 
       // Edit buttons — click opens form directly
       document.querySelectorAll('.edit-btn').forEach(btn => {
@@ -1669,14 +1689,15 @@
       $('formContainer').classList.add('hidden');
     }
 
+    function autoSlug() {
+      $('fSlug').value = slugify($('fTitle').value);
+    }
     $('newBtn').addEventListener('click', () => {
       resetForm();
       const slug = 'new-project-' + Date.now().toString(36);
       openEditForm({ slug, data: {}, body: '' });
-      // Auto-generate slug from title
-      $('fTitle').addEventListener('input', function autoSlug() {
-        $('fSlug').value = slugify($('fTitle').value);
-      });
+      $('fTitle').removeEventListener('input', autoSlug);
+      $('fTitle').addEventListener('input', autoSlug);
     });
 
     $('cancelBtn').addEventListener('click', () => {
